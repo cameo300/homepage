@@ -1,0 +1,473 @@
+<!doctype html>
+<html>
+ <head>
+ <meta charset="euc-kr">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사다리 게임</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #bebf62 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 900px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        label {
+            font-weight: 600;
+            color: #555;
+            font-size: 0.9em;
+        }
+
+        input {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            width: 200px;
+        }
+
+        button {
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            align-self: flex-end;
+        }
+
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .game-area {
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        canvas {
+            border: 3px solid #667eea;
+            border-radius: 10px;
+            background: #f8f9ff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .players-results {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .players, .results {
+            flex: 1;
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .players h3, .results h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .player-item, .result-item {
+            background: white;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .player-item:hover {
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+
+        .result-item {
+            cursor: default;
+            border-left: 4px solid #764ba2;
+        }
+
+        .matched {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .players-results {
+                flex-direction: column;
+            }
+
+            canvas {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> 사다리 게임</h1>
+        
+        <div class="controls">
+            <div class="input-group">
+                <label>참가자 (쉼표로 구분)</label>
+                <input type="text" id="playersInput" placeholder="철수, 영희, 민수, 지은">
+            </div>
+            <div class="input-group">
+                <label>결과 (쉼표로 구분)</label>
+                <input type="text" id="resultsInput" placeholder="당첨, 꽝, 커피, 치킨">
+            </div>
+            <button id="generateBtn">사다리 생성</button>
+        </div>
+
+        <div class="game-area">
+            <canvas id="ladderCanvas" width="700" height="500"></canvas>
+        </div>
+	
+        <div class="players-results">
+            <div class="players">
+                <h3> 참가자 (클릭하세요!)</h3>
+                <div id="playersList"></div>
+            </div>
+            <div class="results">
+                <h3> 결과</h3>
+                <div id="resultsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('ladderCanvas');
+        const ctx = canvas.getContext('2d');
+        const playersInput = document.getElementById('playersInput');
+        const resultsInput = document.getElementById('resultsInput');
+        const generateBtn = document.getElementById('generateBtn');
+        const playersList = document.getElementById('playersList');
+        const resultsList = document.getElementById('resultsList');
+
+        let players = [];
+        let results = [];
+        let ladder = [];
+        let isAnimating = false;
+        let playerResults = {};
+
+        function generateLadder() {
+            if (isAnimating) return;
+
+            const playersText = playersInput.value.trim();
+            const resultsText = resultsInput.value.trim();
+
+            if (!playersText || !resultsText) {
+                alert('참가자와 결과를 입력해주세요!');
+                return;
+            }
+
+            players = playersText.split(',').map(p => p.trim()).filter(p => p);
+            results = resultsText.split(',').map(r => r.trim()).filter(r => r);
+
+            if (players.length < 2) {
+                alert('참가자는 최소 2명 이상이어야 합니다!');
+                return;
+            }
+
+            if (players.length !== results.length) {
+                alert('참가자와 결과의 개수가 같아야 합니다!');
+                return;
+            }
+
+            ladder = createLadderStructure(players.length);
+            drawLadder();
+            playerResults = {};
+            displayPlayersAndResults();
+        }
+
+        function createLadderStructure(cols) {
+            const rows = 15;
+            const structure = [];
+            
+            // 각 세로선 쌍마다 4~7개의 가로선 배치
+            const bridgesPerColumn = [];
+            for (let c = 0; c < cols - 1; c++) {
+                const count = Math.floor(Math.random() * 4) + 4; // 4~7개
+                bridgesPerColumn.push(count);
+            }
+
+            // 빈 구조 초기화
+            for (let r = 0; r < rows; r++) {
+                structure.push(new Array(cols - 1).fill(false));
+            }
+
+            // 각 세로선 쌍에 가로선 배치
+            for (let c = 0; c < cols - 1; c++) {
+                const count = bridgesPerColumn[c];
+                const availableRows = [];
+                for (let r = 0; r < rows; r++) {
+                    availableRows.push(r);
+                }
+
+                // count개의 랜덤한 행에 가로선 배치
+                for (let i = 0; i < count && availableRows.length > 0; i++) {
+                    const idx = Math.floor(Math.random() * availableRows.length);
+                    const row = availableRows[idx];
+                    
+                    // 인접한 열에 가로선이 없는지 확인
+                    let canPlace = true;
+                    if (c > 0 && structure[row][c - 1]) canPlace = false;
+                    if (c < cols - 2 && structure[row][c + 1]) canPlace = false;
+                    
+                    if (canPlace) {
+                        structure[row][c] = true;
+                    }
+                    
+                    availableRows.splice(idx, 1);
+                }
+            }
+
+            return structure;
+        }
+
+        function drawLadder() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const cols = players.length;
+            const spacing = canvas.width / (cols + 1);
+            const topMargin = 80;
+            const bottomMargin = 80;
+            const ladderHeight = canvas.height - topMargin - bottomMargin;
+            const rowSpacing = ladderHeight / (ladder.length + 1);
+
+            // 세로 선
+            ctx.strokeStyle = '#667eea';
+            ctx.lineWidth = 3;
+            for (let i = 0; i < cols; i++) {
+                ctx.beginPath();
+                ctx.moveTo(spacing * (i + 1), topMargin);
+                ctx.lineTo(spacing * (i + 1), canvas.height - bottomMargin);
+                ctx.stroke();
+            }
+
+            // 가로 선 (사다리)
+            ctx.strokeStyle = '#764ba2';
+            ctx.lineWidth = 3;
+            for (let r = 0; r < ladder.length; r++) {
+                for (let c = 0; c < ladder[r].length; c++) {
+                    if (ladder[r][c]) {
+                        const y = topMargin + rowSpacing * (r + 1);
+                        const x1 = spacing * (c + 1);
+                        const x2 = spacing * (c + 2);
+                        
+                        ctx.beginPath();
+                        ctx.moveTo(x1, y);
+                        ctx.lineTo(x2, y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            // 참가자 이름
+            ctx.fillStyle = '#667eea';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            for (let i = 0; i < players.length; i++) {
+                ctx.fillText(players[i], spacing * (i + 1), 40);
+            }
+
+            // 결과
+            ctx.fillStyle = '#764ba2';
+            for (let i = 0; i < results.length; i++) {
+                ctx.fillText(results[i], spacing * (i + 1), canvas.height - 30);
+            }
+        }
+
+        function displayPlayersAndResults() {
+            playersList.innerHTML = '';
+            resultsList.innerHTML = '';
+
+            // 참가자 표시
+            players.forEach((player, playerIndex) => {
+                const div = document.createElement('div');
+                div.className = 'player-item';
+                div.id = `player-${playerIndex}`;
+                
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = player;
+                div.appendChild(nameSpan);
+                
+                // 이 참가자의 결과가 있으면 오른쪽에 표시
+                if (playerResults[playerIndex] !== undefined) {
+                    const resultValue = playerResults[playerIndex];
+                    const resultIndex = results.indexOf(resultValue);
+                    
+                    const resultSpan = document.createElement('span');
+                    resultSpan.className = `player-result color-${resultIndex}`;
+                    resultSpan.textContent = '------→'+resultValue;
+                    div.appendChild(resultSpan);
+                    
+                    div.classList.add(`color-${resultIndex}`);
+                }
+                
+                div.onclick = () => animatePath(playerIndex);
+                playersList.appendChild(div);
+            });
+
+            // 결과 표시 - 매칭된 참가자가 있을 때만 표시
+            for (let playerIndex in playerResults) {
+                const resultValue = playerResults[playerIndex];
+                const resultIndex = results.indexOf(resultValue);
+                
+                if (resultIndex !== -1) {
+                    const div = document.createElement('div');
+                    div.className = `result-item color-${resultIndex}`;
+                    div.id = `result-${resultIndex}`;
+                    div.textContent = resultValue;
+                    resultsList.appendChild(div);
+                }
+            }
+        }
+
+        function animatePath(startCol) {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            drawLadder();
+
+            const cols = players.length;
+            const spacing = canvas.width / (cols + 1);
+            const topMargin = 80;
+            const bottomMargin = 80;
+            const ladderHeight = canvas.height - topMargin - bottomMargin;
+            const rowSpacing = ladderHeight / (ladder.length + 1);
+
+            let currentCol = startCol;
+            let currentRow = 0;
+            let y = topMargin;
+
+            const path = [{x: spacing * (currentCol + 1), y: y}];
+
+            // 경로 계산
+            for (let r = 0; r < ladder.length; r++) {
+                y += rowSpacing;
+                
+                // 왼쪽 확인
+                if (currentCol > 0 && ladder[r][currentCol - 1]) {
+                    path.push({x: spacing * (currentCol + 1), y: y});
+                    path.push({x: spacing * currentCol, y: y});
+                    currentCol--;
+                }
+                // 오른쪽 확인
+                else if (currentCol < cols - 1 && ladder[r][currentCol]) {
+                    path.push({x: spacing * (currentCol + 1), y: y});
+                    path.push({x: spacing * (currentCol + 2), y: y});
+                    currentCol++;
+                } else {
+                    path.push({x: spacing * (currentCol + 1), y: y});
+                }
+            }
+
+            path.push({x: spacing * (currentCol + 1), y: canvas.height - bottomMargin});
+
+            // 애니메이션
+            let step = 0;
+            const animate = () => {
+                if (step < path.length - 1) {
+                    ctx.strokeStyle = '#ff6b6b';
+                    ctx.lineWidth = 5;
+                    ctx.lineCap = 'round';
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(path[step].x, path[step].y);
+                    ctx.lineTo(path[step + 1].x, path[step + 1].y);
+                    ctx.stroke();
+
+                    // 이동 지점 표시
+                    ctx.fillStyle = '#ff6b6b';
+                    ctx.beginPath();
+                    ctx.arc(path[step + 1].x, path[step + 1].y, 6, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    step++;
+                    setTimeout(animate, 200);
+                } else {
+                    // 결과 저장
+                    playerResults[startCol] = results[currentCol];
+                    
+                    // UI 업데이트
+                    displayPlayersAndResults();
+
+                    isAnimating = false;
+                }
+            };
+
+            animate();
+        }
+
+        generateBtn.addEventListener('click', generateLadder);
+
+        // 초기 예제 데이터
+        playersInput.value = '철수, 영희, 민수, 지은';
+        resultsInput.value = '당첨, 꽝, 커피, 치킨';
+        generateLadder();
+    </script>
+</body>
+</html>

@@ -1,0 +1,604 @@
+<!doctype html>
+<html>
+ <head>
+ <meta charset="euc-kr">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>포토앨범</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            padding: 30px;
+        }
+
+        .photo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .photo-title {
+            font-size: 2.5em;
+            color: #667eea;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .photo-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .photo-btn {
+            padding: 12px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .photo-btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .photo-btn-secondary {
+            background: #764ba2;
+        }
+
+        .photo-btn-secondary:hover {
+            background: #653a8a;
+        }
+
+        .category-filter {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .category-badge-btn {
+            padding: 10px 20px;
+            background: #f8f9ff;
+            color: #667eea;
+            border: 2px solid #e8eaff;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .category-badge-btn:hover {
+            border-color: #667eea;
+            background: #e8eaff;
+        }
+
+        .category-badge-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .photo-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .photo-card-item {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .photo-card-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .photo-thumbnail-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            background: #f0f0f0;
+        }
+
+        .photo-card-info {
+            padding: 15px;
+        }
+
+        .photo-card-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .photo-card-date {
+            font-size: 0.85em;
+            color: #999;
+        }
+
+        .photo-category-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #e8eaff;
+            color: #667eea;
+            border-radius: 6px;
+            font-size: 0.8em;
+            margin-top: 8px;
+        }
+
+        .delete-photo-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .photo-card-item:hover .delete-photo-btn {
+            display: flex;
+        }
+
+        .empty-gallery {
+            text-align: center;
+            padding: 80px 20px;
+            color: #999;
+            grid-column: 1 / -1;
+        }
+
+        .empty-gallery svg {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-title {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            margin-bottom: 20px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .modal-btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .modal-btn-primary:hover {
+            background: #5568d3;
+        }
+
+        .modal-btn-secondary {
+            background: #e0e0e0;
+            color: #666;
+        }
+
+        .modal-btn-secondary:hover {
+            background: #d0d0d0;
+        }
+
+        .category-select-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .category-select-btn {
+            width: 100%;
+            padding: 12px;
+            background: #f8f9ff;
+            border: 2px solid #e8eaff;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+            font-weight: 500;
+            color: #667eea;
+        }
+
+        .category-select-btn:hover {
+            background: #e8eaff;
+            border-color: #667eea;
+        }
+
+        #fileInput {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="photo-header">
+        <h1 class="photo-title">포토앨범 ??</h1>
+        <div class="photo-controls">
+            <button class="photo-btn" onclick="document.getElementById('fileInput').click()">
+                ? 사진 업로드
+            </button>
+            <button class="photo-btn photo-btn-secondary" onclick="openCategoryModal()">
+                ??? 카테고리 추가
+            </button>
+        </div>
+    </div>
+
+    <div class="category-filter" id="categoryFilter"></div>
+
+    <div class="photo-gallery-grid" id="photoGalleryGrid"></div>
+
+    <input type="file" id="fileInput" accept="image/*" multiple>
+
+    <!-- 카테고리 추가 모달 -->
+    <div class="modal-overlay" id="categoryModal">
+        <div class="modal-box">
+            <div class="modal-title">새 카테고리 추가</div>
+            <input type="text" class="modal-input" id="categoryInput" placeholder="카테고리 이름을 입력하세요">
+            <div class="modal-buttons">
+                <button class="modal-btn modal-btn-secondary" onclick="closeCategoryModal()">취소</button>
+                <button class="modal-btn modal-btn-primary" onclick="addPhotoCategory()">추가</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 사진 업로드 카테고리 선택 모달 -->
+    <div class="modal-overlay" id="uploadModal">
+        <div class="modal-box">
+            <div class="modal-title">카테고리 선택</div>
+            <div class="category-select-list" id="categorySelectList"></div>
+        </div>
+    </div>
+
+    <script>
+        let photoCategories = ['전체', '여행', '음식', '일상', '풍경'];
+        let photos = [];
+        let currentPhotoCategory = '전체';
+        let pendingFiles = [];
+        let photoDB;
+
+        // IndexedDB 초기화
+        async function initPhotoDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open('PersonalPhotoGalleryDB', 1);
+
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => {
+                    photoDB = request.result;
+                    resolve(photoDB);
+                };
+
+                request.onupgradeneeded = (e) => {
+                    photoDB = e.target.result;
+                    
+                    if (!photoDB.objectStoreNames.contains('photos')) {
+                        photoDB.createObjectStore('photos', { keyPath: 'id' });
+                    }
+                    
+                    if (!photoDB.objectStoreNames.contains('categories')) {
+                        photoDB.createObjectStore('categories', { keyPath: 'name' });
+                    }
+                };
+            });
+        }
+
+        async function savePhotoToDB(photo) {
+            return new Promise((resolve, reject) => {
+                const transaction = photoDB.transaction(['photos'], 'readwrite');
+                const store = transaction.objectStore('photos');
+                const request = store.add(photo);
+                request.onsuccess = () => resolve();
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        async function loadPhotosFromDB() {
+            return new Promise((resolve, reject) => {
+                const transaction = photoDB.transaction(['photos'], 'readonly');
+                const store = transaction.objectStore('photos');
+                const request = store.getAll();
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        async function deletePhotoFromDB(id) {
+            return new Promise((resolve, reject) => {
+                const transaction = photoDB.transaction(['photos'], 'readwrite');
+                const store = transaction.objectStore('photos');
+                const request = store.delete(id);
+                request.onsuccess = () => resolve();
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        async function savePhotoCategoriesToDB() {
+            return new Promise((resolve, reject) => {
+                const transaction = photoDB.transaction(['categories'], 'readwrite');
+                const store = transaction.objectStore('categories');
+                store.clear();
+                photoCategories.forEach(cat => store.add({ name: cat }));
+                transaction.oncomplete = () => resolve();
+                transaction.onerror = () => reject(transaction.error);
+            });
+        }
+
+        async function loadPhotoCategoriesFromDB() {
+            return new Promise((resolve, reject) => {
+                const transaction = photoDB.transaction(['categories'], 'readonly');
+                const store = transaction.objectStore('categories');
+                const request = store.getAll();
+                request.onsuccess = () => {
+                    const result = request.result.map(item => item.name);
+                    resolve(result.length > 0 ? result : null);
+                };
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        async function initPhotoGallery() {
+            try {
+                await initPhotoDB();
+                const savedCategories = await loadPhotoCategoriesFromDB();
+                if (savedCategories) photoCategories = savedCategories;
+                photos = await loadPhotosFromDB();
+                renderCategoryFilter();
+                renderPhotoGallery();
+            } catch (error) {
+                console.error('포토앨범 초기화 오류:', error);
+                renderCategoryFilter();
+                renderPhotoGallery();
+            }
+        }
+
+        function renderCategoryFilter() {
+            const filter = document.getElementById('categoryFilter');
+            filter.innerHTML = '';
+            photoCategories.forEach(cat => {
+                const count = photos.filter(p => cat === '전체' || p.category === cat).length;
+                const btn = document.createElement('button');
+                btn.className = `category-badge-btn ${cat === currentPhotoCategory ? 'active' : ''}`;
+                btn.textContent = `${cat} (${count})`;
+                btn.onclick = () => selectPhotoCategory(cat);
+                filter.appendChild(btn);
+            });
+        }
+
+        function selectPhotoCategory(cat) {
+            currentPhotoCategory = cat;
+            renderCategoryFilter();
+            renderPhotoGallery();
+        }
+
+        function renderPhotoGallery() {
+            const grid = document.getElementById('photoGalleryGrid');
+            const filteredPhotos = currentPhotoCategory === '전체' 
+                ? photos 
+                : photos.filter(p => p.category === currentPhotoCategory);
+
+            if (filteredPhotos.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-gallery">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <circle cx="8.5" cy="8.5" r="1.5"/>
+                            <polyline points="21 15 16 10 5 21"/>
+                        </svg>
+                        <h3>사진이 없습니다</h3>
+                        <p>새로운 사진을 업로드해보세요!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = '';
+            filteredPhotos.forEach(photo => {
+                const card = document.createElement('div');
+                card.className = 'photo-card-item';
+                card.innerHTML = `
+                    <button class="delete-photo-btn" onclick="deletePhoto('${photo.id}'); event.stopPropagation();">?</button>
+                    <img src="${photo.url}" alt="${photo.title}" class="photo-thumbnail-img">
+                    <div class="photo-card-info">
+                        <div class="photo-card-title">${photo.title}</div>
+                        <div class="photo-card-date">${photo.date}</div>
+                        <div class="photo-category-tag">${photo.category}</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        document.getElementById('fileInput').addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            if (files.length > 0) {
+                pendingFiles = files;
+                showCategorySelectModal();
+            }
+            e.target.value = '';
+        });
+
+        function showCategorySelectModal() {
+            const modal = document.getElementById('uploadModal');
+            const list = document.getElementById('categorySelectList');
+            list.innerHTML = '';
+            photoCategories.filter(c => c !== '전체').forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'category-select-btn';
+                btn.textContent = cat;
+                btn.onclick = () => uploadPhotos(cat);
+                list.appendChild(btn);
+            });
+            modal.classList.add('active');
+        }
+
+        async function uploadPhotos(category) {
+            for (const file of pendingFiles) {
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+                    const photo = {
+                        id: Date.now() + Math.random().toString(36),
+                        url: e.target.result,
+                        title: file.name.split('.')[0],
+                        date: new Date().toLocaleDateString('ko-KR'),
+                        category: category
+                    };
+                    try {
+                        await savePhotoToDB(photo);
+                        photos.unshift(photo);
+                        renderCategoryFilter();
+                        renderPhotoGallery();
+                    } catch (error) {
+                        console.error('사진 저장 오류:', error);
+                        alert('사진 저장에 실패했습니다.');
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+            document.getElementById('uploadModal').classList.remove('active');
+            pendingFiles = [];
+        }
+
+        async function deletePhoto(id) {
+            if (confirm('이 사진을 삭제하시겠습니까?')) {
+                try {
+                    await deletePhotoFromDB(id);
+                    photos = photos.filter(p => p.id !== id);
+                    renderCategoryFilter();
+                    renderPhotoGallery();
+                } catch (error) {
+                    console.error('사진 삭제 오류:', error);
+                    alert('사진 삭제에 실패했습니다.');
+                }
+            }
+        }
+
+        function openCategoryModal() {
+            document.getElementById('categoryModal').classList.add('active');
+            document.getElementById('categoryInput').value = '';
+            document.getElementById('categoryInput').focus();
+        }
+
+        function closeCategoryModal() {
+            document.getElementById('categoryModal').classList.remove('active');
+        }
+
+        async function addPhotoCategory() {
+            const input = document.getElementById('categoryInput');
+            const newCategory = input.value.trim();
+            if (!newCategory) {
+                alert('카테고리 이름을 입력해주세요.');
+                return;
+            }
+            if (photoCategories.includes(newCategory)) {
+                alert('이미 존재하는 카테고리입니다.');
+                return;
+            }
+            photoCategories.push(newCategory);
+            try {
+                await savePhotoCategoriesToDB();
+                renderCategoryFilter();
+                closeCategoryModal();
+            } catch (error) {
+                console.error('카테고리 저장 오류:', error);
+                alert('카테고리 저장에 실패했습니다.');
+            }
+        }
+
+        document.getElementById('categoryInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addPhotoCategory();
+        });
+
+        document.getElementById('categoryModal').addEventListener('click', (e) => {
+            if (e.target.id === 'categoryModal') closeCategoryModal();
+        });
+
+        document.getElementById('uploadModal').addEventListener('click', (e) => {
+            if (e.target.id === 'uploadModal') {
+                document.getElementById('uploadModal').classList.remove('active');
+            }
+        });
+
+        window.addEventListener('load', initPhotoGallery);
+    </script>
+</body>
+</html>
