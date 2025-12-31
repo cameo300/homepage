@@ -1,0 +1,668 @@
+/* 전체 설정 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 관리자/기능 버튼 관련 */
+.admin-footer {
+    padding: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 게시판(Board) 관련 */
+.board-container {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+}
+
+.board-item {
+    padding: 20px 25px;
+    border-bottom: 1px solid #e0e0e0;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.board-item:hover {
+    background: #f8f9ff;
+}
+
+.board-item-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.board-item-content {
+    flex: 1;
+}
+
+.board-item-meta {
+    font-size: 0.9em;
+    color: #999;
+}
+
+.board-item-title {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.board-list {
+    border-top: 2px solid #667eea;
+}
+
+.board-title {
+    font-size: 2.5em;
+    color: #667eea;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* 카테고리 필터 관련 */
+.category-badge-btn {
+    padding: 10px 20px;
+    background: #f8f9ff;
+    color: #667eea;
+    border: 2px solid #e8eaff;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 500;
+}
+
+.category-badge-btn:hover {
+    border-color: #667eea;
+    background: #e8eaff;
+}
+
+.category-badge-btn.active {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.category-filter {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.category-select-btn {
+    width: 100%;
+    padding: 12px;
+    background: #f8f9ff;
+    border: 2px solid #e8eaff;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 1em;
+    font-weight: 500;
+    color: #667eea;
+}
+
+.category-select-btn:hover {
+    background: #e8eaff;
+    border-color: #667eea;
+}
+
+.category-select-list {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+/* 본문 및 컨테이너 */
+.commbody {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: white;
+    padding: 50px;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.content-frame {
+    flex: 1;
+    border: none;
+    width: 100%;
+    height: 100%;
+}
+
+/* 삭제/수정 버튼 */
+.delete-btn {
+    background: #e74c3c;
+    color: white;
+}
+
+.delete-btn:hover {
+    background: #c0392b;
+}
+
+.delete-photo-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.edit-btn, .delete-btn {
+	padding: 6px 12px;
+	border: none;
+	border-radius: 6px;
+	font-size: 0.85em;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s;
+}
+
+.edit-btn {
+    background: #764ba2;
+    color: white;
+}
+
+.edit-btn:hover {
+    background: #653a8a;
+}
+
+/* 데이터 없음(Empty) 상태 */
+.empty-board, .empty-gallery {
+    text-align: center;
+    padding: 80px 20px;
+    color: #999;
+}
+
+.empty-board svg, .empty-gallery svg {
+    margin-bottom: 20px;
+    opacity: 0.3;
+}
+
+/* 헤더 및 인트로 */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.indexbody {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f5f5f5;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.intro-content {
+    line-height: 1.8;
+    font-size: 1.1em;
+    color: #444;
+}
+
+.intro-controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.intro-section {
+    margin: 40px 0;
+    padding: 30px;
+    background: #f8f9ff;
+    border-radius: 15px;
+    border-left: 5px solid #667eea;
+}
+
+.intro-section h3 {
+    color: #667eea;
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+
+.intro-subtitle {
+    font-size: 1.5em;
+    color: #666;
+    margin-bottom: 40px;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: white;
+}
+
+/* 메뉴 및 사이드바 아이템 */
+.menu {
+    padding: 30px 0;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.menu-icon {
+    font-size: 1.3em;
+}
+
+.menu-img {
+    width: 35px;
+    padding-right: 10px;
+}
+
+.menu-item {
+    padding: 18px 30px;
+    margin: 8px 15px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 10px;
+    font-size: 1.1em;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.menu-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateX(5px);
+}
+
+.menu-item.active {
+    background: rgba(255, 255, 255, 0.25);
+    font-weight: 600;
+}
+
+/* 모달(Modal) */
+.modal-box {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.modal-btn-primary {
+    background: #667eea;
+    color: white;
+}
+
+.modal-btn-secondary {
+    background: #e0e0e0;
+    color: #666;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.modal-input, .modal-textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    margin-bottom: 15px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.modal-label {
+    display: block;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-title {
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* 앨범 및 포토 갤러리 */
+.photo-btn {
+    padding: 12px 20px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.photo-btn:hover {
+    background: #5568d3;
+    transform: translateY(-2px);
+}
+
+.photo-btn-secondary {
+    background: #764ba2;
+}
+
+.photo-card-date {
+    font-size: 0.85em;
+    color: #999;
+}
+
+.photo-card-info {
+    padding: 15px;
+}
+
+.photo-card-item {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+    cursor: pointer;
+    position: relative;
+}
+
+.photo-card-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.photo-card-item:hover .delete-photo-btn {
+    display: flex;
+}
+
+.photo-card-title {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.photo-category-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    background: #e8eaff;
+    color: #667eea;
+    border-radius: 6px;
+    font-size: 0.8em;
+    margin-top: 8px;
+}
+
+.photo-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.photo-thumbnail-img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    background: #f0f0f0;
+}
+
+.photo-title {
+    font-size: 2.5em;
+    color: #667eea;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* 포트폴리오(Portfolio) */
+.portfolio-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.portfolio-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.portfolio-desc {
+    color: #666;
+    line-height: 1.6;
+}
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.portfolio-image {
+    height: 200px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3em;
+    color: white;
+}
+
+.portfolio-info {
+    padding: 25px;
+}
+
+.portfolio-tags {
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.portfolio-title {
+    font-size: 1.3em;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* 게시글 상세보기(Post Detail) */
+.post-detail-content {
+    color: #444;
+    font-size: 1.05em;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.post-detail-meta {
+    color: #999;
+    font-size: 0.95em;
+    margin-bottom: 30px;
+}
+
+.post-detail-title {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #667eea;
+}
+
+/* 프로필 섹션 */
+.profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: white;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3em;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.profile-name {
+    font-size: 1.8em;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.profile-section {
+    padding: 40px 20px;
+    text-align: center;
+    color: white;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.profile-title {
+    font-size: 1em;
+    opacity: 0.9;
+}
+
+/* 사이드바(Sidebar) */
+.sidebar {
+    width: 280px;
+    background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+    box-shadow: 2px 0 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.sidebar.collapsed {
+    width: 0;
+    min-width: 0;
+}
+
+.sidebar.collapsed > *:not(.toggle-sidebar) {
+    display: none;
+}
+
+/* 스킬 및 태그 */
+.skill-item {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.tag {
+    background: #e8eaff;
+    color: #667eea;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85em;
+}
+
+/* 사이드바 토글 버튼 */
+.toggle-sidebar {
+    position: absolute;
+    right: -40px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 80px;
+    background: white;
+    border: none;
+    border-radius: 0 10px 10px 0;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    color: #667eea;
+    transition: all 0.3s;
+    z-index: 11;
+}
+
+.toggle-sidebar:hover {
+    background: #f8f9ff;
+    right: -42px;
+}
+
+/* 글쓰기 버튼 */
+.write-btn {
+    padding: 12px 25px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.write-btn:hover {
+    background: #5568d3;
+    transform: translateY(-2px);
+}
+
+/* 기타 */
+#fileInput {
+    display: none;
+}
