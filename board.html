@@ -4,270 +4,28 @@
  <meta charset="euc-kr">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시판</title>
+    <link rel="stylesheet" href="common/style.css"> <!-- 공통스타일! -->
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: white;
-            padding: 30px;
-        }
-
-        .board-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .board-title {
-            font-size: 2.5em;
-            color: #667eea;
-            font-weight: 700;
-            margin: 0;
-        }
-
-        .write-btn {
-            padding: 12px 25px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .write-btn:hover {
-            background: #5568d3;
-            transform: translateY(-2px);
-        }
-
-        .board-container {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
-            overflow: hidden;
-        }
-
-        .board-list {
-            border-top: 2px solid #667eea;
-        }
-
-        .board-item {
-            padding: 20px 25px;
-            border-bottom: 1px solid #e0e0e0;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .board-item:hover {
-            background: #f8f9ff;
-        }
-
-        .board-item-content {
-            flex: 1;
-        }
-
-        .board-item-title {
-            font-size: 1.1em;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 8px;
-        }
-
-        .board-item-meta {
-            font-size: 0.9em;
-            color: #999;
-        }
-
-        .board-item-buttons {
-            display: flex;
-            gap: 8px;
-        }
-
-        .edit-btn, .delete-btn {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 6px;
-            font-size: 0.85em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .edit-btn {
-            background: #764ba2;
-            color: white;
-        }
-
-        .edit-btn:hover {
-            background: #653a8a;
-        }
-
-        .delete-btn {
-            background: #e74c3c;
-            color: white;
-        }
-
-        .delete-btn:hover {
-            background: #c0392b;
-        }
-
-        .empty-board {
-            text-align: center;
-            padding: 80px 20px;
-            color: #999;
-        }
-
-        .empty-board svg {
-            width: 100px;
-            height: 100px;
-            margin-bottom: 20px;
-            opacity: 0.3;
-        }
-
-        /* 모달 */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal-box {
-            background: white;
-            border-radius: 16px;
-            padding: 30px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .modal-title {
-            font-size: 1.5em;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        .modal-input, .modal-textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 1em;
-            margin-bottom: 15px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        .modal-input {
-            height: 45px;
-        }
-
-        .modal-textarea {
-            min-height: 200px;
-            resize: vertical;
-        }
-
-        .modal-label {
-            display: block;
-            font-weight: 600;
-            color: #555;
-            margin-bottom: 8px;
-        }
-
-        .modal-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .modal-btn {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .modal-btn-primary {
-            background: #667eea;
-            color: white;
-        }
-
-        .modal-btn-primary:hover {
-            background: #5568d3;
-        }
-
-        .modal-btn-secondary {
-            background: #e0e0e0;
-            color: #666;
-        }
-
-        .modal-btn-secondary:hover {
-            background: #d0d0d0;
-        }
-
-        /* 글 상세보기 모달 */
-        .post-detail {
-            line-height: 1.8;
-        }
-
-        .post-detail-title {
-            font-size: 1.8em;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #667eea;
-        }
-
-        .post-detail-meta {
-            color: #999;
-            font-size: 0.95em;
-            margin-bottom: 30px;
-        }
-
-        .post-detail-content {
-            color: #444;
-            font-size: 1.05em;
-            line-height: 1.8;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
+        
     </style>
 </head>
-<body>
-    <div class="board-header">
-        <h1 class="board-title">게시판 ??</h1>
-        <button class="write-btn" onclick="openWriteModal()">?? 글쓰기</button>
-    </div>
+<body class="commbody">
+<!--header-->
+	<div class="header">
+		<div>
+			<h1 class="intro-header">Board</h1>
+			<p class="intro-subtitle">문의사항이 있으면 글을 남겨주세요.</p>
+		</div>
 
+		<div class="intro-controls">
+			<button class="photo-btn photo-btn-secondary" onclick="openWriteModal()">
+			<img src="images/bear/bear (55).png" class="menu-img">글쓰기
+			</button>
+		</div>
+	</div>
+	
+<!--본문-->
     <div class="board-container">
         <div class="board-list" id="boardList">
             <!-- 게시글 목록 -->
