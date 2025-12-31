@@ -3,7 +3,7 @@
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>¼öÇĞ ÇĞ½À ÄûÁî</title>
+  <title>ìˆ˜í•™ í•™ìŠµ í€´ì¦ˆ</title>
   <script src="/_sdk/element_sdk.js"></script>
   <script src="/_sdk/data_sdk.js"></script>
   <style>
@@ -380,18 +380,18 @@
  <body>
   <div class="app-container">
    <aside class="sidebar">
-    <h1 id="app-title">¼öÇĞ ÇĞ½À ÄûÁî ??</h1><button class="menu-btn" data-menu="arithmetic">»çÄ¢¿¬»ê ??</button> <button class="menu-btn" data-menu="lcm">ÃÖ¼Ò°ø¹è¼ö ??</button> <button class="menu-btn" data-menu="gcd">ÃÖ´ë°ø¾à¼ö ??</button> <button class="menu-btn" data-menu="speed">¼Óµµ±¸ÇÏ±â ??</button> <button class="menu-btn" data-menu="concentration">³óµµ±¸ÇÏ±â ??</button> <button class="menu-btn" data-menu="history">±â·Ïº¸±â ??</button>
+    <h1 id="app-title">ìˆ˜í•™ í•™ìŠµ í€´ì¦ˆ ??</h1><button class="menu-btn" data-menu="arithmetic">ì‚¬ì¹™ì—°ì‚° ??</button> <button class="menu-btn" data-menu="lcm">ìµœì†Œê³µë°°ìˆ˜ ??</button> <button class="menu-btn" data-menu="gcd">ìµœëŒ€ê³µì•½ìˆ˜ ??</button> <button class="menu-btn" data-menu="speed">ì†ë„êµ¬í•˜ê¸° ??</button> <button class="menu-btn" data-menu="concentration">ë†ë„êµ¬í•˜ê¸° ??</button> <button class="menu-btn" data-menu="history">ê¸°ë¡ë³´ê¸° ??</button>
    </aside>
    <main class="main-content" id="main-content">
     <div class="welcome-screen">
-     <h2>¼öÇĞ ÇĞ½À ÄûÁî¿¡ ¿À½Å °ÍÀ» È¯¿µÇØ¿ä! ??</h2>
-     <p>¿ŞÂÊ ¸Ş´º¿¡¼­ ¿øÇÏ´Â ¹®Á¦ À¯ÇüÀ» ¼±ÅÃÇØÁÖ¼¼¿ä</p>
+     <h2>ìˆ˜í•™ í•™ìŠµ í€´ì¦ˆì— ì˜¤ì‹  ê²ƒì„ í™˜ì˜í•´ìš”! ??</h2>
+     <p>ì™¼ìª½ ë©”ë‰´ì—ì„œ ì›í•˜ëŠ” ë¬¸ì œ ìœ í˜•ì„ ì„ íƒí•´ì£¼ì„¸ìš”</p>
     </div>
    </main>
   </div>
   <script>
     const defaultConfig = {
-      app_title: "¼öÇĞ ÇĞ½À ÄûÁî ??",
+      app_title: "ìˆ˜í•™ í•™ìŠµ í€´ì¦ˆ ??",
       primary_color: "#26a69a",
       background_color: "#f5f5f5",
       text_color: "#455a64",
@@ -444,26 +444,26 @@
           case 'arithmetic':
             const num1 = Math.floor(Math.random() * 90) + 10;
             const num2 = Math.floor(Math.random() * 90) + 10;
-            const operators = ['+', '-', '¡¿', '¡À'];
+            const operators = ['+', '-', 'Ã—', 'Ã·'];
             const operator = operators[Math.floor(Math.random() * 4)];
             
             switch(operator) {
               case '+':
                 answer = num1 + num2;
-                explanation = `<div class="explanation-step">?? ${num1} + ${num2}¸¦ °è»êÇÕ´Ï´Ù</div><div class="explanation-step">?? ${num1} + ${num2} = ${answer}</div>`;
+                explanation = `<div class="explanation-step">?? ${num1} + ${num2}ë¥¼ ê³„ì‚°í•©ë‹ˆë‹¤</div><div class="explanation-step">?? ${num1} + ${num2} = ${answer}</div>`;
                 break;
               case '-':
                 answer = num1 - num2;
-                explanation = `<div class="explanation-step">?? ${num1} - ${num2}¸¦ °è»êÇÕ´Ï´Ù</div><div class="explanation-step">?? ${num1} - ${num2} = ${answer}</div>`;
+                explanation = `<div class="explanation-step">?? ${num1} - ${num2}ë¥¼ ê³„ì‚°í•©ë‹ˆë‹¤</div><div class="explanation-step">?? ${num1} - ${num2} = ${answer}</div>`;
                 break;
-              case '¡¿':
+              case 'Ã—':
                 answer = num1 * num2;
-                explanation = `<div class="explanation-step">?? ${num1} ¡¿ ${num2}¸¦ °è»êÇÕ´Ï´Ù</div><div class="explanation-step">?? ${num1} ¡¿ ${num2} = ${answer}</div>`;
+                explanation = `<div class="explanation-step">?? ${num1} Ã— ${num2}ë¥¼ ê³„ì‚°í•©ë‹ˆë‹¤</div><div class="explanation-step">?? ${num1} Ã— ${num2} = ${answer}</div>`;
                 break;
-              case '¡À':
+              case 'Ã·':
                 answer = Math.floor(num1 / num2);
                 const remainder = num1 % num2;
-                explanation = `<div class="explanation-step">?? ${num1} ¡À ${num2}¸¦ °è»êÇÕ´Ï´Ù</div><div class="explanation-step">?? ${num1} ¡À ${num2} = ${answer}${remainder > 0 ? ` (³ª¸ÓÁö ${remainder})` : ''}</div><div class="explanation-step">?? Á¤¼ö ºÎºĞ¸¸ ´äÀ¸·Î ÇÕ´Ï´Ù</div>`;
+                explanation = `<div class="explanation-step">?? ${num1} Ã· ${num2}ë¥¼ ê³„ì‚°í•©ë‹ˆë‹¤</div><div class="explanation-step">?? ${num1} Ã· ${num2} = ${answer}${remainder > 0 ? ` (ë‚˜ë¨¸ì§€ ${remainder})` : ''}</div><div class="explanation-step">?? ì •ìˆ˜ ë¶€ë¶„ë§Œ ë‹µìœ¼ë¡œ í•©ë‹ˆë‹¤</div>`;
                 break;
             }
             question = `${num1} ${operator} ${num2}`;
@@ -472,24 +472,24 @@
           case 'lcm':
             const lcmNum1 = Math.floor(Math.random() * 20) + 5;
             const lcmNum2 = Math.floor(Math.random() * 20) + 5;
-            question = `${lcmNum1}°ú ${lcmNum2}ÀÇ ÃÖ¼Ò°ø¹è¼ö`;
+            question = `${lcmNum1}ê³¼ ${lcmNum2}ì˜ ìµœì†Œê³µë°°ìˆ˜`;
             answer = lcm(lcmNum1, lcmNum2);
             const gcdValue = gcd(lcmNum1, lcmNum2);
-            explanation = `<div class="explanation-step">?? ÃÖ¼Ò°ø¹è¼ö = (µÎ ¼öÀÇ °ö) ¡À (ÃÖ´ë°ø¾à¼ö)</div><div class="explanation-step">?? ${lcmNum1}°ú ${lcmNum2}ÀÇ ÃÖ´ë°ø¾à¼ö = ${gcdValue}</div><div class="explanation-step">?? (${lcmNum1} ¡¿ ${lcmNum2}) ¡À ${gcdValue} = ${lcmNum1 * lcmNum2} ¡À ${gcdValue} = ${answer}</div>`;
+            explanation = `<div class="explanation-step">?? ìµœì†Œê³µë°°ìˆ˜ = (ë‘ ìˆ˜ì˜ ê³±) Ã· (ìµœëŒ€ê³µì•½ìˆ˜)</div><div class="explanation-step">?? ${lcmNum1}ê³¼ ${lcmNum2}ì˜ ìµœëŒ€ê³µì•½ìˆ˜ = ${gcdValue}</div><div class="explanation-step">?? (${lcmNum1} Ã— ${lcmNum2}) Ã· ${gcdValue} = ${lcmNum1 * lcmNum2} Ã· ${gcdValue} = ${answer}</div>`;
             break;
             
           case 'gcd':
             const gcdNum1 = Math.floor(Math.random() * 50) + 10;
             const gcdNum2 = Math.floor(Math.random() * 50) + 10;
-            question = `${gcdNum1}°ú ${gcdNum2}ÀÇ ÃÖ´ë°ø¾à¼ö`;
+            question = `${gcdNum1}ê³¼ ${gcdNum2}ì˜ ìµœëŒ€ê³µì•½ìˆ˜`;
             answer = gcd(gcdNum1, gcdNum2);
-            explanation = `<div class="explanation-step">?? À¯Å¬¸®µå È£Á¦¹ıÀ» »ç¿ëÇÕ´Ï´Ù</div><div class="explanation-step">?? ${gcdNum1}À» ${gcdNum2}·Î ³ª´« ³ª¸ÓÁö¸¦ ¹İº¹ÀûÀ¸·Î ±¸ÇÕ´Ï´Ù</div><div class="explanation-step">?? ÃÖ´ë°ø¾à¼ö = ${answer}</div>`;
+            explanation = `<div class="explanation-step">?? ìœ í´ë¦¬ë“œ í˜¸ì œë²•ì„ ì‚¬ìš©í•©ë‹ˆë‹¤</div><div class="explanation-step">?? ${gcdNum1}ì„ ${gcdNum2}ë¡œ ë‚˜ëˆˆ ë‚˜ë¨¸ì§€ë¥¼ ë°˜ë³µì ìœ¼ë¡œ êµ¬í•©ë‹ˆë‹¤</div><div class="explanation-step">?? ìµœëŒ€ê³µì•½ìˆ˜ = ${answer}</div>`;
             break;
             
           case 'speed':
             const speedProblems = [
               {
-                text: "Ã¶¼ö´Â Áı¿¡¼­ ÇĞ±³¸¦ °ÅÃÄ µµ¼­°ü±îÁö °¬½À´Ï´Ù. Áı¿¡¼­ ÇĞ±³±îÁö 4km¸¦ ½Ã¼Ó 20km·Î ÀÌµ¿Çß°í, ÇĞ±³¿¡¼­ µµ¼­°ü±îÁö 6km¸¦ ½Ã¼Ó 30km·Î ÀÌµ¿Çß½À´Ï´Ù. ÃÑ °É¸° ½Ã°£Àº? (ºĞ)",
+                text: "ì² ìˆ˜ëŠ” ì§‘ì—ì„œ í•™êµë¥¼ ê±°ì³ ë„ì„œê´€ê¹Œì§€ ê°”ìŠµë‹ˆë‹¤. ì§‘ì—ì„œ í•™êµê¹Œì§€ 4kmë¥¼ ì‹œì† 20kmë¡œ ì´ë™í–ˆê³ , í•™êµì—ì„œ ë„ì„œê´€ê¹Œì§€ 6kmë¥¼ ì‹œì† 30kmë¡œ ì´ë™í–ˆìŠµë‹ˆë‹¤. ì´ ê±¸ë¦° ì‹œê°„ì€? (ë¶„)",
                 setup: function() {
                   const dist1 = 4, speed1 = 20;
                   const dist2 = 6, speed2 = 30;
@@ -498,12 +498,12 @@
                   const totalTime = (time1 + time2) * 60;
                   return {
                     answer: totalTime,
-                    explanation: `<div class="explanation-step">?? ¹®Á¦ ºĞ¼®</div><div class="explanation-step">? Áı ¡æ ÇĞ±³: 4km, ¼Óµµ 20km/h</div><div class="explanation-step">? ÇĞ±³ ¡æ µµ¼­°ü: 6km, ¼Óµµ 30km/h</div><div class="explanation-step"></div><div class="explanation-step">?? Ç®ÀÌ °úÁ¤</div><div class="explanation-step">1´Ü°è: ½Ã°£ = °Å¸® ¡À ¼Óµµ °ø½ÄÀ» »ç¿ëÇÕ´Ï´Ù</div><div class="explanation-step"></div><div class="explanation-step">2´Ü°è: Áı¿¡¼­ ÇĞ±³±îÁö °É¸° ½Ã°£</div><div class="explanation-step">   ½Ã°£ = ${dist1}km ¡À ${speed1}km/h = ${time1}½Ã°£</div><div class="explanation-step">   ${time1}½Ã°£ = ${time1 * 60}ºĞ</div><div class="explanation-step"></div><div class="explanation-step">3´Ü°è: ÇĞ±³¿¡¼­ µµ¼­°ü±îÁö °É¸° ½Ã°£</div><div class="explanation-step">   ½Ã°£ = ${dist2}km ¡À ${speed2}km/h = ${time2.toFixed(2)}½Ã°£</div><div class="explanation-step">   ${time2.toFixed(2)}½Ã°£ = ${(time2 * 60).toFixed(0)}ºĞ</div><div class="explanation-step"></div><div class="explanation-step">4´Ü°è: ÃÑ °É¸° ½Ã°£</div><div class="explanation-step">   ÃÑ ½Ã°£ = ${time1 * 60}ºĞ + ${(time2 * 60).toFixed(0)}ºĞ = ${totalTime.toFixed(0)}ºĞ</div><div class="explanation-step"></div><div class="explanation-step">? ´ä: ${totalTime.toFixed(0)}ºĞ</div>`
+                    explanation: `<div class="explanation-step">?? ë¬¸ì œ ë¶„ì„</div><div class="explanation-step">? ì§‘ â†’ í•™êµ: 4km, ì†ë„ 20km/h</div><div class="explanation-step">? í•™êµ â†’ ë„ì„œê´€: 6km, ì†ë„ 30km/h</div><div class="explanation-step"></div><div class="explanation-step">?? í’€ì´ ê³¼ì •</div><div class="explanation-step">1ë‹¨ê³„: ì‹œê°„ = ê±°ë¦¬ Ã· ì†ë„ ê³µì‹ì„ ì‚¬ìš©í•©ë‹ˆë‹¤</div><div class="explanation-step"></div><div class="explanation-step">2ë‹¨ê³„: ì§‘ì—ì„œ í•™êµê¹Œì§€ ê±¸ë¦° ì‹œê°„</div><div class="explanation-step">   ì‹œê°„ = ${dist1}km Ã· ${speed1}km/h = ${time1}ì‹œê°„</div><div class="explanation-step">   ${time1}ì‹œê°„ = ${time1 * 60}ë¶„</div><div class="explanation-step"></div><div class="explanation-step">3ë‹¨ê³„: í•™êµì—ì„œ ë„ì„œê´€ê¹Œì§€ ê±¸ë¦° ì‹œê°„</div><div class="explanation-step">   ì‹œê°„ = ${dist2}km Ã· ${speed2}km/h = ${time2.toFixed(2)}ì‹œê°„</div><div class="explanation-step">   ${time2.toFixed(2)}ì‹œê°„ = ${(time2 * 60).toFixed(0)}ë¶„</div><div class="explanation-step"></div><div class="explanation-step">4ë‹¨ê³„: ì´ ê±¸ë¦° ì‹œê°„</div><div class="explanation-step">   ì´ ì‹œê°„ = ${time1 * 60}ë¶„ + ${(time2 * 60).toFixed(0)}ë¶„ = ${totalTime.toFixed(0)}ë¶„</div><div class="explanation-step"></div><div class="explanation-step">? ë‹µ: ${totalTime.toFixed(0)}ë¶„</div>`
                   };
                 }
               },
               {
-                text: "¿µÈñ´Â ¿ÀÀü 9½Ã¿¡ ÁıÀ» Ãâ¹ßÇØ¼­ °ø¿øÀ» °ÅÃÄ ÇÒ¸Ó´Ï ´ìÀ¸·Î °¬½À´Ï´Ù. Áı¿¡¼­ °ø¿ø±îÁö 8km¸¦ ½Ã¼Ó 40km·Î ÀÌµ¿Çß°í, °ø¿ø¿¡¼­ 30ºĞ ½¬¾ú½À´Ï´Ù. ±× ÈÄ °ø¿ø¿¡¼­ ÇÒ¸Ó´Ï ´ì±îÁö 12km¸¦ ½Ã¼Ó 60km·Î ÀÌµ¿Çß½À´Ï´Ù. ÇÒ¸Ó´Ï ´ì¿¡ µµÂøÇÑ ½Ã°£Àº? (½Ã:ºĞ)",
+                text: "ì˜í¬ëŠ” ì˜¤ì „ 9ì‹œì— ì§‘ì„ ì¶œë°œí•´ì„œ ê³µì›ì„ ê±°ì³ í• ë¨¸ë‹ˆ ëŒìœ¼ë¡œ ê°”ìŠµë‹ˆë‹¤. ì§‘ì—ì„œ ê³µì›ê¹Œì§€ 8kmë¥¼ ì‹œì† 40kmë¡œ ì´ë™í–ˆê³ , ê³µì›ì—ì„œ 30ë¶„ ì‰¬ì—ˆìŠµë‹ˆë‹¤. ê·¸ í›„ ê³µì›ì—ì„œ í• ë¨¸ë‹ˆ ëŒê¹Œì§€ 12kmë¥¼ ì‹œì† 60kmë¡œ ì´ë™í–ˆìŠµë‹ˆë‹¤. í• ë¨¸ë‹ˆ ëŒì— ë„ì°©í•œ ì‹œê°„ì€? (ì‹œ:ë¶„)",
                 setup: function() {
                   const startHour = 9, startMin = 0;
                   const dist1 = 8, speed1 = 40;
@@ -516,12 +516,12 @@
                   const arrivalMin = Math.floor((startHour * 60 + startMin + totalMin) % 60);
                   return {
                     answer: arrivalHour + (arrivalMin / 100),
-                    explanation: `<div class="explanation-step">?? ¹®Á¦ ºĞ¼®</div><div class="explanation-step">? Ãâ¹ß: ¿ÀÀü 9½Ã</div><div class="explanation-step">? Áı ¡æ °ø¿ø: 8km, ¼Óµµ 40km/h</div><div class="explanation-step">? °ø¿ø¿¡¼­ ÈŞ½Ä: 30ºĞ</div><div class="explanation-step">? °ø¿ø ¡æ ÇÒ¸Ó´Ï ´ì: 12km, ¼Óµµ 60km/h</div><div class="explanation-step"></div><div class="explanation-step">?? Ç®ÀÌ °úÁ¤</div><div class="explanation-step">1´Ü°è: Áı¿¡¼­ °ø¿ø±îÁö °É¸° ½Ã°£</div><div class="explanation-step">   ½Ã°£ = ${dist1}km ¡À ${speed1}km/h = ${dist1/speed1}½Ã°£ = ${time1Min}ºĞ</div><div class="explanation-step"></div><div class="explanation-step">2´Ü°è: °ø¿ø¿¡¼­ ÇÒ¸Ó´Ï ´ì±îÁö °É¸° ½Ã°£</div><div class="explanation-step">   ½Ã°£ = ${dist2}km ¡À ${speed2}km/h = ${dist2/speed2}½Ã°£ = ${time2Min}ºĞ</div><div class="explanation-step"></div><div class="explanation-step">3´Ü°è: ÃÑ ¼Ò¿ä ½Ã°£</div><div class="explanation-step">   ÃÑ ½Ã°£ = ${time1Min}ºĞ + ${restMin}ºĞ(ÈŞ½Ä) + ${time2Min}ºĞ = ${totalMin}ºĞ</div><div class="explanation-step"></div><div class="explanation-step">4´Ü°è: µµÂø ½Ã°£ °è»ê</div><div class="explanation-step">   9½Ã 00ºĞ + ${totalMin}ºĞ = ${arrivalHour}½Ã ${arrivalMin}ºĞ</div><div class="explanation-step"></div><div class="explanation-step">? ´ä: ${arrivalHour}.${arrivalMin < 10 ? '0' + arrivalMin : arrivalMin} (${arrivalHour}½Ã ${arrivalMin}ºĞ)</div>`
+                    explanation: `<div class="explanation-step">?? ë¬¸ì œ ë¶„ì„</div><div class="explanation-step">? ì¶œë°œ: ì˜¤ì „ 9ì‹œ</div><div class="explanation-step">? ì§‘ â†’ ê³µì›: 8km, ì†ë„ 40km/h</div><div class="explanation-step">? ê³µì›ì—ì„œ íœ´ì‹: 30ë¶„</div><div class="explanation-step">? ê³µì› â†’ í• ë¨¸ë‹ˆ ëŒ: 12km, ì†ë„ 60km/h</div><div class="explanation-step"></div><div class="explanation-step">?? í’€ì´ ê³¼ì •</div><div class="explanation-step">1ë‹¨ê³„: ì§‘ì—ì„œ ê³µì›ê¹Œì§€ ê±¸ë¦° ì‹œê°„</div><div class="explanation-step">   ì‹œê°„ = ${dist1}km Ã· ${speed1}km/h = ${dist1/speed1}ì‹œê°„ = ${time1Min}ë¶„</div><div class="explanation-step"></div><div class="explanation-step">2ë‹¨ê³„: ê³µì›ì—ì„œ í• ë¨¸ë‹ˆ ëŒê¹Œì§€ ê±¸ë¦° ì‹œê°„</div><div class="explanation-step">   ì‹œê°„ = ${dist2}km Ã· ${speed2}km/h = ${dist2/speed2}ì‹œê°„ = ${time2Min}ë¶„</div><div class="explanation-step"></div><div class="explanation-step">3ë‹¨ê³„: ì´ ì†Œìš” ì‹œê°„</div><div class="explanation-step">   ì´ ì‹œê°„ = ${time1Min}ë¶„ + ${restMin}ë¶„(íœ´ì‹) + ${time2Min}ë¶„ = ${totalMin}ë¶„</div><div class="explanation-step"></div><div class="explanation-step">4ë‹¨ê³„: ë„ì°© ì‹œê°„ ê³„ì‚°</div><div class="explanation-step">   9ì‹œ 00ë¶„ + ${totalMin}ë¶„ = ${arrivalHour}ì‹œ ${arrivalMin}ë¶„</div><div class="explanation-step"></div><div class="explanation-step">? ë‹µ: ${arrivalHour}.${arrivalMin < 10 ? '0' + arrivalMin : arrivalMin} (${arrivalHour}ì‹œ ${arrivalMin}ë¶„)</div>`
                   };
                 }
               },
               {
-                text: "¹ÎÈ£´Â Áı¿¡¼­ ¸¶Æ®¸¦ °ÅÃÄ ¿µÈ­°ü±îÁö °¬½À´Ï´Ù. Áı¿¡¼­ ¸¶Æ®±îÁö 3km¸¦ 15ºĞ µ¿¾È °É¾î°¬°í, ¸¶Æ®¿¡¼­ ¿µÈ­°ü±îÁö´Â ÅÃ½Ã¸¦ Å¸°í 9km¸¦ 18ºĞ µ¿¾È ÀÌµ¿Çß½À´Ï´Ù. ÅÃ½ÃÀÇ Æò±Õ ¼Óµµ´Â? (km/h)",
+                text: "ë¯¼í˜¸ëŠ” ì§‘ì—ì„œ ë§ˆíŠ¸ë¥¼ ê±°ì³ ì˜í™”ê´€ê¹Œì§€ ê°”ìŠµë‹ˆë‹¤. ì§‘ì—ì„œ ë§ˆíŠ¸ê¹Œì§€ 3kmë¥¼ 15ë¶„ ë™ì•ˆ ê±¸ì–´ê°”ê³ , ë§ˆíŠ¸ì—ì„œ ì˜í™”ê´€ê¹Œì§€ëŠ” íƒì‹œë¥¼ íƒ€ê³  9kmë¥¼ 18ë¶„ ë™ì•ˆ ì´ë™í–ˆìŠµë‹ˆë‹¤. íƒì‹œì˜ í‰ê·  ì†ë„ëŠ”? (km/h)",
                 setup: function() {
                   const dist2 = 9;
                   const time2Min = 18;
@@ -529,12 +529,12 @@
                   const speed2 = dist2 / time2Hour;
                   return {
                     answer: speed2,
-                    explanation: `<div class="explanation-step">?? ¹®Á¦ ºĞ¼®</div><div class="explanation-step">? Áı ¡æ ¸¶Æ®: 3km, 15ºĞ ¼Ò¿ä (µµº¸)</div><div class="explanation-step">? ¸¶Æ® ¡æ ¿µÈ­°ü: 9km, 18ºĞ ¼Ò¿ä (ÅÃ½Ã)</div><div class="explanation-step">? ÅÃ½ÃÀÇ Æò±Õ ¼Óµµ¸¦ ±¸ÇØ¾ß ÇÕ´Ï´Ù</div><div class="explanation-step"></div><div class="explanation-step">?? Ç®ÀÌ °úÁ¤</div><div class="explanation-step">1´Ü°è: ÅÃ½Ã ÀÌµ¿ Á¤º¸ Á¤¸®</div><div class="explanation-step">   °Å¸® = ${dist2}km</div><div class="explanation-step">   ½Ã°£ = ${time2Min}ºĞ</div><div class="explanation-step"></div><div class="explanation-step">2´Ü°è: ºĞÀ» ½Ã°£À¸·Î º¯È¯</div><div class="explanation-step">   ${time2Min}ºĞ = ${time2Min} ¡À 60 = ${time2Hour.toFixed(2)}½Ã°£</div><div class="explanation-step"></div><div class="explanation-step">3´Ü°è: ¼Óµµ ±¸ÇÏ±â (¼Óµµ = °Å¸® ¡À ½Ã°£)</div><div class="explanation-step">   ¼Óµµ = ${dist2}km ¡À ${time2Hour.toFixed(2)}½Ã°£</div><div class="explanation-step">   ¼Óµµ = ${speed2}km/h</div><div class="explanation-step"></div><div class="explanation-step">? ´ä: ${speed2}km/h</div>`
+                    explanation: `<div class="explanation-step">?? ë¬¸ì œ ë¶„ì„</div><div class="explanation-step">? ì§‘ â†’ ë§ˆíŠ¸: 3km, 15ë¶„ ì†Œìš” (ë„ë³´)</div><div class="explanation-step">? ë§ˆíŠ¸ â†’ ì˜í™”ê´€: 9km, 18ë¶„ ì†Œìš” (íƒì‹œ)</div><div class="explanation-step">? íƒì‹œì˜ í‰ê·  ì†ë„ë¥¼ êµ¬í•´ì•¼ í•©ë‹ˆë‹¤</div><div class="explanation-step"></div><div class="explanation-step">?? í’€ì´ ê³¼ì •</div><div class="explanation-step">1ë‹¨ê³„: íƒì‹œ ì´ë™ ì •ë³´ ì •ë¦¬</div><div class="explanation-step">   ê±°ë¦¬ = ${dist2}km</div><div class="explanation-step">   ì‹œê°„ = ${time2Min}ë¶„</div><div class="explanation-step"></div><div class="explanation-step">2ë‹¨ê³„: ë¶„ì„ ì‹œê°„ìœ¼ë¡œ ë³€í™˜</div><div class="explanation-step">   ${time2Min}ë¶„ = ${time2Min} Ã· 60 = ${time2Hour.toFixed(2)}ì‹œê°„</div><div class="explanation-step"></div><div class="explanation-step">3ë‹¨ê³„: ì†ë„ êµ¬í•˜ê¸° (ì†ë„ = ê±°ë¦¬ Ã· ì‹œê°„)</div><div class="explanation-step">   ì†ë„ = ${dist2}km Ã· ${time2Hour.toFixed(2)}ì‹œê°„</div><div class="explanation-step">   ì†ë„ = ${speed2}km/h</div><div class="explanation-step"></div><div class="explanation-step">? ë‹µ: ${speed2}km/h</div>`
                   };
                 }
               },
               {
-                text: "Áö¼ö´Â Áı¿¡¼­ Ãâ¹ßÇØ ½Ã¼Ó 12km·Î ÀÚÀü°Å¸¦ Å¸°í 2.4km¸¦ ÀÌµ¿ÇÑ ÈÄ ¹ö½º Á¤·ùÀå¿¡ µµÂøÇß½À´Ï´Ù. °Å±â¼­ ¹ö½º¸¦ Å¸°í ½Ã¼Ó 50km·Î 15km¸¦ ´õ ÀÌµ¿ÇØ ÇĞ¿ø¿¡ µµÂøÇß½À´Ï´Ù. Áı¿¡¼­ ÇĞ¿ø±îÁö ÃÑ ÀÌµ¿ ½Ã°£Àº? (ºĞ)",
+                text: "ì§€ìˆ˜ëŠ” ì§‘ì—ì„œ ì¶œë°œí•´ ì‹œì† 12kmë¡œ ìì „ê±°ë¥¼ íƒ€ê³  2.4kmë¥¼ ì´ë™í•œ í›„ ë²„ìŠ¤ ì •ë¥˜ì¥ì— ë„ì°©í–ˆìŠµë‹ˆë‹¤. ê±°ê¸°ì„œ ë²„ìŠ¤ë¥¼ íƒ€ê³  ì‹œì† 50kmë¡œ 15kmë¥¼ ë” ì´ë™í•´ í•™ì›ì— ë„ì°©í–ˆìŠµë‹ˆë‹¤. ì§‘ì—ì„œ í•™ì›ê¹Œì§€ ì´ ì´ë™ ì‹œê°„ì€? (ë¶„)",
                 setup: function() {
                   const dist1 = 2.4, speed1 = 12;
                   const dist2 = 15, speed2 = 50;
@@ -543,12 +543,12 @@
                   const totalMin = (time1 + time2) * 60;
                   return {
                     answer: totalMin,
-                    explanation: `<div class="explanation-step">?? ¹®Á¦ ºĞ¼®</div><div class="explanation-step">? Áı ¡æ ¹ö½ºÁ¤·ùÀå: 2.4km, ¼Óµµ 12km/h (ÀÚÀü°Å)</div><div class="explanation-step">? ¹ö½ºÁ¤·ùÀå ¡æ ÇĞ¿ø: 15km, ¼Óµµ 50km/h (¹ö½º)</div><div class="explanation-step"></div><div class="explanation-step">?? Ç®ÀÌ °úÁ¤</div><div class="explanation-step">1´Ü°è: ÀÚÀü°Å·Î ÀÌµ¿ÇÑ ½Ã°£</div><div class="explanation-step">   ½Ã°£ = ${dist1}km ¡À ${speed1}km/h = ${time1}½Ã°£</div><div class="explanation-step">   ${time1}½Ã°£ = ${time1 * 60}ºĞ</div><div class="explanation-step"></div><div class="explanation-step">2´Ü°è: ¹ö½º·Î ÀÌµ¿ÇÑ ½Ã°£</div><div class="explanation-step">   ½Ã°£ = ${dist2}km ¡À ${speed2}km/h = ${time2}½Ã°£</div><div class="explanation-step">   ${time2}½Ã°£ = ${time2 * 60}ºĞ</div><div class="explanation-step"></div><div class="explanation-step">3´Ü°è: ÃÑ ÀÌµ¿ ½Ã°£</div><div class="explanation-step">   ÃÑ ½Ã°£ = ${time1 * 60}ºĞ + ${time2 * 60}ºĞ</div><div class="explanation-step">   ÃÑ ½Ã°£ = ${totalMin}ºĞ</div><div class="explanation-step"></div><div class="explanation-step">? ´ä: ${totalMin}ºĞ</div>`
+                    explanation: `<div class="explanation-step">?? ë¬¸ì œ ë¶„ì„</div><div class="explanation-step">? ì§‘ â†’ ë²„ìŠ¤ì •ë¥˜ì¥: 2.4km, ì†ë„ 12km/h (ìì „ê±°)</div><div class="explanation-step">? ë²„ìŠ¤ì •ë¥˜ì¥ â†’ í•™ì›: 15km, ì†ë„ 50km/h (ë²„ìŠ¤)</div><div class="explanation-step"></div><div class="explanation-step">?? í’€ì´ ê³¼ì •</div><div class="explanation-step">1ë‹¨ê³„: ìì „ê±°ë¡œ ì´ë™í•œ ì‹œê°„</div><div class="explanation-step">   ì‹œê°„ = ${dist1}km Ã· ${speed1}km/h = ${time1}ì‹œê°„</div><div class="explanation-step">   ${time1}ì‹œê°„ = ${time1 * 60}ë¶„</div><div class="explanation-step"></div><div class="explanation-step">2ë‹¨ê³„: ë²„ìŠ¤ë¡œ ì´ë™í•œ ì‹œê°„</div><div class="explanation-step">   ì‹œê°„ = ${dist2}km Ã· ${speed2}km/h = ${time2}ì‹œê°„</div><div class="explanation-step">   ${time2}ì‹œê°„ = ${time2 * 60}ë¶„</div><div class="explanation-step"></div><div class="explanation-step">3ë‹¨ê³„: ì´ ì´ë™ ì‹œê°„</div><div class="explanation-step">   ì´ ì‹œê°„ = ${time1 * 60}ë¶„ + ${time2 * 60}ë¶„</div><div class="explanation-step">   ì´ ì‹œê°„ = ${totalMin}ë¶„</div><div class="explanation-step"></div><div class="explanation-step">? ë‹µ: ${totalMin}ë¶„</div>`
                   };
                 }
               },
               {
-                text: "¼öÁøÀÌ´Â ¿ÀÈÄ 2½Ã¿¡ ÁıÀ» Ãâ¹ßÇØ ½Ã¼Ó 4km·Î °É¾î¼­ °ø¿ø±îÁö 2km¸¦ ÀÌµ¿Çß½À´Ï´Ù. °ø¿ø¿¡¼­ 10ºĞ°£ ½¬°í, ½Ã¼Ó 5km·Î 1.5km¸¦ ´õ °É¾î Ä£±¸ Áı¿¡ µµÂøÇß½À´Ï´Ù. Ä£±¸ Áı¿¡ µµÂøÇÑ ½Ã°£Àº? (½Ã:ºĞ)",
+                text: "ìˆ˜ì§„ì´ëŠ” ì˜¤í›„ 2ì‹œì— ì§‘ì„ ì¶œë°œí•´ ì‹œì† 4kmë¡œ ê±¸ì–´ì„œ ê³µì›ê¹Œì§€ 2kmë¥¼ ì´ë™í–ˆìŠµë‹ˆë‹¤. ê³µì›ì—ì„œ 10ë¶„ê°„ ì‰¬ê³ , ì‹œì† 5kmë¡œ 1.5kmë¥¼ ë” ê±¸ì–´ ì¹œêµ¬ ì§‘ì— ë„ì°©í–ˆìŠµë‹ˆë‹¤. ì¹œêµ¬ ì§‘ì— ë„ì°©í•œ ì‹œê°„ì€? (ì‹œ:ë¶„)",
                 setup: function() {
                   const startHour = 14, startMin = 0;
                   const dist1 = 2, speed1 = 4;
@@ -561,7 +561,7 @@
                   const arrivalMin = Math.floor((startHour * 60 + startMin + totalMin) % 60);
                   return {
                     answer: arrivalHour + (arrivalMin / 100),
-                    explanation: `<div class="explanation-step">?? ¹®Á¦ ºĞ¼®</div><div class="explanation-step">? Ãâ¹ß: ¿ÀÈÄ 2½Ã (14½Ã)</div><div class="explanation-step">? Áı ¡æ °ø¿ø: 2km, ¼Óµµ 4km/h</div><div class="explanation-step">? °ø¿ø¿¡¼­ ÈŞ½Ä: 10ºĞ</div><div class="explanation-step">? °ø¿ø ¡æ Ä£±¸Áı: 1.5km, ¼Óµµ 5km/h</div><div class="explanation-step"></div><div class="explanation-step">?? Ç®ÀÌ °úÁ¤</div><div class="explanation-step">1´Ü°è: Áı¿¡¼­ °ø¿ø±îÁö °É¸° ½Ã°£</div><div class="explanation-step">   ½Ã°£ = ${dist1}km ¡À ${speed1}km/h = ${dist1/speed1}½Ã°£ = ${time1Min}ºĞ</div><div class="explanation-step"></div><div class="explanation-step">2´Ü°è: °ø¿ø¿¡¼­ Ä£±¸Áı±îÁö °É¸° ½Ã°£</div><div class="explanation-step">   ½Ã°£ = ${dist2}km ¡À ${speed2}km/h = ${dist2/speed2}½Ã°£ = ${time2Min}ºĞ</div><div class="explanation-step"></div><div class="explanation-step">3´Ü°è: ÃÑ ¼Ò¿ä ½Ã°£</div><div class="explanation-step">   ÃÑ ½Ã°£ = ${time1Min}ºĞ + ${restMin}ºĞ(ÈŞ½Ä) + ${time2Min}ºĞ = ${totalMin}ºĞ</div><div class="explanation-step"></div><div class="explanation-step">4´Ü°è: µµÂø ½Ã°£ °è»ê</div><div class="explanation-step">   14½Ã 00ºĞ + ${totalMin}ºĞ = ${arrivalHour}½Ã ${arrivalMin}ºĞ</div><div class="explanation-step"></div><div class="explanation-step">? ´ä: ${arrivalHour}.${arrivalMin < 10 ? '0' + arrivalMin : arrivalMin} (${arrivalHour}½Ã ${arrivalMin}ºĞ)</div>`
+                    explanation: `<div class="explanation-step">?? ë¬¸ì œ ë¶„ì„</div><div class="explanation-step">? ì¶œë°œ: ì˜¤í›„ 2ì‹œ (14ì‹œ)</div><div class="explanation-step">? ì§‘ â†’ ê³µì›: 2km, ì†ë„ 4km/h</div><div class="explanation-step">? ê³µì›ì—ì„œ íœ´ì‹: 10ë¶„</div><div class="explanation-step">? ê³µì› â†’ ì¹œêµ¬ì§‘: 1.5km, ì†ë„ 5km/h</div><div class="explanation-step"></div><div class="explanation-step">?? í’€ì´ ê³¼ì •</div><div class="explanation-step">1ë‹¨ê³„: ì§‘ì—ì„œ ê³µì›ê¹Œì§€ ê±¸ë¦° ì‹œê°„</div><div class="explanation-step">   ì‹œê°„ = ${dist1}km Ã· ${speed1}km/h = ${dist1/speed1}ì‹œê°„ = ${time1Min}ë¶„</div><div class="explanation-step"></div><div class="explanation-step">2ë‹¨ê³„: ê³µì›ì—ì„œ ì¹œêµ¬ì§‘ê¹Œì§€ ê±¸ë¦° ì‹œê°„</div><div class="explanation-step">   ì‹œê°„ = ${dist2}km Ã· ${speed2}km/h = ${dist2/speed2}ì‹œê°„ = ${time2Min}ë¶„</div><div class="explanation-step"></div><div class="explanation-step">3ë‹¨ê³„: ì´ ì†Œìš” ì‹œê°„</div><div class="explanation-step">   ì´ ì‹œê°„ = ${time1Min}ë¶„ + ${restMin}ë¶„(íœ´ì‹) + ${time2Min}ë¶„ = ${totalMin}ë¶„</div><div class="explanation-step"></div><div class="explanation-step">4ë‹¨ê³„: ë„ì°© ì‹œê°„ ê³„ì‚°</div><div class="explanation-step">   14ì‹œ 00ë¶„ + ${totalMin}ë¶„ = ${arrivalHour}ì‹œ ${arrivalMin}ë¶„</div><div class="explanation-step"></div><div class="explanation-step">? ë‹µ: ${arrivalHour}.${arrivalMin < 10 ? '0' + arrivalMin : arrivalMin} (${arrivalHour}ì‹œ ${arrivalMin}ë¶„)</div>`
                   };
                 }
               }
@@ -576,7 +576,7 @@
           case 'concentration':
             const concProblems = [
               {
-                text: "¹Î¼ö´Â 500gÀÇ ¼Ò±İ¹°¿¡ ¼Ò±İ 50gÀ» ´õ ³Ö¾ú´õ´Ï ³óµµ°¡ 20%°¡ µÇ¾ú½À´Ï´Ù. Ã³À½ ¼Ò±İ¹°¿¡ µé¾îÀÖ´ø ¼Ò±İÀÇ ¾çÀº? (g)",
+                text: "ë¯¼ìˆ˜ëŠ” 500gì˜ ì†Œê¸ˆë¬¼ì— ì†Œê¸ˆ 50gì„ ë” ë„£ì—ˆë”ë‹ˆ ë†ë„ê°€ 20%ê°€ ë˜ì—ˆìŠµë‹ˆë‹¤. ì²˜ìŒ ì†Œê¸ˆë¬¼ì— ë“¤ì–´ìˆë˜ ì†Œê¸ˆì˜ ì–‘ì€? (g)",
                 setup: function() {
                   const finalConc = 20;
                   const finalSolution = 500 + 50;
@@ -584,12 +584,12 @@
                   const initialSalt = finalSalt - 50;
                   return {
                     answer: initialSalt,
-                    explanation: `<div class="explanation-step">?? ¹®Á¦ ºĞ¼®</div><div class="explanation-step">? Ã³À½ ¼Ò±İ¹°: 500g (¼Ò±İÀÇ ¾çÀ» x¶ó°í ÇÏÀÚ)</div><div class="explanation-step">? Ãß°¡ÇÑ ¼Ò±İ: 50g</div><div class="explanation-step">? ÃÖÁ¾ ¼Ò±İ¹°: 500 + 50 = 550g</div><div class="explanation-step">? ÃÖÁ¾ ³óµµ: 20%</div><div class="explanation-step"></div><div class="explanation-step">?? Ç®ÀÌ °úÁ¤</div><div class="explanation-step">1´Ü°è: ÃÖÁ¾ ¼Ò±İ¹°¿¡ µé¾îÀÖ´Â ¼Ò±İÀÇ ¾çÀ» ±¸ÇÕ´Ï´Ù</div><div class="explanation-step">   ³óµµ °ø½Ä: ³óµµ = (¼Ò±İ ¡À ¼Ò±İ¹°) ¡¿ 100</div><div class="explanation-step">   20 = (¼Ò±İ ¡À 550) ¡¿ 100</div><div class="explanation-step">   ¼Ò±İ = 550 ¡¿ 0.2 = ${finalSalt}g</div><div class="explanation-step"></div><div class="explanation-step">2´Ü°è: Ã³À½ ¼Ò±İ¹°¿¡ µé¾îÀÖ´ø ¼Ò±İÀÇ ¾çÀ» ±¸ÇÕ´Ï´Ù</div><div class="explanation-step">   Ã³À½ ¼Ò±İ = ÃÖÁ¾ ¼Ò±İ - Ãß°¡ÇÑ ¼Ò±İ</div><div class="explanation-step">   Ã³À½ ¼Ò±İ = ${finalSalt}g - 50g = ${initialSalt}g</div><div class="explanation-step"></div><div class="explanation-step">?? °Ë»ê: ${initialSalt}g + 50g = ${finalSalt}g</div><div class="explanation-step">   ³óµµ = (${finalSalt} ¡À 550) ¡¿ 100 = 20% ?</div><div class="explanation-step"></div><div class="explanation-step">? ´ä: ${initialSalt}g</div>`
+                    explanation: `<div class="explanation-step">?? ë¬¸ì œ ë¶„ì„</div><div class="explanation-step">? ì²˜ìŒ ì†Œê¸ˆë¬¼: 500g (ì†Œê¸ˆì˜ ì–‘ì„ xë¼ê³  í•˜ì)</div><div class="explanation-step">? ì¶”ê°€í•œ ì†Œê¸ˆ: 50g</div><div class="explanation-step">? ìµœì¢… ì†Œê¸ˆë¬¼: 500 + 50 = 550g</div><div class="explanation-step">? ìµœì¢… ë†ë„: 20%</div><div class="explanation-step"></div><div class="explanation-step">?? í’€ì´ ê³¼ì •</div><div class="explanation-step">1ë‹¨ê³„: ìµœì¢… ì†Œê¸ˆë¬¼ì— ë“¤ì–´ìˆëŠ” ì†Œê¸ˆì˜ ì–‘ì„ êµ¬í•©ë‹ˆë‹¤</div><div class="explanation-step">   ë†ë„ ê³µì‹: ë†ë„ = (ì†Œê¸ˆ Ã· ì†Œê¸ˆë¬¼) Ã— 100</div><div class="explanation-step">   20 = (ì†Œê¸ˆ Ã· 550) Ã— 100</div><div class="explanation-step">   ì†Œê¸ˆ = 550 Ã— 0.2 = ${finalSalt}g</div><div class="explanation-step"></div><div class="explanation-step">2ë‹¨ê³„: ì²˜ìŒ ì†Œê¸ˆë¬¼ì— ë“¤ì–´ìˆë˜ ì†Œê¸ˆì˜ ì–‘ì„ êµ¬í•©ë‹ˆë‹¤</div><div class="explanation-step">   ì²˜ìŒ ì†Œê¸ˆ = ìµœì¢… ì†Œê¸ˆ - ì¶”ê°€í•œ ì†Œê¸ˆ</div><div class="explanation-step">   ì²˜ìŒ ì†Œê¸ˆ = ${finalSalt}g - 50g = ${initialSalt}g</div><div class="explanation-step"></div><div class="explanation-step">?? ê²€ì‚°: ${initialSalt}g + 50g = ${finalSalt}g</div><div class="explanation-step">   ë†ë„ = (${finalSalt} Ã· 550) Ã— 100 = 20% ?</div><div class="explanation-step"></div><div class="explanation-step">? ë‹µ: ${initialSalt}g</div>`
                   };
                 }
               },
               {
-                text: "Áö¿¬ÀÌ´Â ³óµµ 15%ÀÎ ¼Ò±İ¹° 200g°ú ³óµµ 25%ÀÎ ¼Ò±İ¹° 300gÀ» ¼¯¾ú½À´Ï´Ù. ¼¯Àº ¼Ò±İ¹°ÀÇ ³óµµ´Â? (%)",
+                text: "ì§€ì—°ì´ëŠ” ë†ë„ 15%ì¸ ì†Œê¸ˆë¬¼ 200gê³¼ ë†ë„ 25%ì¸ ì†Œê¸ˆë¬¼ 300gì„ ì„ì—ˆìŠµë‹ˆë‹¤. ì„ì€ ì†Œê¸ˆë¬¼ì˜ ë†ë„ëŠ”? (%)",
                 setup: function() {
                   const salt1 = 200 * 0.15;
                   const salt2 = 300 * 0.25;
@@ -598,12 +598,12 @@
                   const finalConc = Math.round((totalSalt / totalSolution) * 100 * 10) / 10;
                   return {
                     answer: finalConc,
-                    explanation: `<div class="explanation-step">?? ¹®Á¦ ºĞ¼®</div><div class="explanation-step">? Ã¹ ¹øÂ° ¼Ò±İ¹°: 200g, ³óµµ 15%</div><div class="explanation-step">? µÎ ¹øÂ° ¼Ò±İ¹°: 300g, ³óµµ 25%</div><div class="explanation-step">? µÎ ¼Ò±İ¹°À» ¼¯¾úÀ» ¶§ÀÇ ³óµµ¸¦ ±¸ÇØ¾ß ÇÕ´Ï´Ù</div><div class="explanation-step"></div><div class="explanation-step">?? Ç®ÀÌ °úÁ¤</div><div class="explanation-step">1´Ü°è: °¢ ¼Ò±İ¹°¿¡ µé¾îÀÖ´Â ¼Ò±İÀÇ ¾çÀ» ±¸ÇÕ´Ï´Ù</div><div class="explanation-step">   Ã¹ ¹øÂ° ¼Ò±İ¹°ÀÇ ¼Ò±İ = 200g ¡¿ 0.15 = ${salt1}g</div><div class="explanation-step">   µÎ ¹øÂ° ¼Ò±İ¹°ÀÇ ¼Ò±İ = 300g ¡¿ 0.25 = ${salt2}g</div><div class="explanation-step"></div><div class="explanation-step">2´Ü°è: ¼¯Àº ¼Ò±İ¹°ÀÇ ÀüÃ¼ ¾çÀ» ±¸ÇÕ´Ï´Ù</div><div class="explanation-step">   ÀüÃ¼ ¼Ò±İ¹° = 200g + 300g = ${totalSolution}g</div><div class="explanation-step">   ÀüÃ¼ ¼Ò±İ = ${salt1}g + ${salt2}g = ${totalSalt}g</div><div class="explanation-step"></div><div class="explanation-step">3´Ü°è: ¼¯Àº ¼Ò±İ¹°ÀÇ ³óµµ¸¦ ±¸ÇÕ´Ï´Ù</div><div class="explanation-step">   ³óµµ = (¼Ò±İ ¡À ¼Ò±İ¹°) ¡¿ 100</div><div class="explanation-step">   ³óµµ = (${totalSalt}g ¡À ${totalSolution}g) ¡¿ 100</div><div class="explanation-step">   ³óµµ = ${finalConc}%</div><div class="explanation-step"></div><div class="explanation-step">?? ¼Ò±İ¸¸ ´õÇÏ°í ¹°Àº ´õÇÏÁö ¾Ê¾ÒÀ¸¹Ç·Î</div><div class="explanation-step">   ³óµµ´Â 15%¿Í 25% »çÀÌÀÇ °ªÀÌ ³ª¿Í¾ß ÇÕ´Ï´Ù ?</div><div class="explanation-step"></div><div class="explanation-step">? ´ä: ${finalConc}%</div>`
+                    explanation: `<div class="explanation-step">?? ë¬¸ì œ ë¶„ì„</div><div class="explanation-step">? ì²« ë²ˆì§¸ ì†Œê¸ˆë¬¼: 200g, ë†ë„ 15%</div><div class="explanation-step">? ë‘ ë²ˆì§¸ ì†Œê¸ˆë¬¼: 300g, ë†ë„ 25%</div><div class="explanation-step">? ë‘ ì†Œê¸ˆë¬¼ì„ ì„ì—ˆì„ ë•Œì˜ ë†ë„ë¥¼ êµ¬í•´ì•¼ í•©ë‹ˆë‹¤</div><div class="explanation-step"></div><div class="explanation-step">?? í’€ì´ ê³¼ì •</div><div class="explanation-step">1ë‹¨ê³„: ê° ì†Œê¸ˆë¬¼ì— ë“¤ì–´ìˆëŠ” ì†Œê¸ˆì˜ ì–‘ì„ êµ¬í•©ë‹ˆë‹¤</div><div class="explanation-step">   ì²« ë²ˆì§¸ ì†Œê¸ˆë¬¼ì˜ ì†Œê¸ˆ = 200g Ã— 0.15 = ${salt1}g</div><div class="explanation-step">   ë‘ ë²ˆì§¸ ì†Œê¸ˆë¬¼ì˜ ì†Œê¸ˆ = 300g Ã— 0.25 = ${salt2}g</div><div class="explanation-step"></div><div class="explanation-step">2ë‹¨ê³„: ì„ì€ ì†Œê¸ˆë¬¼ì˜ ì „ì²´ ì–‘ì„ êµ¬í•©ë‹ˆë‹¤</div><div class="explanation-step">   ì „ì²´ ì†Œê¸ˆë¬¼ = 200g + 300g = ${totalSolution}g</div><div class="explanation-step">   ì „ì²´ ì†Œê¸ˆ = ${salt1}g + ${salt2}g = ${totalSalt}g</div><div class="explanation-step"></div><div class="explanation-step">3ë‹¨ê³„: ì„ì€ ì†Œê¸ˆë¬¼ì˜ ë†ë„ë¥¼ êµ¬í•©ë‹ˆë‹¤</div><div class="explanation-step">   ë†ë„ = (ì†Œê¸ˆ Ã· ì†Œê¸ˆë¬¼) Ã— 100</div><div class="explanation-step">   ë†ë„ = (${totalSalt}g Ã· ${totalSolution}g) Ã— 100</div><div class="explanation-step">   ë†ë„ = ${finalConc}%</div><div class="explanation-step"></div><div class="explanation-step">?? ì†Œê¸ˆë§Œ ë”í•˜ê³  ë¬¼ì€ ë”í•˜ì§€ ì•Šì•˜ìœ¼ë¯€ë¡œ</div><div class="explanation-step">   ë†ë„ëŠ” 15%ì™€ 25% ì‚¬ì´ì˜ ê°’ì´ ë‚˜ì™€ì•¼ í•©ë‹ˆë‹¤ ?</div><div class="explanation-step"></div><div class="explanation-step">? ë‹µ: ${finalConc}%</div>`
                   };
                 }
               },
               {
-                text: "Çö¿ì´Â ³óµµ 10%ÀÎ ¼Ò±İ¹° 300g¿¡¼­ ¹°À» Áõ¹ß½ÃÄÑ ³óµµ¸¦ 15%·Î ¸¸µé¾ú½À´Ï´Ù. Áõ¹ß½ÃÅ² ¹°ÀÇ ¾çÀº? (g)",
+                text: "í˜„ìš°ëŠ” ë†ë„ 10%ì¸ ì†Œê¸ˆë¬¼ 300gì—ì„œ ë¬¼ì„ ì¦ë°œì‹œì¼œ ë†ë„ë¥¼ 15%ë¡œ ë§Œë“¤ì—ˆìŠµë‹ˆë‹¤. ì¦ë°œì‹œí‚¨ ë¬¼ì˜ ì–‘ì€? (g)",
                 setup: function() {
                   const initialSolution = 300;
                   const initialConc = 10;
@@ -613,12 +613,12 @@
                   const evaporated = initialSolution - finalSolution;
                   return {
                     answer: evaporated,
-                    explanation: `<div class="explanation-step">?? ¹®Á¦ ºĞ¼®</div><div class="explanation-step">? Ã³À½ ¼Ò±İ¹°: 300g, ³óµµ 10%</div><div class="explanation-step">? ÃÖÁ¾ ³óµµ: 15%</div><div class="explanation-step">? ¹°¸¸ Áõ¹ßÇÏ¹Ç·Î ¼Ò±İÀÇ ¾çÀº º¯ÇÏÁö ¾Ê½À´Ï´Ù</div><div class="explanation-step"></div><div class="explanation-step">?? Ç®ÀÌ °úÁ¤</div><div class="explanation-step">1´Ü°è: ¼Ò±İÀÇ ¾çÀ» ±¸ÇÕ´Ï´Ù</div><div class="explanation-step">   ¼Ò±İ = 300g ¡¿ 0.1 = ${salt}g</div><div class="explanation-step">   (¹°¸¸ Áõ¹ßÇÏ¹Ç·Î ¼Ò±İÀº ${salt}g·Î ÀÏÁ¤)</div><div class="explanation-step"></div><div class="explanation-step">2´Ü°è: 15%°¡ µÇ±â À§ÇÑ ¼Ò±İ¹°ÀÇ ¾çÀ» ±¸ÇÕ´Ï´Ù</div><div class="explanation-step">   ³óµµ °ø½Ä: 15 = (${salt} ¡À ¼Ò±İ¹°) ¡¿ 100</div><div class="explanation-step">   ¼Ò±İ¹° = ${salt} ¡À 0.15 = ${finalSolution}g</div><div class="explanation-step"></div><div class="explanation-step">3´Ü°è: Áõ¹ß½ÃÅ² ¹°ÀÇ ¾çÀ» ±¸ÇÕ´Ï´Ù</div><div class="explanation-step">   Áõ¹ßÇÑ ¹° = Ã³À½ ¼Ò±İ¹° - ³ªÁß ¼Ò±İ¹°</div><div class="explanation-step">   Áõ¹ßÇÑ ¹° = 300g - ${finalSolution}g = ${evaporated}g</div><div class="explanation-step"></div><div class="explanation-step">?? °Ë»ê: ${finalSolution}gÀÇ 15% = ${finalSolution * 0.15}g</div><div class="explanation-step">   Ã³À½ ¼Ò±İ ${salt}g°ú °°À¸¹Ç·Î Á¤´ä ?</div><div class="explanation-step"></div><div class="explanation-step">? ´ä: ${evaporated}g</div>`
+                    explanation: `<div class="explanation-step">?? ë¬¸ì œ ë¶„ì„</div><div class="explanation-step">? ì²˜ìŒ ì†Œê¸ˆë¬¼: 300g, ë†ë„ 10%</div><div class="explanation-step">? ìµœì¢… ë†ë„: 15%</div><div class="explanation-step">? ë¬¼ë§Œ ì¦ë°œí•˜ë¯€ë¡œ ì†Œê¸ˆì˜ ì–‘ì€ ë³€í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤</div><div class="explanation-step"></div><div class="explanation-step">?? í’€ì´ ê³¼ì •</div><div class="explanation-step">1ë‹¨ê³„: ì†Œê¸ˆì˜ ì–‘ì„ êµ¬í•©ë‹ˆë‹¤</div><div class="explanation-step">   ì†Œê¸ˆ = 300g Ã— 0.1 = ${salt}g</div><div class="explanation-step">   (ë¬¼ë§Œ ì¦ë°œí•˜ë¯€ë¡œ ì†Œê¸ˆì€ ${salt}gë¡œ ì¼ì •)</div><div class="explanation-step"></div><div class="explanation-step">2ë‹¨ê³„: 15%ê°€ ë˜ê¸° ìœ„í•œ ì†Œê¸ˆë¬¼ì˜ ì–‘ì„ êµ¬í•©ë‹ˆë‹¤</div><div class="explanation-step">   ë†ë„ ê³µì‹: 15 = (${salt} Ã· ì†Œê¸ˆë¬¼) Ã— 100</div><div class="explanation-step">   ì†Œê¸ˆë¬¼ = ${salt} Ã· 0.15 = ${finalSolution}g</div><div class="explanation-step"></div><div class="explanation-step">3ë‹¨ê³„: ì¦ë°œì‹œí‚¨ ë¬¼ì˜ ì–‘ì„ êµ¬í•©ë‹ˆë‹¤</div><div class="explanation-step">   ì¦ë°œí•œ ë¬¼ = ì²˜ìŒ ì†Œê¸ˆë¬¼ - ë‚˜ì¤‘ ì†Œê¸ˆë¬¼</div><div class="explanation-step">   ì¦ë°œí•œ ë¬¼ = 300g - ${finalSolution}g = ${evaporated}g</div><div class="explanation-step"></div><div class="explanation-step">?? ê²€ì‚°: ${finalSolution}gì˜ 15% = ${finalSolution * 0.15}g</div><div class="explanation-step">   ì²˜ìŒ ì†Œê¸ˆ ${salt}gê³¼ ê°™ìœ¼ë¯€ë¡œ ì •ë‹µ ?</div><div class="explanation-step"></div><div class="explanation-step">? ë‹µ: ${evaporated}g</div>`
                   };
                 }
               },
               {
-                text: "¼­ÁØÀÌ´Â ³óµµ 8%ÀÎ ¼Ò±İ¹° 400g¿¡ ¼Ò±İÀ» ´õ ³Ö¾î ³óµµ¸¦ 12%·Î ¸¸µé¾ú½À´Ï´Ù. Ãß°¡ÇÑ ¼Ò±İÀÇ ¾çÀº? (g)",
+                text: "ì„œì¤€ì´ëŠ” ë†ë„ 8%ì¸ ì†Œê¸ˆë¬¼ 400gì— ì†Œê¸ˆì„ ë” ë„£ì–´ ë†ë„ë¥¼ 12%ë¡œ ë§Œë“¤ì—ˆìŠµë‹ˆë‹¤. ì¶”ê°€í•œ ì†Œê¸ˆì˜ ì–‘ì€? (g)",
                 setup: function() {
                   const initialSolution = 400;
                   const initialConc = 8;
@@ -627,12 +627,12 @@
                   const addedSalt = Math.round((48 - initialSalt) / 0.88 * 10) / 10;
                   return {
                     answer: addedSalt,
-                    explanation: `<div class="explanation-step">?? ¹®Á¦ ºĞ¼®</div><div class="explanation-step">? Ã³À½ ¼Ò±İ¹°: 400g, ³óµµ 8%</div><div class="explanation-step">? ÃÖÁ¾ ³óµµ: 12%</div><div class="explanation-step">? Ãß°¡ÇÑ ¼Ò±İÀÇ ¾çÀ» x¶ó°í ÇÏÀÚ</div><div class="explanation-step"></div><div class="explanation-step">?? Ç®ÀÌ °úÁ¤</div><div class="explanation-step">1´Ü°è: Ã³À½ ¼Ò±İ¹°¿¡ µé¾îÀÖ´ø ¼Ò±İÀÇ ¾ç</div><div class="explanation-step">   Ã³À½ ¼Ò±İ = 400g ¡¿ 0.08 = ${initialSalt}g</div><div class="explanation-step"></div><div class="explanation-step">2´Ü°è: ¹æÁ¤½ÄÀ» ¼¼¿ó´Ï´Ù</div><div class="explanation-step">   ¼Ò±İ x¸¦ Ãß°¡ÇÏ¸é:</div><div class="explanation-step">   ? ÀüÃ¼ ¼Ò±İ = ${initialSalt}g + x</div><div class="explanation-step">   ? ÀüÃ¼ ¼Ò±İ¹° = 400g + x</div><div class="explanation-step">   ? ³óµµ: (${initialSalt} + x) ¡À (400 + x) = 0.12</div><div class="explanation-step"></div><div class="explanation-step">3´Ü°è: ¹æÁ¤½ÄÀ» Ç±´Ï´Ù</div><div class="explanation-step">   ${initialSalt} + x = 0.12 ¡¿ (400 + x)</div><div class="explanation-step">   ${initialSalt} + x = 48 + 0.12x</div><div class="explanation-step">   x - 0.12x = 48 - ${initialSalt}</div><div class="explanation-step">   0.88x = ${48 - initialSalt}</div><div class="explanation-step">   x = ${48 - initialSalt} ¡À 0.88 = ${addedSalt}g</div><div class="explanation-step"></div><div class="explanation-step">?? °Ë»ê: (${initialSalt} + ${addedSalt}) ¡À (400 + ${addedSalt}) ¡¿ 100</div><div class="explanation-step">   ? 12% ?</div><div class="explanation-step"></div><div class="explanation-step">? ´ä: ${addedSalt}g</div>`
+                    explanation: `<div class="explanation-step">?? ë¬¸ì œ ë¶„ì„</div><div class="explanation-step">? ì²˜ìŒ ì†Œê¸ˆë¬¼: 400g, ë†ë„ 8%</div><div class="explanation-step">? ìµœì¢… ë†ë„: 12%</div><div class="explanation-step">? ì¶”ê°€í•œ ì†Œê¸ˆì˜ ì–‘ì„ xë¼ê³  í•˜ì</div><div class="explanation-step"></div><div class="explanation-step">?? í’€ì´ ê³¼ì •</div><div class="explanation-step">1ë‹¨ê³„: ì²˜ìŒ ì†Œê¸ˆë¬¼ì— ë“¤ì–´ìˆë˜ ì†Œê¸ˆì˜ ì–‘</div><div class="explanation-step">   ì²˜ìŒ ì†Œê¸ˆ = 400g Ã— 0.08 = ${initialSalt}g</div><div class="explanation-step"></div><div class="explanation-step">2ë‹¨ê³„: ë°©ì •ì‹ì„ ì„¸ì›ë‹ˆë‹¤</div><div class="explanation-step">   ì†Œê¸ˆ xë¥¼ ì¶”ê°€í•˜ë©´:</div><div class="explanation-step">   ? ì „ì²´ ì†Œê¸ˆ = ${initialSalt}g + x</div><div class="explanation-step">   ? ì „ì²´ ì†Œê¸ˆë¬¼ = 400g + x</div><div class="explanation-step">   ? ë†ë„: (${initialSalt} + x) Ã· (400 + x) = 0.12</div><div class="explanation-step"></div><div class="explanation-step">3ë‹¨ê³„: ë°©ì •ì‹ì„ í’‰ë‹ˆë‹¤</div><div class="explanation-step">   ${initialSalt} + x = 0.12 Ã— (400 + x)</div><div class="explanation-step">   ${initialSalt} + x = 48 + 0.12x</div><div class="explanation-step">   x - 0.12x = 48 - ${initialSalt}</div><div class="explanation-step">   0.88x = ${48 - initialSalt}</div><div class="explanation-step">   x = ${48 - initialSalt} Ã· 0.88 = ${addedSalt}g</div><div class="explanation-step"></div><div class="explanation-step">?? ê²€ì‚°: (${initialSalt} + ${addedSalt}) Ã· (400 + ${addedSalt}) Ã— 100</div><div class="explanation-step">   ? 12% ?</div><div class="explanation-step"></div><div class="explanation-step">? ë‹µ: ${addedSalt}g</div>`
                   };
                 }
               },
               {
-                text: "ÀºÁö´Â ³óµµ 18%ÀÎ ¼Ò±İ¹° 250g°ú ¹°À» ¼¯¾î¼­ ³óµµ 12%ÀÎ ¼Ò±İ¹°À» ¸¸µé¾ú½À´Ï´Ù. Ãß°¡ÇÑ ¹°ÀÇ ¾çÀº? (g)",
+                text: "ì€ì§€ëŠ” ë†ë„ 18%ì¸ ì†Œê¸ˆë¬¼ 250gê³¼ ë¬¼ì„ ì„ì–´ì„œ ë†ë„ 12%ì¸ ì†Œê¸ˆë¬¼ì„ ë§Œë“¤ì—ˆìŠµë‹ˆë‹¤. ì¶”ê°€í•œ ë¬¼ì˜ ì–‘ì€? (g)",
                 setup: function() {
                   const initialSolution = 250;
                   const initialConc = 18;
@@ -642,7 +642,7 @@
                   const addedWater = finalSolution - initialSolution;
                   return {
                     answer: addedWater,
-                    explanation: `<div class="explanation-step">?? ¹®Á¦ ºĞ¼®</div><div class="explanation-step">? Ã³À½ ¼Ò±İ¹°: 250g, ³óµµ 18%</div><div class="explanation-step">? ÃÖÁ¾ ³óµµ: 12%</div><div class="explanation-step">? ¹°À» Ãß°¡ÇÏ¹Ç·Î ¼Ò±İÀÇ ¾çÀº º¯ÇÏÁö ¾Ê½À´Ï´Ù</div><div class="explanation-step"></div><div class="explanation-step">?? Ç®ÀÌ °úÁ¤</div><div class="explanation-step">1´Ü°è: ¼Ò±İÀÇ ¾çÀ» ±¸ÇÕ´Ï´Ù</div><div class="explanation-step">   ¼Ò±İ = 250g ¡¿ 0.18 = ${salt}g</div><div class="explanation-step">   (¹°¸¸ Ãß°¡ÇÏ¹Ç·Î ¼Ò±İÀº ${salt}g·Î ÀÏÁ¤)</div><div class="explanation-step"></div><div class="explanation-step">2´Ü°è: 12%°¡ µÇ±â À§ÇÑ ¼Ò±İ¹°ÀÇ ¾çÀ» ±¸ÇÕ´Ï´Ù</div><div class="explanation-step">   ³óµµ °ø½Ä: 12 = (${salt} ¡À ¼Ò±İ¹°) ¡¿ 100</div><div class="explanation-step">   ¼Ò±İ¹° = ${salt} ¡À 0.12 = ${finalSolution}g</div><div class="explanation-step"></div><div class="explanation-step">3´Ü°è: Ãß°¡ÇÑ ¹°ÀÇ ¾çÀ» ±¸ÇÕ´Ï´Ù</div><div class="explanation-step">   Ãß°¡ÇÑ ¹° = ³ªÁß ¼Ò±İ¹° - Ã³À½ ¼Ò±İ¹°</div><div class="explanation-step">   Ãß°¡ÇÑ ¹° = ${finalSolution}g - 250g = ${addedWater}g</div><div class="explanation-step"></div><div class="explanation-step">?? °Ë»ê: ${finalSolution}gÀÇ 12% = ${finalSolution * 0.12}g</div><div class="explanation-step">   Ã³À½ ¼Ò±İ ${salt}g°ú °°À¸¹Ç·Î Á¤´ä ?</div><div class="explanation-step"></div><div class="explanation-step">? ´ä: ${addedWater}g</div>`
+                    explanation: `<div class="explanation-step">?? ë¬¸ì œ ë¶„ì„</div><div class="explanation-step">? ì²˜ìŒ ì†Œê¸ˆë¬¼: 250g, ë†ë„ 18%</div><div class="explanation-step">? ìµœì¢… ë†ë„: 12%</div><div class="explanation-step">? ë¬¼ì„ ì¶”ê°€í•˜ë¯€ë¡œ ì†Œê¸ˆì˜ ì–‘ì€ ë³€í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤</div><div class="explanation-step"></div><div class="explanation-step">?? í’€ì´ ê³¼ì •</div><div class="explanation-step">1ë‹¨ê³„: ì†Œê¸ˆì˜ ì–‘ì„ êµ¬í•©ë‹ˆë‹¤</div><div class="explanation-step">   ì†Œê¸ˆ = 250g Ã— 0.18 = ${salt}g</div><div class="explanation-step">   (ë¬¼ë§Œ ì¶”ê°€í•˜ë¯€ë¡œ ì†Œê¸ˆì€ ${salt}gë¡œ ì¼ì •)</div><div class="explanation-step"></div><div class="explanation-step">2ë‹¨ê³„: 12%ê°€ ë˜ê¸° ìœ„í•œ ì†Œê¸ˆë¬¼ì˜ ì–‘ì„ êµ¬í•©ë‹ˆë‹¤</div><div class="explanation-step">   ë†ë„ ê³µì‹: 12 = (${salt} Ã· ì†Œê¸ˆë¬¼) Ã— 100</div><div class="explanation-step">   ì†Œê¸ˆë¬¼ = ${salt} Ã· 0.12 = ${finalSolution}g</div><div class="explanation-step"></div><div class="explanation-step">3ë‹¨ê³„: ì¶”ê°€í•œ ë¬¼ì˜ ì–‘ì„ êµ¬í•©ë‹ˆë‹¤</div><div class="explanation-step">   ì¶”ê°€í•œ ë¬¼ = ë‚˜ì¤‘ ì†Œê¸ˆë¬¼ - ì²˜ìŒ ì†Œê¸ˆë¬¼</div><div class="explanation-step">   ì¶”ê°€í•œ ë¬¼ = ${finalSolution}g - 250g = ${addedWater}g</div><div class="explanation-step"></div><div class="explanation-step">?? ê²€ì‚°: ${finalSolution}gì˜ 12% = ${finalSolution * 0.12}g</div><div class="explanation-step">   ì²˜ìŒ ì†Œê¸ˆ ${salt}gê³¼ ê°™ìœ¼ë¯€ë¡œ ì •ë‹µ ?</div><div class="explanation-step"></div><div class="explanation-step">? ë‹µ: ${addedWater}g</div>`
                   };
                 }
               }
@@ -668,11 +668,11 @@
 
     function getMenuTitle(menuType) {
       const titles = {
-        'arithmetic': '»çÄ¢¿¬»ê ¹®Á¦',
-        'lcm': 'ÃÖ¼Ò°ø¹è¼ö ¹®Á¦',
-        'gcd': 'ÃÖ´ë°ø¾à¼ö ¹®Á¦',
-        'speed': '¼Óµµ ±¸ÇÏ±â ¹®Á¦',
-        'concentration': '³óµµ ±¸ÇÏ±â ¹®Á¦'
+        'arithmetic': 'ì‚¬ì¹™ì—°ì‚° ë¬¸ì œ',
+        'lcm': 'ìµœì†Œê³µë°°ìˆ˜ ë¬¸ì œ',
+        'gcd': 'ìµœëŒ€ê³µì•½ìˆ˜ ë¬¸ì œ',
+        'speed': 'ì†ë„ êµ¬í•˜ê¸° ë¬¸ì œ',
+        'concentration': 'ë†ë„ êµ¬í•˜ê¸° ë¬¸ì œ'
       };
       return titles[menuType] || '';
     }
@@ -683,12 +683,12 @@
       let html = `
         <div class="content-header">
           <h2>${getMenuTitle(menuType)}</h2>
-          <p>°¢ ¹®Á¦ÀÇ ´äÀ» ÀÔ·ÂÇÏ°í °á°ú ¹öÆ°À» ´­·¯ÁÖ¼¼¿ä</p>
+          <p>ê° ë¬¸ì œì˜ ë‹µì„ ì…ë ¥í•˜ê³  ê²°ê³¼ ë²„íŠ¼ì„ ëˆŒëŸ¬ì£¼ì„¸ìš”</p>
         </div>
         
         <div class="completion-message" id="completion-message">
-          <h3>ÃàÇÏÇÕ´Ï´Ù! ??</h3>
-          <p id="score-text">5¹®Á¦ Áß 0¹®Á¦ Á¤´ä!</p>
+          <h3>ì¶•í•˜í•©ë‹ˆë‹¤! ??</h3>
+          <p id="score-text">5ë¬¸ì œ ì¤‘ 0ë¬¸ì œ ì •ë‹µ!</p>
         </div>
         
         <div class="quiz-grid">
@@ -702,13 +702,13 @@
               <div class="problem">${quiz.question}</div>
               <div class="equals">=</div>
               <input type="number" step="0.1" id="input-${index}" placeholder="?">
-              <button class="check-btn" onclick="checkAnswer(${index})" id="btn-${index}">°á°ú</button>
-              <button class="explain-btn" onclick="toggleExplanation(${index})" id="explain-btn-${index}">ÇØ¼³</button>
+              <button class="check-btn" onclick="checkAnswer(${index})" id="btn-${index}">ê²°ê³¼</button>
+              <button class="explain-btn" onclick="toggleExplanation(${index})" id="explain-btn-${index}">í•´ì„¤</button>
               <div class="result" id="result-${index}"></div>
             </div>
             <div class="explanation-section" id="explanation-${index}">
               <div class="explanation-content">
-                <div class="explanation-title">?? Ç®ÀÌ °úÁ¤</div>
+                <div class="explanation-title">?? í’€ì´ ê³¼ì •</div>
                 ${quiz.explanation}
               </div>
             </div>
@@ -718,7 +718,7 @@
       
       html += `
         </div>
-        <button class="retry-btn" onclick="generateQuiz('${menuType}')">»õ·Î¿î ¹®Á¦ ¸¸µé±â ??</button>
+        <button class="retry-btn" onclick="generateQuiz('${menuType}')">ìƒˆë¡œìš´ ë¬¸ì œ ë§Œë“¤ê¸° ??</button>
       `;
       
       mainContent.innerHTML = html;
@@ -765,11 +765,11 @@
       if (explanationSection.classList.contains('show')) {
         explanationSection.classList.remove('show');
         explainBtn.classList.remove('active');
-        explainBtn.textContent = 'ÇØ¼³';
+        explainBtn.textContent = 'í•´ì„¤';
       } else {
         explanationSection.classList.add('show');
         explainBtn.classList.add('active');
-        explainBtn.textContent = '´İ±â';
+        explainBtn.textContent = 'ë‹«ê¸°';
       }
     }
 
@@ -781,7 +781,7 @@
       
       const completionMsg = document.getElementById('completion-message');
       const scoreText = document.getElementById('score-text');
-      scoreText.textContent = `5¹®Á¦ Áß ${score}¹®Á¦ Á¤´ä! ${score === 5 ? '¿Ïº®ÇØ¿ä! ??' : ''}`;
+      scoreText.textContent = `5ë¬¸ì œ ì¤‘ ${score}ë¬¸ì œ ì •ë‹µ! ${score === 5 ? 'ì™„ë²½í•´ìš”! ??' : ''}`;
       completionMsg.classList.add('show');
       
       if (window.dataSdk && historyRecords.length < 999) {
@@ -803,7 +803,7 @@
           console.error("Failed to save quiz result");
         }
       } else if (historyRecords.length >= 999) {
-        scoreText.textContent = `±â·Ï ÇÑ°è(999°³)¿¡ µµ´ŞÇß½À´Ï´Ù. ÀÌÀü ±â·ÏÀ» »èÁ¦ÇØÁÖ¼¼¿ä.`;
+        scoreText.textContent = `ê¸°ë¡ í•œê³„(999ê°œ)ì— ë„ë‹¬í–ˆìŠµë‹ˆë‹¤. ì´ì „ ê¸°ë¡ì„ ì‚­ì œí•´ì£¼ì„¸ìš”.`;
       }
     }
 
@@ -812,28 +812,28 @@
       
       let html = `
         <div class="content-header">
-          <h2>?? ÇĞ½À ±â·Ï</h2>
-          <p>Áö±İ±îÁö ¿Ï·áÇÑ ¸ğµç ÄûÁî ±â·ÏÀ» È®ÀÎÇÏ¼¼¿ä</p>
+          <h2>?? í•™ìŠµ ê¸°ë¡</h2>
+          <p>ì§€ê¸ˆê¹Œì§€ ì™„ë£Œí•œ ëª¨ë“  í€´ì¦ˆ ê¸°ë¡ì„ í™•ì¸í•˜ì„¸ìš”</p>
         </div>
         <div class="history-list">
       `;
       
       if (historyRecords.length === 0) {
-        html += '<div class="no-history">¾ÆÁ÷ ¿Ï·áÇÑ ÄûÁî°¡ ¾ø¾î¿ä ??</div>';
+        html += '<div class="no-history">ì•„ì§ ì™„ë£Œí•œ í€´ì¦ˆê°€ ì—†ì–´ìš” ??</div>';
       } else {
         historyRecords.forEach(record => {
           html += `
             <div class="history-item">
               <div class="history-field">
-                <div class="history-label">³¯Â¥</div>
+                <div class="history-label">ë‚ ì§œ</div>
                 <div class="history-value">${record.date}</div>
               </div>
               <div class="history-field">
-                <div class="history-label">¸Ş´º</div>
+                <div class="history-label">ë©”ë‰´</div>
                 <div class="history-value">${record.menu}</div>
               </div>
               <div class="history-field">
-                <div class="history-label">Á¡¼ö</div>
+                <div class="history-label">ì ìˆ˜</div>
                 <div class="history-value score">${record.score} / ${record.total}</div>
               </div>
             </div>
