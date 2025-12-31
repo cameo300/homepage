@@ -3,341 +3,62 @@
  <head>
  <meta charset="euc-kr">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Æ÷Åä¾Ù¹ü</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: white;
-            padding: 30px;
-        }
-
-        .photo-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .photo-title {
-            font-size: 2.5em;
-            color: #667eea;
-            font-weight: 700;
-            margin: 0;
-        }
-
-        .photo-controls {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .photo-btn {
-            padding: 12px 20px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.95em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .photo-btn:hover {
-            background: #5568d3;
-            transform: translateY(-2px);
-        }
-
-        .photo-btn-secondary {
-            background: #764ba2;
-        }
-
-        .photo-btn-secondary:hover {
-            background: #653a8a;
-        }
-
-        .category-filter {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .category-badge-btn {
-            padding: 10px 20px;
-            background: #f8f9ff;
-            color: #667eea;
-            border: 2px solid #e8eaff;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 500;
-        }
-
-        .category-badge-btn:hover {
-            border-color: #667eea;
-            background: #e8eaff;
-        }
-
-        .category-badge-btn.active {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
-
-        .photo-gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 25px;
-        }
-
-        .photo-card-item {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .photo-card-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-
-        .photo-thumbnail-img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            background: #f0f0f0;
-        }
-
-        .photo-card-info {
-            padding: 15px;
-        }
-
-        .photo-card-title {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .photo-card-date {
-            font-size: 0.85em;
-            color: #999;
-        }
-
-        .photo-category-tag {
-            display: inline-block;
-            padding: 4px 10px;
-            background: #e8eaff;
-            color: #667eea;
-            border-radius: 6px;
-            font-size: 0.8em;
-            margin-top: 8px;
-        }
-
-        .delete-photo-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255,255,255,0.9);
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            cursor: pointer;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            color: #e74c3c;
-            font-weight: bold;
-        }
-
-        .photo-card-item:hover .delete-photo-btn {
-            display: flex;
-        }
-
-        .empty-gallery {
-            text-align: center;
-            padding: 80px 20px;
-            color: #999;
-            grid-column: 1 / -1;
-        }
-
-        .empty-gallery svg {
-            width: 120px;
-            height: 120px;
-            margin-bottom: 20px;
-            opacity: 0.3;
-        }
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal-box {
-            background: white;
-            border-radius: 16px;
-            padding: 30px;
-            max-width: 500px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .modal-title {
-            font-size: 1.5em;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        .modal-input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 1em;
-            margin-bottom: 20px;
-        }
-
-        .modal-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .modal-btn {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .modal-btn-primary {
-            background: #667eea;
-            color: white;
-        }
-
-        .modal-btn-primary:hover {
-            background: #5568d3;
-        }
-
-        .modal-btn-secondary {
-            background: #e0e0e0;
-            color: #666;
-        }
-
-        .modal-btn-secondary:hover {
-            background: #d0d0d0;
-        }
-
-        .category-select-list {
-            max-height: 300px;
-            overflow-y: auto;
-            margin-bottom: 20px;
-        }
-
-        .category-select-btn {
-            width: 100%;
-            padding: 12px;
-            background: #f8f9ff;
-            border: 2px solid #e8eaff;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 1em;
-            font-weight: 500;
-            color: #667eea;
-        }
-
-        .category-select-btn:hover {
-            background: #e8eaff;
-            border-color: #667eea;
-        }
-
-        #fileInput {
-            display: none;
-        }
-    </style>
+    <title>í¬í† ì•¨ë²”</title>
+    <link rel="stylesheet" href="common/style.css"> <!-- ê³µí†µìŠ¤íƒ€ì¼! -->
 </head>
-<body>
-    <div class="photo-header">
-        <h1 class="photo-title">Æ÷Åä¾Ù¹ü ??</h1>
-        <div class="photo-controls">
-            <button class="photo-btn" onclick="document.getElementById('fileInput').click()">
-                ? »çÁø ¾÷·Îµå
-            </button>
-            <button class="photo-btn photo-btn-secondary" onclick="openCategoryModal()">
-                ??? Ä«Å×°í¸® Ãß°¡
-            </button>
-        </div>
-    </div>
+<body class="commbody">
+<!--header-->
+	<div class="header">
+		<div>
+			<h1 class="intro-header">Photo Album</h1>
+			<p class="intro-subtitle">ì¹´í…Œê³ ë¦¬ë³„ ì‚¬ì§„ì„ ê´€ë¦¬í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.</p>
+		</div>
 
+		<div class="intro-controls">
+			<button class="photo-btn" onclick="document.getElementById('fileInput').click()">
+			<img src="images/bear/bear (41).png" class="menu-img">ì‚¬ì§„ ì—…ë¡œë“œ
+			</button>
+			<button class="photo-btn photo-btn-secondary" onclick="openCategoryModal()">
+			<img src="images/bear/bear (42).png" class="menu-img">ì¹´í…Œê³ ë¦¬ ì¶”ê°€
+			</button>
+		</div>
+	</div>
+	
+<!--ë³¸ë¬¸-->
     <div class="category-filter" id="categoryFilter"></div>
 
     <div class="photo-gallery-grid" id="photoGalleryGrid"></div>
 
     <input type="file" id="fileInput" accept="image/*" multiple>
 
-    <!-- Ä«Å×°í¸® Ãß°¡ ¸ğ´Ş -->
+    <!-- ì¹´í…Œê³ ë¦¬ ì¶”ê°€ ëª¨ë‹¬ -->
     <div class="modal-overlay" id="categoryModal">
         <div class="modal-box">
-            <div class="modal-title">»õ Ä«Å×°í¸® Ãß°¡</div>
-            <input type="text" class="modal-input" id="categoryInput" placeholder="Ä«Å×°í¸® ÀÌ¸§À» ÀÔ·ÂÇÏ¼¼¿ä">
+            <div class="modal-title">ìƒˆ ì¹´í…Œê³ ë¦¬ ì¶”ê°€</div>
+            <input type="text" class="modal-input" id="categoryInput" placeholder="ì¹´í…Œê³ ë¦¬ ì´ë¦„ì„ ì…ë ¥í•˜ì„¸ìš”">
             <div class="modal-buttons">
-                <button class="modal-btn modal-btn-secondary" onclick="closeCategoryModal()">Ãë¼Ò</button>
-                <button class="modal-btn modal-btn-primary" onclick="addPhotoCategory()">Ãß°¡</button>
+                <button class="modal-btn modal-btn-secondary" onclick="closeCategoryModal()">ì·¨ì†Œ</button>
+                <button class="modal-btn modal-btn-primary" onclick="addPhotoCategory()">ì¶”ê°€</button>
             </div>
         </div>
     </div>
 
-    <!-- »çÁø ¾÷·Îµå Ä«Å×°í¸® ¼±ÅÃ ¸ğ´Ş -->
+    <!-- ì‚¬ì§„ ì—…ë¡œë“œ ì¹´í…Œê³ ë¦¬ ì„ íƒ ëª¨ë‹¬ -->
     <div class="modal-overlay" id="uploadModal">
         <div class="modal-box">
-            <div class="modal-title">Ä«Å×°í¸® ¼±ÅÃ</div>
+            <div class="modal-title">ì¹´í…Œê³ ë¦¬ ì„ íƒ</div>
             <div class="category-select-list" id="categorySelectList"></div>
         </div>
     </div>
 
     <script>
-        let photoCategories = ['ÀüÃ¼', '¿©Çà', 'À½½Ä', 'ÀÏ»ó', 'Ç³°æ'];
+        let photoCategories = ['ì „ì²´', 'í‹°ë¼ë¯¸ìˆ˜ì— ë¹ ì§„ ê³°', 'ìŒì‹', 'ì¼ìƒ', 'í’ê²½'];
         let photos = [];
-        let currentPhotoCategory = 'ÀüÃ¼';
+        let currentPhotoCategory = 'ì „ì²´';
         let pendingFiles = [];
         let photoDB;
 
-        // IndexedDB ÃÊ±âÈ­
+        // IndexedDB ì´ˆê¸°í™”
         async function initPhotoDB() {
             return new Promise((resolve, reject) => {
                 const request = indexedDB.open('PersonalPhotoGalleryDB', 1);
@@ -425,7 +146,7 @@
                 renderCategoryFilter();
                 renderPhotoGallery();
             } catch (error) {
-                console.error('Æ÷Åä¾Ù¹ü ÃÊ±âÈ­ ¿À·ù:', error);
+                console.error('í¬í† ì•¨ë²” ì´ˆê¸°í™” ì˜¤ë¥˜:', error);
                 renderCategoryFilter();
                 renderPhotoGallery();
             }
@@ -435,7 +156,7 @@
             const filter = document.getElementById('categoryFilter');
             filter.innerHTML = '';
             photoCategories.forEach(cat => {
-                const count = photos.filter(p => cat === 'ÀüÃ¼' || p.category === cat).length;
+                const count = photos.filter(p => cat === 'ì „ì²´' || p.category === cat).length;
                 const btn = document.createElement('button');
                 btn.className = `category-badge-btn ${cat === currentPhotoCategory ? 'active' : ''}`;
                 btn.textContent = `${cat} (${count})`;
@@ -452,7 +173,7 @@
 
         function renderPhotoGallery() {
             const grid = document.getElementById('photoGalleryGrid');
-            const filteredPhotos = currentPhotoCategory === 'ÀüÃ¼' 
+            const filteredPhotos = currentPhotoCategory === 'ì „ì²´' 
                 ? photos 
                 : photos.filter(p => p.category === currentPhotoCategory);
 
@@ -464,8 +185,8 @@
                             <circle cx="8.5" cy="8.5" r="1.5"/>
                             <polyline points="21 15 16 10 5 21"/>
                         </svg>
-                        <h3>»çÁøÀÌ ¾ø½À´Ï´Ù</h3>
-                        <p>»õ·Î¿î »çÁøÀ» ¾÷·ÎµåÇØº¸¼¼¿ä!</p>
+                        <h3>ì‚¬ì§„ì´ ì—†ìŠµë‹ˆë‹¤</h3>
+                        <p>ìƒˆë¡œìš´ ì‚¬ì§„ì„ ì—…ë¡œë“œí•´ë³´ì„¸ìš”!</p>
                     </div>
                 `;
                 return;
@@ -501,7 +222,7 @@
             const modal = document.getElementById('uploadModal');
             const list = document.getElementById('categorySelectList');
             list.innerHTML = '';
-            photoCategories.filter(c => c !== 'ÀüÃ¼').forEach(cat => {
+            photoCategories.filter(c => c !== 'ì „ì²´').forEach(cat => {
                 const btn = document.createElement('button');
                 btn.className = 'category-select-btn';
                 btn.textContent = cat;
@@ -528,8 +249,8 @@
                         renderCategoryFilter();
                         renderPhotoGallery();
                     } catch (error) {
-                        console.error('»çÁø ÀúÀå ¿À·ù:', error);
-                        alert('»çÁø ÀúÀå¿¡ ½ÇÆĞÇß½À´Ï´Ù.');
+                        console.error('ì‚¬ì§„ ì €ì¥ ì˜¤ë¥˜:', error);
+                        alert('ì‚¬ì§„ ì €ì¥ì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.');
                     }
                 };
                 reader.readAsDataURL(file);
@@ -539,15 +260,15 @@
         }
 
         async function deletePhoto(id) {
-            if (confirm('ÀÌ »çÁøÀ» »èÁ¦ÇÏ½Ã°Ú½À´Ï±î?')) {
+            if (confirm('ì´ ì‚¬ì§„ì„ ì‚­ì œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?')) {
                 try {
                     await deletePhotoFromDB(id);
                     photos = photos.filter(p => p.id !== id);
                     renderCategoryFilter();
                     renderPhotoGallery();
                 } catch (error) {
-                    console.error('»çÁø »èÁ¦ ¿À·ù:', error);
-                    alert('»çÁø »èÁ¦¿¡ ½ÇÆĞÇß½À´Ï´Ù.');
+                    console.error('ì‚¬ì§„ ì‚­ì œ ì˜¤ë¥˜:', error);
+                    alert('ì‚¬ì§„ ì‚­ì œì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.');
                 }
             }
         }
@@ -566,11 +287,11 @@
             const input = document.getElementById('categoryInput');
             const newCategory = input.value.trim();
             if (!newCategory) {
-                alert('Ä«Å×°í¸® ÀÌ¸§À» ÀÔ·ÂÇØÁÖ¼¼¿ä.');
+                alert('ì¹´í…Œê³ ë¦¬ ì´ë¦„ì„ ì…ë ¥í•´ì£¼ì„¸ìš”.');
                 return;
             }
             if (photoCategories.includes(newCategory)) {
-                alert('ÀÌ¹Ì Á¸ÀçÇÏ´Â Ä«Å×°í¸®ÀÔ´Ï´Ù.');
+                alert('ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ì¹´í…Œê³ ë¦¬ì…ë‹ˆë‹¤.');
                 return;
             }
             photoCategories.push(newCategory);
@@ -579,8 +300,8 @@
                 renderCategoryFilter();
                 closeCategoryModal();
             } catch (error) {
-                console.error('Ä«Å×°í¸® ÀúÀå ¿À·ù:', error);
-                alert('Ä«Å×°í¸® ÀúÀå¿¡ ½ÇÆĞÇß½À´Ï´Ù.');
+                console.error('ì¹´í…Œê³ ë¦¬ ì €ì¥ ì˜¤ë¥˜:', error);
+                alert('ì¹´í…Œê³ ë¦¬ ì €ì¥ì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.');
             }
         }
 
