@@ -1,0 +1,937 @@
+<!doctype html>
+<html lang="ko">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>수학 학습 퀴즈</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Nanum Pen Script', 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 100%);
+      height: 100%;
+      overflow: hidden;
+    }
+    
+    html, body {
+      height: 100%;
+    }
+    
+    .app-container {
+      display: flex;
+      height: 100%;
+    }
+    
+    .sidebar {
+      width: 25%;
+      background: #37474f;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 4px 0 12px rgba(0, 0, 0, 0.2);
+    }
+    
+    .sidebar h1 {
+      color: #4db6ac;
+      font-size: 28px;
+      margin: 0 0 20px 0;
+      text-align: center;
+    }
+    
+    .menu-btn {
+      background: linear-gradient(145deg, #546e7a, #455a64);
+      color: white;
+      border: none;
+      padding: 18px 20px;
+      border-radius: 12px;
+      font-size: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      text-align: left;
+    }
+    
+    .menu-btn:hover {
+      background: linear-gradient(145deg, #607d8b, #546e7a);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+    
+    .menu-btn.active {
+      background: linear-gradient(145deg, #4db6ac, #26a69a);
+      box-shadow: 0 4px 6px rgba(38, 166, 154, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+    
+    .main-content {
+      width: 75%;
+      padding: 40px;
+      overflow-y: auto;
+      background: #f5f5f5;
+    }
+    
+    .content-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    
+    .content-header h2 {
+      color: #26a69a;
+      font-size: 36px;
+      margin: 0 0 8px 0;
+    }
+    
+    .content-header p {
+      color: #64748b;
+      font-size: 18px;
+      margin: 0;
+    }
+    
+    .quiz-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+    
+    .quiz-item {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 24px;
+      background: white;
+      border-radius: 12px;
+      border: 2px solid #b2dfdb;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+    }
+    
+    .quiz-item-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    .question-number {
+      font-size: 24px;
+      font-weight: 700;
+      color: #26a69a;
+      min-width: 40px;
+    }
+    
+    .problem {
+      font-size: 22px;
+      font-weight: 600;
+      color: #455a64;
+      flex: 1;
+    }
+    
+    .equals {
+      font-size: 22px;
+      color: #94a3b8;
+    }
+    
+    input {
+      width: 100px;
+      padding: 12px 16px;
+      font-size: 20px;
+      border: 2px solid #b0bec5;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 600;
+      background: #fafafa;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: #26a69a;
+      background: white;
+    }
+    
+    .check-btn {
+      background: linear-gradient(145deg, #4db6ac, #26a69a);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      white-space: nowrap;
+      box-shadow: 0 4px 6px rgba(38, 166, 154, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+    
+    .check-btn:hover {
+      background: linear-gradient(145deg, #26a69a, #00897b);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(38, 166, 154, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+    
+    .check-btn:disabled {
+      background: linear-gradient(145deg, #cfd8dc, #b0bec5);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .explain-btn {
+      background: linear-gradient(145deg, #78909c, #607d8b);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      white-space: nowrap;
+      box-shadow: 0 4px 6px rgba(96, 125, 139, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+    
+    .explain-btn:hover {
+      background: linear-gradient(145deg, #607d8b, #546e7a);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(96, 125, 139, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+    
+    .explain-btn.active {
+      background: linear-gradient(145deg, #ff9800, #f57c00);
+      box-shadow: 0 4px 6px rgba(255, 152, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+    
+    .result {
+      min-width: 50px;
+      text-align: center;
+      font-size: 28px;
+    }
+    
+    .explanation-section {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      border-top: 0px solid #b2dfdb;
+      padding-top: 0;
+      margin-top: 0;
+    }
+    
+    .explanation-section.show {
+      max-height: 800px;
+      border-top: 2px solid #b2dfdb;
+      padding-top: 20px;
+      margin-top: 20px;
+    }
+    
+    .explanation-content {
+      background: #e0f2f1;
+      padding: 20px;
+      border-radius: 8px;
+      color: #455a64;
+      font-size: 18px;
+      line-height: 1.8;
+    }
+    
+    .explanation-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #26a69a;
+      margin-bottom: 12px;
+    }
+    
+    .explanation-step {
+      margin-bottom: 8px;
+    }
+    
+    .completion-message {
+      background: linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 100%);
+      padding: 32px;
+      border-radius: 12px;
+      text-align: center;
+      margin-bottom: 24px;
+      display: none;
+    }
+    
+    .completion-message.show {
+      display: block;
+    }
+    
+    .completion-message h3 {
+      color: #26a69a;
+      margin: 0 0 8px 0;
+      font-size: 32px;
+    }
+    
+    .completion-message p {
+      color: #455a64;
+      margin: 0;
+      font-size: 20px;
+    }
+    
+    .retry-btn {
+      background: linear-gradient(145deg, #4db6ac, #26a69a);
+      color: white;
+      border: none;
+      padding: 16px 32px;
+      border-radius: 12px;
+      font-size: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 8px rgba(38, 166, 154, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      width: 100%;
+    }
+    
+    .retry-btn:hover {
+      background: linear-gradient(145deg, #26a69a, #00897b);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(38, 166, 154, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+    
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    .history-item {
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      border: 2px solid #b2dfdb;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+    
+    .history-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    
+    .history-label {
+      font-size: 14px;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+    
+    .history-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #455a64;
+    }
+    
+    .history-value.score {
+      color: #26a69a;
+    }
+    
+    .no-history {
+      text-align: center;
+      color: #94a3b8;
+      font-size: 20px;
+      padding: 60px;
+    }
+    
+    .welcome-screen {
+      text-align: center;
+      padding: 60px 20px;
+    }
+    
+    .welcome-screen h2 {
+      color: #26a69a;
+      font-size: 42px;
+      margin: 0 0 16px 0;
+    }
+    
+    .welcome-screen p {
+      color: #64748b;
+      font-size: 22px;
+    }
+
+    @media (max-width: 768px) {
+      .app-container {
+        flex-direction: column;
+      }
+      
+      .sidebar {
+        width: 100%;
+        height: auto;
+      }
+      
+      .main-content {
+        width: 100%;
+        height: auto;
+      }
+      
+      .history-item {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="app-container">
+   <aside class="sidebar">
+    <h1 id="app-title">수학 학습 퀴즈 ??</h1><button class="menu-btn" data-menu="arithmetic">사칙연산 ??</button> <button class="menu-btn" data-menu="lcm">최소공배수 ??</button> <button class="menu-btn" data-menu="gcd">최대공약수 ??</button> <button class="menu-btn" data-menu="speed">속도구하기 ??</button> <button class="menu-btn" data-menu="concentration">농도구하기 ??</button> <button class="menu-btn" data-menu="history">기록보기 ??</button>
+   </aside>
+   <main class="main-content" id="main-content">
+    <div class="welcome-screen">
+     <h2>수학 학습 퀴즈에 오신 것을 환영해요! ??</h2>
+     <p>왼쪽 메뉴에서 원하는 문제 유형을 선택해주세요</p>
+    </div>
+   </main>
+  </div>
+  <script>
+    const defaultConfig = {
+      app_title: "수학 학습 퀴즈 ??",
+      primary_color: "#26a69a",
+      background_color: "#f5f5f5",
+      text_color: "#455a64",
+      sidebar_color: "#37474f",
+      button_color: "#4db6ac"
+    };
+
+    let currentMenu = null;
+    let quizData = [];
+    let checkedAnswers = new Set();
+    let historyRecords = [];
+    let isSaving = false;
+
+    const dataHandler = {
+      onDataChanged(data) {
+        historyRecords = data.sort((a, b) => {
+          return new Date(b.timestamp) - new Date(a.timestamp);
+        });
+        if (currentMenu === 'history') {
+          renderHistory();
+        }
+      }
+    };
+
+    async function initDataSdk() {
+      if (window.dataSdk) {
+        const result = await window.dataSdk.init(dataHandler);
+        if (!result.isOk) {
+          console.error("Failed to initialize data SDK");
+        }
+      }
+    }
+
+    function gcd(a, b) {
+      return b === 0 ? a : gcd(b, a % b);
+    }
+
+    function lcm(a, b) {
+      return (a * b) / gcd(a, b);
+    }
+
+    function generateQuiz(menuType) {
+      quizData = [];
+      checkedAnswers = new Set();
+      
+      for (let i = 0; i < 5; i++) {
+        let question, answer, explanation;
+        
+        switch(menuType) {
+          case 'arithmetic':
+            const num1 = Math.floor(Math.random() * 90) + 10;
+            const num2 = Math.floor(Math.random() * 90) + 10;
+            const operators = ['+', '-', '×', '÷'];
+            const operator = operators[Math.floor(Math.random() * 4)];
+            
+            switch(operator) {
+              case '+':
+                answer = num1 + num2;
+                explanation = `<div class="explanation-step">?? ${num1} + ${num2}를 계산합니다</div><div class="explanation-step">?? ${num1} + ${num2} = ${answer}</div>`;
+                break;
+              case '-':
+                answer = num1 - num2;
+                explanation = `<div class="explanation-step">?? ${num1} - ${num2}를 계산합니다</div><div class="explanation-step">?? ${num1} - ${num2} = ${answer}</div>`;
+                break;
+              case '×':
+                answer = num1 * num2;
+                explanation = `<div class="explanation-step">?? ${num1} × ${num2}를 계산합니다</div><div class="explanation-step">?? ${num1} × ${num2} = ${answer}</div>`;
+                break;
+              case '÷':
+                answer = Math.floor(num1 / num2);
+                const remainder = num1 % num2;
+                explanation = `<div class="explanation-step">?? ${num1} ÷ ${num2}를 계산합니다</div><div class="explanation-step">?? ${num1} ÷ ${num2} = ${answer}${remainder > 0 ? ` (나머지 ${remainder})` : ''}</div><div class="explanation-step">?? 정수 부분만 답으로 합니다</div>`;
+                break;
+            }
+            question = `${num1} ${operator} ${num2}`;
+            break;
+            
+          case 'lcm':
+            const lcmNum1 = Math.floor(Math.random() * 20) + 5;
+            const lcmNum2 = Math.floor(Math.random() * 20) + 5;
+            question = `${lcmNum1}과 ${lcmNum2}의 최소공배수`;
+            answer = lcm(lcmNum1, lcmNum2);
+            const gcdValue = gcd(lcmNum1, lcmNum2);
+            explanation = `<div class="explanation-step">?? 최소공배수 = (두 수의 곱) ÷ (최대공약수)</div><div class="explanation-step">?? ${lcmNum1}과 ${lcmNum2}의 최대공약수 = ${gcdValue}</div><div class="explanation-step">?? (${lcmNum1} × ${lcmNum2}) ÷ ${gcdValue} = ${lcmNum1 * lcmNum2} ÷ ${gcdValue} = ${answer}</div>`;
+            break;
+            
+          case 'gcd':
+            const gcdNum1 = Math.floor(Math.random() * 50) + 10;
+            const gcdNum2 = Math.floor(Math.random() * 50) + 10;
+            question = `${gcdNum1}과 ${gcdNum2}의 최대공약수`;
+            answer = gcd(gcdNum1, gcdNum2);
+            explanation = `<div class="explanation-step">?? 유클리드 호제법을 사용합니다</div><div class="explanation-step">?? ${gcdNum1}을 ${gcdNum2}로 나눈 나머지를 반복적으로 구합니다</div><div class="explanation-step">?? 최대공약수 = ${answer}</div>`;
+            break;
+            
+          case 'speed':
+            const speedProblems = [
+              {
+                text: "철수는 집에서 학교를 거쳐 도서관까지 갔습니다. 집에서 학교까지 4km를 시속 20km로 이동했고, 학교에서 도서관까지 6km를 시속 30km로 이동했습니다. 총 걸린 시간은? (분)",
+                setup: function() {
+                  const dist1 = 4, speed1 = 20;
+                  const dist2 = 6, speed2 = 30;
+                  const time1 = dist1 / speed1;
+                  const time2 = dist2 / speed2;
+                  const totalTime = (time1 + time2) * 60;
+                  return {
+                    answer: totalTime,
+                    explanation: `<div class="explanation-step">?? 문제 분석</div><div class="explanation-step">? 집 → 학교: 4km, 속도 20km/h</div><div class="explanation-step">? 학교 → 도서관: 6km, 속도 30km/h</div><div class="explanation-step"></div><div class="explanation-step">?? 풀이 과정</div><div class="explanation-step">1단계: 시간 = 거리 ÷ 속도 공식을 사용합니다</div><div class="explanation-step"></div><div class="explanation-step">2단계: 집에서 학교까지 걸린 시간</div><div class="explanation-step">   시간 = ${dist1}km ÷ ${speed1}km/h = ${time1}시간</div><div class="explanation-step">   ${time1}시간 = ${time1 * 60}분</div><div class="explanation-step"></div><div class="explanation-step">3단계: 학교에서 도서관까지 걸린 시간</div><div class="explanation-step">   시간 = ${dist2}km ÷ ${speed2}km/h = ${time2.toFixed(2)}시간</div><div class="explanation-step">   ${time2.toFixed(2)}시간 = ${(time2 * 60).toFixed(0)}분</div><div class="explanation-step"></div><div class="explanation-step">4단계: 총 걸린 시간</div><div class="explanation-step">   총 시간 = ${time1 * 60}분 + ${(time2 * 60).toFixed(0)}분 = ${totalTime.toFixed(0)}분</div><div class="explanation-step"></div><div class="explanation-step">? 답: ${totalTime.toFixed(0)}분</div>`
+                  };
+                }
+              },
+              {
+                text: "영희는 오전 9시에 집을 출발해서 공원을 거쳐 할머니 댁으로 갔습니다. 집에서 공원까지 8km를 시속 40km로 이동했고, 공원에서 30분 쉬었습니다. 그 후 공원에서 할머니 댁까지 12km를 시속 60km로 이동했습니다. 할머니 댁에 도착한 시간은? (시:분)",
+                setup: function() {
+                  const startHour = 9, startMin = 0;
+                  const dist1 = 8, speed1 = 40;
+                  const restMin = 30;
+                  const dist2 = 12, speed2 = 60;
+                  const time1Min = (dist1 / speed1) * 60;
+                  const time2Min = (dist2 / speed2) * 60;
+                  const totalMin = time1Min + restMin + time2Min;
+                  const arrivalHour = Math.floor((startHour * 60 + startMin + totalMin) / 60);
+                  const arrivalMin = Math.floor((startHour * 60 + startMin + totalMin) % 60);
+                  return {
+                    answer: arrivalHour + (arrivalMin / 100),
+                    explanation: `<div class="explanation-step">?? 문제 분석</div><div class="explanation-step">? 출발: 오전 9시</div><div class="explanation-step">? 집 → 공원: 8km, 속도 40km/h</div><div class="explanation-step">? 공원에서 휴식: 30분</div><div class="explanation-step">? 공원 → 할머니 댁: 12km, 속도 60km/h</div><div class="explanation-step"></div><div class="explanation-step">?? 풀이 과정</div><div class="explanation-step">1단계: 집에서 공원까지 걸린 시간</div><div class="explanation-step">   시간 = ${dist1}km ÷ ${speed1}km/h = ${dist1/speed1}시간 = ${time1Min}분</div><div class="explanation-step"></div><div class="explanation-step">2단계: 공원에서 할머니 댁까지 걸린 시간</div><div class="explanation-step">   시간 = ${dist2}km ÷ ${speed2}km/h = ${dist2/speed2}시간 = ${time2Min}분</div><div class="explanation-step"></div><div class="explanation-step">3단계: 총 소요 시간</div><div class="explanation-step">   총 시간 = ${time1Min}분 + ${restMin}분(휴식) + ${time2Min}분 = ${totalMin}분</div><div class="explanation-step"></div><div class="explanation-step">4단계: 도착 시간 계산</div><div class="explanation-step">   9시 00분 + ${totalMin}분 = ${arrivalHour}시 ${arrivalMin}분</div><div class="explanation-step"></div><div class="explanation-step">? 답: ${arrivalHour}.${arrivalMin < 10 ? '0' + arrivalMin : arrivalMin} (${arrivalHour}시 ${arrivalMin}분)</div>`
+                  };
+                }
+              },
+              {
+                text: "민호는 집에서 마트를 거쳐 영화관까지 갔습니다. 집에서 마트까지 3km를 15분 동안 걸어갔고, 마트에서 영화관까지는 택시를 타고 9km를 18분 동안 이동했습니다. 택시의 평균 속도는? (km/h)",
+                setup: function() {
+                  const dist2 = 9;
+                  const time2Min = 18;
+                  const time2Hour = time2Min / 60;
+                  const speed2 = dist2 / time2Hour;
+                  return {
+                    answer: speed2,
+                    explanation: `<div class="explanation-step">?? 문제 분석</div><div class="explanation-step">? 집 → 마트: 3km, 15분 소요 (도보)</div><div class="explanation-step">? 마트 → 영화관: 9km, 18분 소요 (택시)</div><div class="explanation-step">? 택시의 평균 속도를 구해야 합니다</div><div class="explanation-step"></div><div class="explanation-step">?? 풀이 과정</div><div class="explanation-step">1단계: 택시 이동 정보 정리</div><div class="explanation-step">   거리 = ${dist2}km</div><div class="explanation-step">   시간 = ${time2Min}분</div><div class="explanation-step"></div><div class="explanation-step">2단계: 분을 시간으로 변환</div><div class="explanation-step">   ${time2Min}분 = ${time2Min} ÷ 60 = ${time2Hour.toFixed(2)}시간</div><div class="explanation-step"></div><div class="explanation-step">3단계: 속도 구하기 (속도 = 거리 ÷ 시간)</div><div class="explanation-step">   속도 = ${dist2}km ÷ ${time2Hour.toFixed(2)}시간</div><div class="explanation-step">   속도 = ${speed2}km/h</div><div class="explanation-step"></div><div class="explanation-step">? 답: ${speed2}km/h</div>`
+                  };
+                }
+              },
+              {
+                text: "지수는 집에서 출발해 시속 12km로 자전거를 타고 2.4km를 이동한 후 버스 정류장에 도착했습니다. 거기서 버스를 타고 시속 50km로 15km를 더 이동해 학원에 도착했습니다. 집에서 학원까지 총 이동 시간은? (분)",
+                setup: function() {
+                  const dist1 = 2.4, speed1 = 12;
+                  const dist2 = 15, speed2 = 50;
+                  const time1 = dist1 / speed1;
+                  const time2 = dist2 / speed2;
+                  const totalMin = (time1 + time2) * 60;
+                  return {
+                    answer: totalMin,
+                    explanation: `<div class="explanation-step">?? 문제 분석</div><div class="explanation-step">? 집 → 버스정류장: 2.4km, 속도 12km/h (자전거)</div><div class="explanation-step">? 버스정류장 → 학원: 15km, 속도 50km/h (버스)</div><div class="explanation-step"></div><div class="explanation-step">?? 풀이 과정</div><div class="explanation-step">1단계: 자전거로 이동한 시간</div><div class="explanation-step">   시간 = ${dist1}km ÷ ${speed1}km/h = ${time1}시간</div><div class="explanation-step">   ${time1}시간 = ${time1 * 60}분</div><div class="explanation-step"></div><div class="explanation-step">2단계: 버스로 이동한 시간</div><div class="explanation-step">   시간 = ${dist2}km ÷ ${speed2}km/h = ${time2}시간</div><div class="explanation-step">   ${time2}시간 = ${time2 * 60}분</div><div class="explanation-step"></div><div class="explanation-step">3단계: 총 이동 시간</div><div class="explanation-step">   총 시간 = ${time1 * 60}분 + ${time2 * 60}분</div><div class="explanation-step">   총 시간 = ${totalMin}분</div><div class="explanation-step"></div><div class="explanation-step">? 답: ${totalMin}분</div>`
+                  };
+                }
+              },
+              {
+                text: "수진이는 오후 2시에 집을 출발해 시속 4km로 걸어서 공원까지 2km를 이동했습니다. 공원에서 10분간 쉬고, 시속 5km로 1.5km를 더 걸어 친구 집에 도착했습니다. 친구 집에 도착한 시간은? (시:분)",
+                setup: function() {
+                  const startHour = 14, startMin = 0;
+                  const dist1 = 2, speed1 = 4;
+                  const restMin = 10;
+                  const dist2 = 1.5, speed2 = 5;
+                  const time1Min = (dist1 / speed1) * 60;
+                  const time2Min = (dist2 / speed2) * 60;
+                  const totalMin = time1Min + restMin + time2Min;
+                  const arrivalHour = Math.floor((startHour * 60 + startMin + totalMin) / 60);
+                  const arrivalMin = Math.floor((startHour * 60 + startMin + totalMin) % 60);
+                  return {
+                    answer: arrivalHour + (arrivalMin / 100),
+                    explanation: `<div class="explanation-step">?? 문제 분석</div><div class="explanation-step">? 출발: 오후 2시 (14시)</div><div class="explanation-step">? 집 → 공원: 2km, 속도 4km/h</div><div class="explanation-step">? 공원에서 휴식: 10분</div><div class="explanation-step">? 공원 → 친구집: 1.5km, 속도 5km/h</div><div class="explanation-step"></div><div class="explanation-step">?? 풀이 과정</div><div class="explanation-step">1단계: 집에서 공원까지 걸린 시간</div><div class="explanation-step">   시간 = ${dist1}km ÷ ${speed1}km/h = ${dist1/speed1}시간 = ${time1Min}분</div><div class="explanation-step"></div><div class="explanation-step">2단계: 공원에서 친구집까지 걸린 시간</div><div class="explanation-step">   시간 = ${dist2}km ÷ ${speed2}km/h = ${dist2/speed2}시간 = ${time2Min}분</div><div class="explanation-step"></div><div class="explanation-step">3단계: 총 소요 시간</div><div class="explanation-step">   총 시간 = ${time1Min}분 + ${restMin}분(휴식) + ${time2Min}분 = ${totalMin}분</div><div class="explanation-step"></div><div class="explanation-step">4단계: 도착 시간 계산</div><div class="explanation-step">   14시 00분 + ${totalMin}분 = ${arrivalHour}시 ${arrivalMin}분</div><div class="explanation-step"></div><div class="explanation-step">? 답: ${arrivalHour}.${arrivalMin < 10 ? '0' + arrivalMin : arrivalMin} (${arrivalHour}시 ${arrivalMin}분)</div>`
+                  };
+                }
+              }
+            ];
+            const speedProblem = speedProblems[Math.floor(Math.random() * speedProblems.length)];
+            const speedResult = speedProblem.setup();
+            question = speedProblem.text;
+            answer = speedResult.answer;
+            explanation = speedResult.explanation;
+            break;
+            
+          case 'concentration':
+            const concProblems = [
+              {
+                text: "민수는 500g의 소금물에 소금 50g을 더 넣었더니 농도가 20%가 되었습니다. 처음 소금물에 들어있던 소금의 양은? (g)",
+                setup: function() {
+                  const finalConc = 20;
+                  const finalSolution = 500 + 50;
+                  const finalSalt = finalSolution * finalConc / 100;
+                  const initialSalt = finalSalt - 50;
+                  return {
+                    answer: initialSalt,
+                    explanation: `<div class="explanation-step">?? 문제 분석</div><div class="explanation-step">? 처음 소금물: 500g (소금의 양을 x라고 하자)</div><div class="explanation-step">? 추가한 소금: 50g</div><div class="explanation-step">? 최종 소금물: 500 + 50 = 550g</div><div class="explanation-step">? 최종 농도: 20%</div><div class="explanation-step"></div><div class="explanation-step">?? 풀이 과정</div><div class="explanation-step">1단계: 최종 소금물에 들어있는 소금의 양을 구합니다</div><div class="explanation-step">   농도 공식: 농도 = (소금 ÷ 소금물) × 100</div><div class="explanation-step">   20 = (소금 ÷ 550) × 100</div><div class="explanation-step">   소금 = 550 × 0.2 = ${finalSalt}g</div><div class="explanation-step"></div><div class="explanation-step">2단계: 처음 소금물에 들어있던 소금의 양을 구합니다</div><div class="explanation-step">   처음 소금 = 최종 소금 - 추가한 소금</div><div class="explanation-step">   처음 소금 = ${finalSalt}g - 50g = ${initialSalt}g</div><div class="explanation-step"></div><div class="explanation-step">?? 검산: ${initialSalt}g + 50g = ${finalSalt}g</div><div class="explanation-step">   농도 = (${finalSalt} ÷ 550) × 100 = 20% ?</div><div class="explanation-step"></div><div class="explanation-step">? 답: ${initialSalt}g</div>`
+                  };
+                }
+              },
+              {
+                text: "지연이는 농도 15%인 소금물 200g과 농도 25%인 소금물 300g을 섞었습니다. 섞은 소금물의 농도는? (%)",
+                setup: function() {
+                  const salt1 = 200 * 0.15;
+                  const salt2 = 300 * 0.25;
+                  const totalSalt = salt1 + salt2;
+                  const totalSolution = 200 + 300;
+                  const finalConc = Math.round((totalSalt / totalSolution) * 100 * 10) / 10;
+                  return {
+                    answer: finalConc,
+                    explanation: `<div class="explanation-step">?? 문제 분석</div><div class="explanation-step">? 첫 번째 소금물: 200g, 농도 15%</div><div class="explanation-step">? 두 번째 소금물: 300g, 농도 25%</div><div class="explanation-step">? 두 소금물을 섞었을 때의 농도를 구해야 합니다</div><div class="explanation-step"></div><div class="explanation-step">?? 풀이 과정</div><div class="explanation-step">1단계: 각 소금물에 들어있는 소금의 양을 구합니다</div><div class="explanation-step">   첫 번째 소금물의 소금 = 200g × 0.15 = ${salt1}g</div><div class="explanation-step">   두 번째 소금물의 소금 = 300g × 0.25 = ${salt2}g</div><div class="explanation-step"></div><div class="explanation-step">2단계: 섞은 소금물의 전체 양을 구합니다</div><div class="explanation-step">   전체 소금물 = 200g + 300g = ${totalSolution}g</div><div class="explanation-step">   전체 소금 = ${salt1}g + ${salt2}g = ${totalSalt}g</div><div class="explanation-step"></div><div class="explanation-step">3단계: 섞은 소금물의 농도를 구합니다</div><div class="explanation-step">   농도 = (소금 ÷ 소금물) × 100</div><div class="explanation-step">   농도 = (${totalSalt}g ÷ ${totalSolution}g) × 100</div><div class="explanation-step">   농도 = ${finalConc}%</div><div class="explanation-step"></div><div class="explanation-step">?? 소금만 더하고 물은 더하지 않았으므로</div><div class="explanation-step">   농도는 15%와 25% 사이의 값이 나와야 합니다 ?</div><div class="explanation-step"></div><div class="explanation-step">? 답: ${finalConc}%</div>`
+                  };
+                }
+              },
+              {
+                text: "현우는 농도 10%인 소금물 300g에서 물을 증발시켜 농도를 15%로 만들었습니다. 증발시킨 물의 양은? (g)",
+                setup: function() {
+                  const initialSolution = 300;
+                  const initialConc = 10;
+                  const finalConc = 15;
+                  const salt = initialSolution * initialConc / 100;
+                  const finalSolution = salt / (finalConc / 100);
+                  const evaporated = initialSolution - finalSolution;
+                  return {
+                    answer: evaporated,
+                    explanation: `<div class="explanation-step">?? 문제 분석</div><div class="explanation-step">? 처음 소금물: 300g, 농도 10%</div><div class="explanation-step">? 최종 농도: 15%</div><div class="explanation-step">? 물만 증발하므로 소금의 양은 변하지 않습니다</div><div class="explanation-step"></div><div class="explanation-step">?? 풀이 과정</div><div class="explanation-step">1단계: 소금의 양을 구합니다</div><div class="explanation-step">   소금 = 300g × 0.1 = ${salt}g</div><div class="explanation-step">   (물만 증발하므로 소금은 ${salt}g로 일정)</div><div class="explanation-step"></div><div class="explanation-step">2단계: 15%가 되기 위한 소금물의 양을 구합니다</div><div class="explanation-step">   농도 공식: 15 = (${salt} ÷ 소금물) × 100</div><div class="explanation-step">   소금물 = ${salt} ÷ 0.15 = ${finalSolution}g</div><div class="explanation-step"></div><div class="explanation-step">3단계: 증발시킨 물의 양을 구합니다</div><div class="explanation-step">   증발한 물 = 처음 소금물 - 나중 소금물</div><div class="explanation-step">   증발한 물 = 300g - ${finalSolution}g = ${evaporated}g</div><div class="explanation-step"></div><div class="explanation-step">?? 검산: ${finalSolution}g의 15% = ${finalSolution * 0.15}g</div><div class="explanation-step">   처음 소금 ${salt}g과 같으므로 정답 ?</div><div class="explanation-step"></div><div class="explanation-step">? 답: ${evaporated}g</div>`
+                  };
+                }
+              },
+              {
+                text: "서준이는 농도 8%인 소금물 400g에 소금을 더 넣어 농도를 12%로 만들었습니다. 추가한 소금의 양은? (g)",
+                setup: function() {
+                  const initialSolution = 400;
+                  const initialConc = 8;
+                  const finalConc = 12;
+                  const initialSalt = initialSolution * initialConc / 100;
+                  const addedSalt = Math.round((48 - initialSalt) / 0.88 * 10) / 10;
+                  return {
+                    answer: addedSalt,
+                    explanation: `<div class="explanation-step">?? 문제 분석</div><div class="explanation-step">? 처음 소금물: 400g, 농도 8%</div><div class="explanation-step">? 최종 농도: 12%</div><div class="explanation-step">? 추가한 소금의 양을 x라고 하자</div><div class="explanation-step"></div><div class="explanation-step">?? 풀이 과정</div><div class="explanation-step">1단계: 처음 소금물에 들어있던 소금의 양</div><div class="explanation-step">   처음 소금 = 400g × 0.08 = ${initialSalt}g</div><div class="explanation-step"></div><div class="explanation-step">2단계: 방정식을 세웁니다</div><div class="explanation-step">   소금 x를 추가하면:</div><div class="explanation-step">   ? 전체 소금 = ${initialSalt}g + x</div><div class="explanation-step">   ? 전체 소금물 = 400g + x</div><div class="explanation-step">   ? 농도: (${initialSalt} + x) ÷ (400 + x) = 0.12</div><div class="explanation-step"></div><div class="explanation-step">3단계: 방정식을 풉니다</div><div class="explanation-step">   ${initialSalt} + x = 0.12 × (400 + x)</div><div class="explanation-step">   ${initialSalt} + x = 48 + 0.12x</div><div class="explanation-step">   x - 0.12x = 48 - ${initialSalt}</div><div class="explanation-step">   0.88x = ${48 - initialSalt}</div><div class="explanation-step">   x = ${48 - initialSalt} ÷ 0.88 = ${addedSalt}g</div><div class="explanation-step"></div><div class="explanation-step">?? 검산: (${initialSalt} + ${addedSalt}) ÷ (400 + ${addedSalt}) × 100</div><div class="explanation-step">   ? 12% ?</div><div class="explanation-step"></div><div class="explanation-step">? 답: ${addedSalt}g</div>`
+                  };
+                }
+              },
+              {
+                text: "은지는 농도 18%인 소금물 250g과 물을 섞어서 농도 12%인 소금물을 만들었습니다. 추가한 물의 양은? (g)",
+                setup: function() {
+                  const initialSolution = 250;
+                  const initialConc = 18;
+                  const finalConc = 12;
+                  const salt = initialSolution * initialConc / 100;
+                  const finalSolution = salt / (finalConc / 100);
+                  const addedWater = finalSolution - initialSolution;
+                  return {
+                    answer: addedWater,
+                    explanation: `<div class="explanation-step">?? 문제 분석</div><div class="explanation-step">? 처음 소금물: 250g, 농도 18%</div><div class="explanation-step">? 최종 농도: 12%</div><div class="explanation-step">? 물을 추가하므로 소금의 양은 변하지 않습니다</div><div class="explanation-step"></div><div class="explanation-step">?? 풀이 과정</div><div class="explanation-step">1단계: 소금의 양을 구합니다</div><div class="explanation-step">   소금 = 250g × 0.18 = ${salt}g</div><div class="explanation-step">   (물만 추가하므로 소금은 ${salt}g로 일정)</div><div class="explanation-step"></div><div class="explanation-step">2단계: 12%가 되기 위한 소금물의 양을 구합니다</div><div class="explanation-step">   농도 공식: 12 = (${salt} ÷ 소금물) × 100</div><div class="explanation-step">   소금물 = ${salt} ÷ 0.12 = ${finalSolution}g</div><div class="explanation-step"></div><div class="explanation-step">3단계: 추가한 물의 양을 구합니다</div><div class="explanation-step">   추가한 물 = 나중 소금물 - 처음 소금물</div><div class="explanation-step">   추가한 물 = ${finalSolution}g - 250g = ${addedWater}g</div><div class="explanation-step"></div><div class="explanation-step">?? 검산: ${finalSolution}g의 12% = ${finalSolution * 0.12}g</div><div class="explanation-step">   처음 소금 ${salt}g과 같으므로 정답 ?</div><div class="explanation-step"></div><div class="explanation-step">? 답: ${addedWater}g</div>`
+                  };
+                }
+              }
+            ];
+            const concProblem = concProblems[Math.floor(Math.random() * concProblems.length)];
+            const concResult = concProblem.setup();
+            question = concProblem.text;
+            answer = concResult.answer;
+            explanation = concResult.explanation;
+            break;
+        }
+        
+        quizData.push({
+          question,
+          answer,
+          explanation,
+          isCorrect: null
+        });
+      }
+      
+      renderQuiz(menuType);
+    }
+
+    function getMenuTitle(menuType) {
+      const titles = {
+        'arithmetic': '사칙연산 문제',
+        'lcm': '최소공배수 문제',
+        'gcd': '최대공약수 문제',
+        'speed': '속도 구하기 문제',
+        'concentration': '농도 구하기 문제'
+      };
+      return titles[menuType] || '';
+    }
+
+    function renderQuiz(menuType) {
+      const mainContent = document.getElementById('main-content');
+      
+      let html = `
+        <div class="content-header">
+          <h2>${getMenuTitle(menuType)}</h2>
+          <p>각 문제의 답을 입력하고 결과 버튼을 눌러주세요</p>
+        </div>
+        
+        <div class="completion-message" id="completion-message">
+          <h3>축하합니다! ??</h3>
+          <p id="score-text">5문제 중 0문제 정답!</p>
+        </div>
+        
+        <div class="quiz-grid">
+      `;
+      
+      quizData.forEach((quiz, index) => {
+        html += `
+          <div class="quiz-item" id="quiz-item-${index}">
+            <div class="quiz-item-header">
+              <div class="question-number">${index + 1}.</div>
+              <div class="problem">${quiz.question}</div>
+              <div class="equals">=</div>
+              <input type="number" step="0.1" id="input-${index}" placeholder="?">
+              <button class="check-btn" onclick="checkAnswer(${index})" id="btn-${index}">결과</button>
+              <button class="explain-btn" onclick="toggleExplanation(${index})" id="explain-btn-${index}">해설</button>
+              <div class="result" id="result-${index}"></div>
+            </div>
+            <div class="explanation-section" id="explanation-${index}">
+              <div class="explanation-content">
+                <div class="explanation-title">?? 풀이 과정</div>
+                ${quiz.explanation}
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      
+      html += `
+        </div>
+        <button class="retry-btn" onclick="generateQuiz('${menuType}')">새로운 문제 만들기 ??</button>
+      `;
+      
+      mainContent.innerHTML = html;
+    }
+
+    async function checkAnswer(index) {
+      if (checkedAnswers.has(index)) return;
+      
+      const input = document.getElementById(`input-${index}`);
+      const result = document.getElementById(`result-${index}`);
+      const button = document.getElementById(`btn-${index}`);
+      const userAnswer = parseFloat(input.value);
+      const correctAnswer = quizData[index].answer;
+      
+      if (isNaN(userAnswer)) {
+        result.textContent = '?';
+        return;
+      }
+      
+      checkedAnswers.add(index);
+      button.disabled = true;
+      
+      const isCorrect = Math.abs(userAnswer - correctAnswer) < 0.01;
+      
+      if (isCorrect) {
+        result.textContent = '?';
+        input.style.borderColor = '#26a69a';
+        quizData[index].isCorrect = true;
+      } else {
+        result.textContent = '?';
+        input.style.borderColor = '#ef4444';
+        quizData[index].isCorrect = false;
+      }
+      
+      if (checkedAnswers.size === 5) {
+        await completeQuiz();
+      }
+    }
+
+    function toggleExplanation(index) {
+      const explanationSection = document.getElementById(`explanation-${index}`);
+      const explainBtn = document.getElementById(`explain-btn-${index}`);
+      
+      if (explanationSection.classList.contains('show')) {
+        explanationSection.classList.remove('show');
+        explainBtn.classList.remove('active');
+        explainBtn.textContent = '해설';
+      } else {
+        explanationSection.classList.add('show');
+        explainBtn.classList.add('active');
+        explainBtn.textContent = '닫기';
+      }
+    }
+
+    async function completeQuiz() {
+      if (isSaving) return;
+      
+      const score = quizData.filter(q => q.isCorrect === true).length;
+      const total = 5;
+      
+      const completionMsg = document.getElementById('completion-message');
+      const scoreText = document.getElementById('score-text');
+      scoreText.textContent = `5문제 중 ${score}문제 정답! ${score === 5 ? '완벽해요! ??' : ''}`;
+      completionMsg.classList.add('show');
+      
+      if (window.dataSdk && historyRecords.length < 999) {
+        isSaving = true;
+        const now = new Date();
+        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
+        
+        const result = await window.dataSdk.create({
+          date: dateStr,
+          menu: getMenuTitle(currentMenu),
+          score: score,
+          total: total,
+          timestamp: now.toISOString()
+        });
+        
+        isSaving = false;
+        
+        if (!result.isOk) {
+          console.error("Failed to save quiz result");
+        }
+      } else if (historyRecords.length >= 999) {
+        scoreText.textContent = `기록 한계(999개)에 도달했습니다. 이전 기록을 삭제해주세요.`;
+      }
+    }
+
+    function renderHistory() {
+      const mainContent = document.getElementById('main-content');
+      
+      let html = `
+        <div class="content-header">
+          <h2>?? 학습 기록</h2>
+          <p>지금까지 완료한 모든 퀴즈 기록을 확인하세요</p>
+        </div>
+        <div class="history-list">
+      `;
+      
+      if (historyRecords.length === 0) {
+        html += '<div class="no-history">아직 완료한 퀴즈가 없어요 ??</div>';
+      } else {
+        historyRecords.forEach(record => {
+          html += `
+            <div class="history-item">
+              <div class="history-field">
+                <div class="history-label">날짜</div>
+                <div class="history-value">${record.date}</div>
+              </div>
+              <div class="history-field">
+                <div class="history-label">메뉴</div>
+                <div class="history-value">${record.menu}</div>
+              </div>
+              <div class="history-field">
+                <div class="history-label">점수</div>
+                <div class="history-value score">${record.score} / ${record.total}</div>
+              </div>
+            </div>
+          `;
+        });
+      }
+      
+      html += '</div>';
+      mainContent.innerHTML = html;
+    }
+
+    document.querySelectorAll('.menu-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        
+        const menuType = this.getAttribute('data-menu');
+        currentMenu = menuType;
+        
+        if (menuType === 'history') {
+          renderHistory();
+        } else {
+          generateQuiz(menuType);
+        }
+      });
+    });
+
+    async function onConfigChange(config) {
+      document.getElementById('app-title').textContent = config.app_title || defaultConfig.app_title;
+      
+      const sidebar = document.querySelector('.sidebar');
+      sidebar.style.background = config.sidebar_color || defaultConfig.sidebar_color;
+      
+      const mainContent = document.querySelector('.main-content');
+      mainContent.style.background = config.background_color || defaultConfig.background_color;
+      
+      const h1 = document.querySelector('.sidebar h1');
+      if (h1) h1.style.color = config.primary_color || defaultConfig.primary_color;
+      
+      const h2Elements = document.querySelectorAll('h2, h3');
+      h2Elements.forEach(h => {
+        h.style.color = config.primary_color || defaultConfig.primary_color;
+      });
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.primary_color || defaultConfig.primary_color,
+              set: (value) => {
+                config.primary_color = value;
+                window.elementSdk.setConfig({ primary_color: value });
+              }
+            },
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (value) => {
+                config.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => {
+                config.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            },
+            {
+              get: () => config.sidebar_color || defaultConfig.sidebar_color,
+              set: (value) => {
+                config.sidebar_color = value;
+                window.elementSdk.setConfig({ sidebar_color: value });
+              }
+            },
+            {
+              get: () => config.button_color || defaultConfig.button_color,
+              set: (value) => {
+                config.button_color = value;
+                window.elementSdk.setConfig({ button_color: value });
+              }
+            }
+          ],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ["app_title", config.app_title || defaultConfig.app_title]
+        ])
+      });
+    }
+
+    initDataSdk();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b668437f7dbeaa7',t:'MTc2NzE0OTkyMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

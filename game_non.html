@@ -1,0 +1,857 @@
+<!doctype html>
+<html>
+ <head>
+ <meta charset="euc-kr">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>알아두면 유용해요</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+        body {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background: #fef5f8;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        html {
+            height: 100%;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        .main-container {
+            display: flex;
+            height: 100%;
+            width: 100%;
+        }
+        
+        .sidebar {
+            width: 25%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px 20px;
+            overflow-y: auto;
+            box-shadow: 2px 0 15px rgba(180, 100, 120, 0.1);
+        }
+        
+        .content {
+            width: 75%;
+            padding: 40px;
+            overflow-y: auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #555555;
+            margin: 0 0 30px 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .menu-btn {
+            width: 100%;
+            padding: 18px 20px;
+            margin-bottom: 12px;
+            border: none;
+            background: #e8f4f8;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #555555;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        }
+        
+        .menu-btn:hover {
+            background: #d4e8f0;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        }
+        
+        .menu-btn.active {
+            background: #c99fad;
+            color: #555555;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 -2px 4px rgba(0, 0, 0, 0.1);
+            transform: translateY(1px);
+        }
+        
+        .menu-icon {
+            font-size: 20px;
+        }
+        
+        .quiz-container {
+            background: transparent;
+            border-radius: 0;
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+            box-shadow: none;
+        }
+        
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .quiz-title {
+            font-size: 28px;
+            color: #555555;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .quiz-subtitle {
+            font-size: 15px;
+            color: #6a6a6a;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .question-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 2.5px solid #c99fad;
+        }
+        
+        .question-number {
+            font-size: 14px;
+            color: #6b6b6b;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+        
+        .question-text {
+            font-size: 18px;
+            color: #555555;
+            font-weight: 500;
+            line-height: 1.6;
+            flex: 1;
+        }
+        
+        .hint-btn {
+            padding: 8px 16px;
+            background: #c99fad;
+            border: none;
+            border-radius: 8px;
+            color: #555555;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        
+        .hint-btn:hover {
+            background: #b88a9a;
+            transform: translateY(-1px);
+        }
+        
+        .hint-display {
+            margin-top: 10px;
+            padding: 12px;
+            background: #f5ebef;
+            border-radius: 8px;
+            border-left: 4px solid #c99fad;
+            display: none;
+            font-size: 16px;
+            color: #555555;
+            font-weight: 500;
+            letter-spacing: 2px;
+        }
+        
+        .answer-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #c99fad;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            color: #555555;
+            transition: all 0.2s ease;
+        }
+        
+        .answer-input:focus {
+            outline: none;
+            border-color: #b88a9a;
+            box-shadow: 0 0 0 3px rgba(201, 159, 173, 0.2);
+        }
+        
+        .answer-input.correct {
+            border-color: #6eb56e;
+            background: #f0f9f0;
+        }
+        
+        .answer-input.incorrect {
+            border-color: #d87c7c;
+            background: #fdf0f0;
+        }
+        
+        .explanation {
+            margin-top: 12px;
+            padding: 12px;
+            background: #f5ebef;
+            border-radius: 8px;
+            border-left: 4px solid #c99fad;
+            display: none;
+        }
+        
+        .explanation.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .explanation-text {
+            font-size: 15px;
+            color: #555555;
+            line-height: 1.5;
+        }
+        
+        .correct-answer {
+            font-weight: 700;
+            color: #6eb56e;
+        }
+        
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 16px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: #c99fad;
+            color: #555555;
+        }
+        
+        .btn-primary:hover {
+            background: #b88a9a;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #555555;
+            border: 2px solid #c99fad;
+        }
+        
+        .btn-secondary:hover {
+            background: #f5ebef;
+            transform: translateY(-2px);
+        }
+        
+        .score-display {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 2.5px solid #c99fad;
+        }
+        
+        .score-text {
+            font-size: 24px;
+            color: #555555;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .score-number {
+            font-size: 48px;
+            color: #c99fad;
+            font-weight: 600;
+        }
+        
+        .records-container {
+            background: transparent;
+            border-radius: 0;
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .records-title {
+            font-size: 28px;
+            color: #555555;
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .record-item {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 2.5px solid #c99fad;
+        }
+        
+        .record-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .record-category {
+            font-size: 18px;
+            color: #555555;
+            font-weight: 500;
+        }
+        
+        .record-score {
+            font-size: 20px;
+            color: #c99fad;
+            font-weight: 600;
+        }
+        
+        .record-date {
+            font-size: 14px;
+            color: #6b6b6b;
+        }
+        
+        .empty-records {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6b6b6b;
+            font-size: 16px;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 200px;
+            }
+            
+            .content {
+                width: 100%;
+                height: calc(100% - 200px);
+            }
+            
+            .quiz-container, .records-container {
+                padding: 24px;
+            }
+            
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="main-container">
+   <aside class="sidebar">
+    <h1 id="pageTitle">알아두면 유용해요</h1><button class="menu-btn active" data-menu="proverb" id="menu1"> <span class="menu-icon">??</span> <span id="category1Text">속담</span> </button> <button class="menu-btn" data-menu="idiom" id="menu2"> <span class="menu-icon">?</span> <span id="category2Text">사자성어</span> </button> <button class="menu-btn" data-menu="ai" id="menu3"> <span class="menu-icon">??</span> <span id="category3Text">AI 용어</span> </button> <button class="menu-btn" data-menu="nonsense" id="menu4"> <span class="menu-icon">??</span> <span id="category4Text">넌센스 퀴즈</span> </button> <button class="menu-btn" data-menu="records" id="menu5"> <span class="menu-icon">??</span> <span>기록보기</span> </button>
+   </aside>
+   <main class="content">
+    <div id="quizView" class="quiz-container">
+     <div class="quiz-header">
+      <div class="quiz-title" id="quizTitle">
+       속담 퀴즈
+      </div>
+      <div class="quiz-subtitle">
+       설명을 보고 어울리는 답을 입력하세요.<br>
+       잘 모르겠으면 ?? 힌트 버튼을 눌러보세요!
+      </div>
+     </div>
+     <div id="questionsContainer"></div>
+     <div id="scoreSection" class="score-display" style="display: none;">
+      <div class="score-text">
+       당신의 점수는
+      </div>
+      <div class="score-number" id="scoreValue">
+       0/5
+      </div>
+     </div>
+     <div class="button-group"><button class="btn btn-primary" id="checkBtn">결과 확인</button> <button class="btn btn-secondary" id="explanationBtn">해설 보기</button> <button class="btn btn-secondary" id="newQuizBtn">새로운 문제 만들기</button>
+     </div>
+    </div>
+    <div id="recordsView" class="records-container" style="display: none;">
+     <h2 class="records-title">학습 기록</h2>
+     <div id="recordsList"></div>
+    </div>
+   </main>
+  </div>
+  <script>
+        let currentCategory = 'proverb';
+        let userAnswers = [];
+        let showingExplanations = false;
+        let records = [];
+        let currentQuizSet = [];
+        
+        const allQuizData = {
+            proverb: [
+                { question: "민수는 자기 동네만 알고 다른 곳은 한 번도 나가본 적이 없어요. 그래서 세상에 대해 잘 몰라요. 이런 사람을 뭐라고 부를까요?", answer: "우물 안 개구리", explanation: "우물 속에 사는 개구리는 우물 밖 세상을 몰라요. 좁은 곳만 알면 넓은 세상을 모르게 돼요." },
+                { question: "지현이와 수진이가 교실에서 몰래 이야기를 했어요. 그런데 어느새 반 친구들이 다 알고 있어요. 언제 어디서든 조심해야 한다는 속담은?", answer: "낮말은 새가 듣고 밤말은 쥐가 듣는다", explanation: "낮에도 밤에도 어디선가 듣고 있을 수 있어요. 비밀 이야기는 조심해서 해야 해요." },
+                { question: "엄마가 안경을 찾고 있어요. 온 집안을 뒤지는데 안경은 엄마 머리 위에 있었어요. 가까이 있는 걸 못 찾는다는 속담은?", answer: "등잔 밑이 어둡다", explanation: "옛날 등잔은 바로 아래가 그늘져서 어두워요. 가까운 곳을 오히려 잘 못 보게 돼요." },
+                { question: "토끼가 우리에서 도망갔어요. 토끼가 없어진 후에 우리를 튼튼하게 고쳤어요. 이미 늦었다는 뜻의 속담은?", answer: "소 잃고 외양간 고친다", explanation: "소가 이미 도망간 뒤에 외양간을 고쳐봤자 소용없어요. 미리 준비하는 게 중요해요." },
+                { question: "큰 책상을 옮기려고 해요. 혼자서는 무겁지만 친구와 함께 들으니 훨씬 가벼워요. 함께하면 쉽다는 속담은?", answer: "백지장도 맞들면 낫다", explanation: "얇은 종이 한 장도 두 명이 같이 들면 더 쉬워요. 작은 일도 함께하면 좋아요." },
+                { question: "학교에 소방차가 왔다는 소문이 났어요. 가보니 정말 소방차가 와 있었어요. 소문에는 이유가 있다는 속담은?", answer: "아니 땐 굴뚝에 연기 날까", explanation: "불을 피우지 않으면 굴뚝에서 연기가 안 나요. 소문은 이유 없이 나지 않아요." },
+                { question: "유진이는 놀이공원에 갔지만 배가 너무 고파서 재미가 없었어요. 먼저 밥을 먹고 놀았어야 했어요. 이런 상황을 나타내는 속담은?", answer: "금강산도 식후경", explanation: "아무리 아름다운 금강산도 배가 고프면 즐겁지 않아요. 밥을 먹고 나서 구경해야 해요." },
+                { question: "동생이 매일 용돈을 10원씩 모았어요. 1년이 지나니 큰 돈이 되어서 장난감을 살 수 있었어요. 조금씩 모으면 커진다는 속담은?", answer: "티끌 모아 태산", explanation: "아주 작은 먼지도 계속 모으면 큰 산처럼 커져요. 작은 것도 모으면 큰 것이 돼요." },
+                { question: "두 가게에서 똑같은 가격으로 연필을 팔아요. 한 곳은 예쁜 무늬가 있고 한 곳은 그냥 연필이에요. 어느 걸 사야 할까요?", answer: "같은 값이면 다홍치마", explanation: "값이 같다면 더 예쁘고 좋은 것을 고르는 게 당연해요. 똑같은 조건이면 더 나은 걸 선택해요." },
+                { question: "준호는 피아노를 배우고 싶었지만 '이제 너무 늦었어'라고 생각했어요. 하지만 오늘이라도 시작하면 좋다는 속담은?", answer: "늦었다고 생각할 때가 가장 빠를 때다", explanation: "늦었다고 생각하는 그 순간이 시작하기 가장 좋은 때예요. 지금 바로 시작해야 해요." }
+            ],
+            idiom: [
+                { question: "동쪽을 물으니 서쪽을 대답한다는 뜻으로, 질문과 대답이 서로 맞지 않는 것을 뜻하는 사자성어는?", answer: "동문서답", explanation: "질문과 대답이 전혀 안 맞는 거예요. 엉뚱한 대답을 한다는 뜻이에요." },
+                { question: "사방이 모두 적에게 둘러싸여 고립된 상태를 이르는 사자성어는?", answer: "사면초가", explanation: "동서남북 네 방향이 모두 위험해요. 아주 어려운 상황이라는 뜻이에요." },
+                { question: "돌 하나로 새 두 마리를 잡는다는 뜻으로, 한 가지 일로 두 가지 이익을 얻는 것은?", answer: "일석이조", explanation: "한 번의 행동으로 두 가지 좋은 일이 생긴다는 뜻이에요." },
+                { question: "쓴 것이 다하면 단 것이 온다는 뜻으로, 고생 끝에 즐거움이 오는 것을 뜻하는 사자성어는?", answer: "고진감래", explanation: "쓴맛이 다하면 단맛이 와요. 고생 끝에 행복이 온다는 뜻이에요." },
+                { question: "미리 준비가 되어 있으면 걱정할 것이 없다는 뜻의 사자성어는?", answer: "유비무환", explanation: "준비를 잘하면 걱정할 게 없어요. 미리미리 준비하자는 뜻이에요." },
+                { question: "인생의 길흉화복은 변화가 많아서 예측하기 어렵다는 뜻의 사자성어는?", answer: "새옹지마", explanation: "말을 키우던 할아버지 이야기예요. 나쁜 일이 좋은 일이 되기도 해요." },
+                { question: "일곱 번 넘어져도 여덟 번 일어난다는 뜻으로, 여러 번 실패해도 굴하지 않고 다시 일어나는 것은?", answer: "칠전팔기", explanation: "실패해도 포기하지 않고 계속 도전한다는 뜻이에요." },
+                { question: "재앙이 바뀌어 오히려 복이 된다는 뜻의 사자성어는?", answer: "전화위복", explanation: "재앙이 바뀌어서 복이 돼요. 나쁜 일이 좋은 일이 된다는 뜻이에요." },
+                { question: "같은 배를 타고 있다는 뜻으로, 이해관계가 같은 처지를 말하는 사자성어는?", answer: "동주공제", explanation: "같은 배를 타면 같이 가야 해요. 함께 어려움을 이겨낸다는 뜻이에요." },
+                { question: "처음부터 끝까지 잘한다는 뜻으로, 시작이 좋으면 끝도 좋다는 사자성어는?", answer: "유종지미", explanation: "처음부터 끝까지 잘한다는 뜻이에요. 마무리를 잘하는 게 중요해요." }
+            ],
+            ai: [
+                { question: "컴퓨터가 수백 장의 고양이 사진을 보고, 새로운 사진을 보여줬을 때 '이건 고양이야!'라고 스스로 알아맞히는 기술을 뭐라고 할까요?", answer: "머신러닝", explanation: "컴퓨터가 많은 예시를 보고 스스로 배워서 패턴을 찾아내는 기술이에요." },
+                { question: "사람의 뇌처럼 여러 층으로 된 인공 신경망을 사용해서 컴퓨터가 아주 복잡한 것들을 배우고 판단하는 기술은 무엇일까요?", answer: "딥러닝", explanation: "머신러닝보다 더 깊고 복잡하게 배우는 방법이에요. 사람 뇌의 신경세포처럼 작동해요." },
+                { question: "ChatGPT에게 '강아지 그림을 그려줘'라고 말을 걸 때, 이렇게 AI에게 하는 명령이나 질문을 뭐라고 부를까요?", answer: "프롬프트", explanation: "AI에게 원하는 것을 얻기 위해 입력하는 명령어나 질문을 말해요." },
+                { question: "라면을 끓일 때 '물 끓이기 → 면 넣기 → 3분 기다리기 → 스프 넣기'처럼 순서대로 정해진 방법을 컴퓨터 용어로 뭐라고 할까요?", answer: "알고리즘", explanation: "문제를 해결하기 위한 단계별 절차나 방법을 말해요. 요리 레시피와 비슷해요." },
+                { question: "컴퓨터가 '오늘 날씨 어때?'라는 우리말을 이해하고 '맑아요'라고 대답할 수 있게 해주는 기술은 무엇일까요?", answer: "자연어처리", explanation: "컴퓨터가 사람이 쓰는 일상 언어를 이해하고 처리하는 기술이에요." },
+                { question: "전 세계 사람들이 쓴 수십억 개의 문장을 공부해서, 질문하면 답변을 만들어주는 대화형 AI 모델의 이름은? (힌트: Chat___)", answer: "GPT", explanation: "Generative Pre-trained Transformer의 약자예요. 대화를 생성하는 AI 모델이에요." },
+                { question: "수백만 장의 사진, 수천만 개의 영상, 수억 개의 글처럼 일반적인 방법으로는 다루기 어려울 정도로 엄청나게 많은 정보를 뭐라고 부를까요?", answer: "빅데이터", explanation: "아주 크고 많은 양의 데이터를 말해요. 이걸 분석하면 유용한 정보를 찾을 수 있어요." },
+                { question: "사람 뇌의 신경세포들이 연결된 것처럼, 컴퓨터 안에 여러 개의 인공 노드들을 연결해서 만든 학습 구조를 뭐라고 할까요?", answer: "신경망", explanation: "사람의 뇌 구조를 본떠서 만든 인공지능 학습 모델이에요." },
+                { question: "게임 캐릭터가 적을 잘 피하면 점수를 주고, 적에게 맞으면 점수를 빼면서 스스로 게임을 잘하는 방법을 배우게 하는 학습 방식은?", answer: "강화학습", explanation: "보상과 벌을 통해 스스로 최선의 방법을 찾아가며 배우는 학습 방식이에요." },
+                { question: "AI에게 '바다 위를 나는 고래'라고 글로 설명하면, AI가 그 장면을 그림으로 그려주는 기술을 뭐라고 할까요?", answer: "이미지생성", explanation: "글로 쓴 설명을 읽고 AI가 그림이나 이미지를 만들어내는 기술이에요." }
+            ],
+            nonsense: [
+                { question: "세상에서 가장 뜨거운 바다는?", answer: "열받아", explanation: "'열'받았으니 뜨겁겠죠? 재미있는 말장난이에요!" },
+                { question: "돼지를 거꾸로 읽으면?", answer: "지돼", explanation: "돼-지를 거꾸로 하면 지-돼! 간단하죠?" },
+                { question: "세상에서 가장 슬픈 과일은?", answer: "멜론", explanation: "'메'롱~하면서 우는 것 같아요. 멜론이 슬프대요!" },
+                { question: "바늘이 가장 싫어하는 음식은?", answer: "실밥", explanation: "바늘에는 실이 꿰어져 있잖아요. 그런데 '실밥'을 먹으면 안 되겠죠?" },
+                { question: "곰이 넘어지면 어떤 소리가 날까요?", answer: "곰방", explanation: "쿵! 하고 넘어지면 '곰'이 '방'망이처럼 떨어져요!" },
+                { question: "공중에 둥둥 떠다니는 나라는?", answer: "에어프랑스", explanation: "'에어(공기)'에 있으니까 떠다니는 것 같죠? 비행기 회사 이름이에요!" },
+                { question: "자동차가 제일 싫어하는 나라는?", answer: "카타르", explanation: "'카' 타르~하면 자동차가 싫어할 것 같아요!" },
+                { question: "개가 제일 좋아하는 나라는?", answer: "캐나다", explanation: "'캐'(개)나라니까 개들이 좋아할 거예요!" },
+                { question: "문어가 격투를 하면 몇 대를 때릴 수 있을까요?", answer: "먹대", explanation: "문어는 다리가 8개잖아요! 그래서 '8대(먹대)'를 때릴 수 있어요!" },
+                { question: "소가 웃으면 무슨 소리가 날까요?", answer: "우스워", explanation: "소는 '음메~'하잖아요. 웃으면 '우'스꽝스럽게 울 거예요!" }
+            ]
+        };
+
+        const defaultConfig = {
+            page_title: "알아두면 유용해요",
+            category_1: "속담",
+            category_2: "사자성어",
+            category_3: "AI 용어",
+            category_4: "넌센스 퀴즈",
+            background_color: "#fef5f8",
+            surface_color: "#d4a5b5",
+            text_color: "#555555",
+            primary_action_color: "#c99fad",
+            secondary_action_color: "#e8f4f8",
+            font_family: "Noto Sans KR",
+            font_size: 16
+        };
+
+        function getRandomQuestions(category, count = 5) {
+            const allQuestions = allQuizData[category];
+            const shuffled = [...allQuestions];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled.slice(0, Math.min(count, shuffled.length));
+        }
+        
+        function loadQuestions() {
+            currentQuizSet = getRandomQuestions(currentCategory, 5);
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+            userAnswers = [];
+            showingExplanations = false;
+            
+            const categoryNames = {
+                'proverb': document.getElementById('category1Text').textContent,
+                'idiom': document.getElementById('category2Text').textContent,
+                'ai': document.getElementById('category3Text').textContent,
+                'nonsense': document.getElementById('category4Text').textContent
+            };
+            
+            document.getElementById('quizTitle').textContent = categoryNames[currentCategory] + ' 퀴즈';
+            document.getElementById('scoreSection').style.display = 'none';
+            document.getElementById('explanationBtn').textContent = '해설 보기';
+            
+            currentQuizSet.forEach((q, index) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                
+                const answerWithoutSpaces = q.answer.replace(/\s+/g, '');
+                const firstChar = q.answer.charAt(0);
+                const restLength = answerWithoutSpaces.length - 1;
+                const hint = firstChar + ' ' + 'O '.repeat(restLength).trim();
+                
+                card.innerHTML = `
+                    <div class="question-number">문제 ${index + 1}</div>
+                    <div class="question-header">
+                        <div class="question-text">${q.question}</div>
+                        <button class="hint-btn" data-index="${index}">?? 힌트</button>
+                    </div>
+                    <div class="hint-display" id="hint-${index}">?? ${hint} (총 ${answerWithoutSpaces.length}글자)</div>
+                    <input type="text" class="answer-input" data-index="${index}" placeholder="정답을 입력하세요">
+                    <div class="explanation" id="explanation-${index}">
+                        <div class="explanation-text">
+                            <span class="correct-answer">정답: ${q.answer}</span><br>
+                            ${q.explanation}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+                userAnswers.push('');
+            });
+            
+            document.querySelectorAll('.hint-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = this.dataset.index;
+                    const hintDisplay = document.getElementById(`hint-${index}`);
+                    if (hintDisplay.style.display === 'none' || !hintDisplay.style.display) {
+                        hintDisplay.style.display = 'block';
+                        this.textContent = '?? 힌트';
+                    } else {
+                        hintDisplay.style.display = 'none';
+                        this.textContent = '?? 힌트';
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.answer-input').forEach(input => {
+                input.addEventListener('input', function() {
+                    const index = parseInt(this.dataset.index);
+                    userAnswers[index] = this.value.trim();
+                    this.classList.remove('correct', 'incorrect');
+                });
+            });
+        }
+
+        function checkAnswers() {
+            const emptyAnswers = userAnswers.filter(answer => !answer || answer.trim() === '');
+            if (emptyAnswers.length > 0) {
+                showNotification('모든 문제의 정답을 입력해주세요!');
+                return;
+            }
+            
+            let correctCount = 0;
+            
+            currentQuizSet.forEach((q, index) => {
+                const input = document.querySelector(`input[data-index="${index}"]`);
+                const userAnswer = userAnswers[index].trim();
+                const correctAnswer = q.answer;
+                
+                const userWords = userAnswer.split(/\s+/).filter(w => w.length > 0);
+                const correctWords = correctAnswer.split(/\s+/).filter(w => w.length > 0);
+                
+                let matchCount = 0;
+                correctWords.forEach(cWord => {
+                    if (userWords.some(uWord => 
+                        uWord.toLowerCase().includes(cWord.toLowerCase()) || 
+                        cWord.toLowerCase().includes(uWord.toLowerCase())
+                    )) {
+                        matchCount++;
+                    }
+                });
+                
+                if (userAnswer.toLowerCase().replace(/\s+/g, '') === correctAnswer.toLowerCase().replace(/\s+/g, '') || 
+                    matchCount >= 2) {
+                    input.classList.add('correct');
+                    input.classList.remove('incorrect');
+                    correctCount++;
+                } else {
+                    input.classList.add('incorrect');
+                    input.classList.remove('correct');
+                }
+            });
+            
+            document.getElementById('scoreValue').textContent = `${correctCount}/5`;
+            document.getElementById('scoreSection').style.display = 'block';
+            
+            const categoryNames = {
+                'proverb': document.getElementById('category1Text').textContent,
+                'idiom': document.getElementById('category2Text').textContent,
+                'ai': document.getElementById('category3Text').textContent,
+                'nonsense': document.getElementById('category4Text').textContent
+            };
+            
+            records.push({
+                category: categoryNames[currentCategory],
+                score: correctCount,
+                total: 5,
+                date: new Date().toLocaleString('ko-KR')
+            });
+            
+            document.getElementById('scoreSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: white;
+                padding: 30px 50px;
+                border-radius: 16px;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+                z-index: 1000;
+                font-size: 18px;
+                font-weight: 600;
+                color: #555555;
+                text-align: center;
+                animation: fadeIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 2000);
+        }
+
+        function toggleExplanations() {
+            showingExplanations = !showingExplanations;
+            document.querySelectorAll('.explanation').forEach(exp => {
+                if (showingExplanations) {
+                    exp.classList.add('show');
+                } else {
+                    exp.classList.remove('show');
+                }
+            });
+            
+            document.getElementById('explanationBtn').textContent = showingExplanations ? '해설 숨기기' : '해설 보기';
+        }
+
+        function showRecords() {
+            document.getElementById('quizView').style.display = 'none';
+            document.getElementById('recordsView').style.display = 'block';
+            
+            const recordsList = document.getElementById('recordsList');
+            
+            if (records.length === 0) {
+                recordsList.innerHTML = '<div class="empty-records">아직 학습 기록이 없습니다.<br>퀴즈를 풀어보세요!</div>';
+            } else {
+                recordsList.innerHTML = records.map(record => `
+                    <div class="record-item">
+                        <div class="record-header">
+                            <span class="record-category">${record.category}</span>
+                            <span class="record-score">${record.score}/${record.total}</span>
+                        </div>
+                        <div class="record-date">${record.date}</div>
+                    </div>
+                `).reverse().join('');
+            }
+        }
+
+        document.getElementById('checkBtn').addEventListener('click', checkAnswers);
+        document.getElementById('explanationBtn').addEventListener('click', toggleExplanations);
+        document.getElementById('newQuizBtn').addEventListener('click', function() {
+            loadQuestions();
+        });
+
+        document.querySelectorAll('.menu-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const menu = this.dataset.menu;
+                
+                if (menu === 'records') {
+                    showRecords();
+                } else {
+                    currentCategory = menu;
+                    document.getElementById('quizView').style.display = 'block';
+                    document.getElementById('recordsView').style.display = 'none';
+                    loadQuestions();
+                }
+            });
+        });
+
+        async function onConfigChange(config) {
+            const customFont = config.font_family || defaultConfig.font_family;
+            const baseFontStack = 'Malgun Gothic, Apple SD Gothic Neo, sans-serif';
+            const baseSize = config.font_size || defaultConfig.font_size;
+            
+            const backgroundColor = config.background_color || defaultConfig.background_color;
+            const textColor = config.text_color || defaultConfig.text_color;
+            const primaryActionColor = config.primary_action_color || defaultConfig.primary_action_color;
+            const secondaryActionColor = config.secondary_action_color || defaultConfig.secondary_action_color;
+            
+            document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
+            document.body.style.background = backgroundColor;
+            
+            document.getElementById('pageTitle').textContent = config.page_title || defaultConfig.page_title;
+            document.getElementById('pageTitle').style.fontSize = `${baseSize * 1.5}px`;
+            document.getElementById('pageTitle').style.color = textColor;
+            
+            document.getElementById('category1Text').textContent = config.category_1 || defaultConfig.category_1;
+            document.getElementById('category2Text').textContent = config.category_2 || defaultConfig.category_2;
+            document.getElementById('category3Text').textContent = config.category_3 || defaultConfig.category_3;
+            document.getElementById('category4Text').textContent = config.category_4 || defaultConfig.category_4;
+            
+            document.querySelectorAll('.menu-btn').forEach(btn => {
+                btn.style.fontSize = `${baseSize}px`;
+                btn.style.color = textColor;
+                if (!btn.classList.contains('active')) {
+                    btn.style.backgroundColor = secondaryActionColor;
+                }
+            });
+            
+            const activeBtn = document.querySelector('.menu-btn.active');
+            if (activeBtn) {
+                activeBtn.style.background = primaryActionColor;
+                activeBtn.style.color = textColor;
+            }
+            
+            document.querySelectorAll('.quiz-title, .records-title').forEach(el => {
+                el.style.fontSize = `${baseSize * 1.75}px`;
+                el.style.color = textColor;
+            });
+            
+            document.querySelectorAll('.question-text').forEach(el => {
+                el.style.fontSize = `${baseSize * 1.125}px`;
+                el.style.color = textColor;
+            });
+            
+            document.querySelectorAll('.answer-input').forEach(el => {
+                el.style.fontSize = `${baseSize}px`;
+                el.style.color = textColor;
+            });
+            
+            document.querySelectorAll('.btn').forEach(el => {
+                el.style.fontSize = `${baseSize * 1.125}px`;
+            });
+            
+            document.querySelectorAll('.btn-primary').forEach(el => {
+                el.style.background = primaryActionColor;
+            });
+            
+            document.querySelectorAll('.hint-btn').forEach(el => {
+                el.style.background = primaryActionColor;
+            });
+            
+            const categoryNames = {
+                'proverb': config.category_1 || defaultConfig.category_1,
+                'idiom': config.category_2 || defaultConfig.category_2,
+                'ai': config.category_3 || defaultConfig.category_3,
+                'nonsense': config.category_4 || defaultConfig.category_4
+            };
+            
+            if (currentCategory !== 'records') {
+                document.getElementById('quizTitle').textContent = categoryNames[currentCategory] + ' 퀴즈';
+            }
+        }
+
+        if (window.elementSdk) {
+            window.elementSdk.init({
+                defaultConfig: defaultConfig,
+                onConfigChange: onConfigChange,
+                mapToCapabilities: (config) => ({
+                    recolorables: [
+                        {
+                            get: () => config.background_color || defaultConfig.background_color,
+                            set: (value) => {
+                                config.background_color = value;
+                                window.elementSdk.setConfig({ background_color: value });
+                            }
+                        },
+                        {
+                            get: () => config.text_color || defaultConfig.text_color,
+                            set: (value) => {
+                                config.text_color = value;
+                                window.elementSdk.setConfig({ text_color: value });
+                            }
+                        },
+                        {
+                            get: () => config.primary_action_color || defaultConfig.primary_action_color,
+                            set: (value) => {
+                                config.primary_action_color = value;
+                                window.elementSdk.setConfig({ primary_action_color: value });
+                            }
+                        },
+                        {
+                            get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
+                            set: (value) => {
+                                config.secondary_action_color = value;
+                                window.elementSdk.setConfig({ secondary_action_color: value });
+                            }
+                        }
+                    ],
+                    borderables: [],
+                    fontEditable: {
+                        get: () => config.font_family || defaultConfig.font_family,
+                        set: (value) => {
+                            config.font_family = value;
+                            window.elementSdk.setConfig({ font_family: value });
+                        }
+                    },
+                    fontSizeable: {
+                        get: () => config.font_size || defaultConfig.font_size,
+                        set: (value) => {
+                            config.font_size = value;
+                            window.elementSdk.setConfig({ font_size: value });
+                        }
+                    }
+                }),
+                mapToEditPanelValues: (config) => new Map([
+                    ["page_title", config.page_title || defaultConfig.page_title],
+                    ["category_1", config.category_1 || defaultConfig.category_1],
+                    ["category_2", config.category_2 || defaultConfig.category_2],
+                    ["category_3", config.category_3 || defaultConfig.category_3],
+                    ["category_4", config.category_4 || defaultConfig.category_4]
+                ])
+            });
+        }
+
+        loadQuestions();
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b668be18407eaa7',t:'MTc2NzE1MDIzNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
