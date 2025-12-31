@@ -1,17 +1,17 @@
-/* ÀüÃ¼ ¼³Á¤ */
+/* ì „ì²´ ì„¤ì • */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* °ü¸®ÀÚ/±â´É ¹öÆ° °ü·Ã */
+/* ê´€ë¦¬ì/ê¸°ëŠ¥ ë²„íŠ¼ ê´€ë ¨ */
 .admin-footer {
     padding: 20px;
     border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* °Ô½ÃÆÇ(Board) °ü·Ã */
+/* ê²Œì‹œíŒ(Board) ê´€ë ¨ */
 .board-container {
     background: white;
     border-radius: 15px;
@@ -65,7 +65,7 @@
     margin: 0;
 }
 
-/* Ä«Å×°í¸® ÇÊÅÍ °ü·Ã */
+/* ì¹´í…Œê³ ë¦¬ í•„í„° ê´€ë ¨ */
 .category-badge-btn {
     padding: 10px 20px;
     background: #f8f9ff;
@@ -120,7 +120,7 @@
     margin-bottom: 20px;
 }
 
-/* º»¹® ¹× ÄÁÅ×ÀÌ³Ê */
+/* ë³¸ë¬¸ ë° ì»¨í…Œì´ë„ˆ */
 .commbody {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: white;
@@ -139,7 +139,7 @@
     height: 100%;
 }
 
-/* »èÁ¦/¼öÁ¤ ¹öÆ° */
+/* ì‚­ì œ/ìˆ˜ì • ë²„íŠ¼ */
 .delete-btn {
     background: #e74c3c;
     color: white;
@@ -185,7 +185,7 @@
     background: #653a8a;
 }
 
-/* µ¥ÀÌÅÍ ¾øÀ½(Empty) »óÅÂ */
+/* ë°ì´í„° ì—†ìŒ(Empty) ìƒíƒœ */
 .empty-board, .empty-gallery {
     text-align: center;
     padding: 80px 20px;
@@ -193,11 +193,13 @@
 }
 
 .empty-board svg, .empty-gallery svg {
-    margin-bottom: 20px;
-    opacity: 0.3;
+	width: 100px;
+	height: 100px;
+	margin-bottom: 20px;
+	opacity: 0.3;
 }
 
-/* Çì´õ ¹× ÀÎÆ®·Î */
+/* í—¤ë” ë° ì¸íŠ¸ë¡œ */
 .header {
     display: flex;
     justify-content: space-between;
@@ -254,7 +256,7 @@
     background: white;
 }
 
-/* ¸Ş´º ¹× »çÀÌµå¹Ù ¾ÆÀÌÅÛ */
+/* ë©”ë‰´ ë° ì‚¬ì´ë“œë°” ì•„ì´í…œ */
 .menu {
     padding: 30px 0;
     flex: 1;
@@ -294,7 +296,7 @@
     font-weight: 600;
 }
 
-/* ¸ğ´Ş(Modal) */
+/* ëª¨ë‹¬(Modal) */
 .modal-box {
     background: white;
     border-radius: 16px;
@@ -372,7 +374,7 @@
     color: #333;
 }
 
-/* ¾Ù¹ü ¹× Æ÷Åä °¶·¯¸® */
+/* ì•¨ë²” ë° í¬í†  ê°¤ëŸ¬ë¦¬ */
 .photo-btn {
     padding: 12px 20px;
     background: #667eea;
@@ -461,7 +463,7 @@
     margin: 0;
 }
 
-/* Æ÷Æ®Æú¸®¿À(Portfolio) */
+/* í¬íŠ¸í´ë¦¬ì˜¤(Portfolio) */
 .portfolio-card {
     background: white;
     border-radius: 15px;
@@ -516,7 +518,7 @@
     margin-bottom: 10px;
 }
 
-/* °Ô½Ã±Û »ó¼¼º¸±â(Post Detail) */
+/* ê²Œì‹œê¸€ ìƒì„¸ë³´ê¸°(Post Detail) */
 .post-detail-content {
     color: #444;
     font-size: 1.05em;
@@ -540,7 +542,7 @@
     border-bottom: 2px solid #667eea;
 }
 
-/* ÇÁ·ÎÇÊ ¼½¼Ç */
+/* í”„ë¡œí•„ ì„¹ì…˜ */
 .profile-image {
     width: 120px;
     height: 120px;
@@ -572,7 +574,7 @@
     opacity: 0.9;
 }
 
-/* »çÀÌµå¹Ù(Sidebar) */
+/* ì‚¬ì´ë“œë°”(Sidebar) */
 .sidebar {
     width: 280px;
     background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
@@ -593,7 +595,7 @@
     display: none;
 }
 
-/* ½ºÅ³ ¹× ÅÂ±× */
+/* ìŠ¤í‚¬ ë° íƒœê·¸ */
 .skill-item {
     background: white;
     padding: 15px;
@@ -617,7 +619,7 @@
     font-size: 0.85em;
 }
 
-/* »çÀÌµå¹Ù Åä±Û ¹öÆ° */
+/* ì‚¬ì´ë“œë°” í† ê¸€ ë²„íŠ¼ */
 .toggle-sidebar {
     position: absolute;
     right: -40px;
@@ -644,7 +646,7 @@
     right: -42px;
 }
 
-/* ±Û¾²±â ¹öÆ° */
+/* ê¸€ì“°ê¸° ë²„íŠ¼ */
 .write-btn {
     padding: 12px 25px;
     background: #667eea;
@@ -662,7 +664,7 @@
     transform: translateY(-2px);
 }
 
-/* ±âÅ¸ */
+/* ê¸°íƒ€ */
 #fileInput {
     display: none;
 }
