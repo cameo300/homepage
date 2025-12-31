@@ -3,7 +3,7 @@
  <head>
  <meta charset="euc-kr">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>»ç´Ù¸® °ÔÀÓ</title>
+    <title>ì‚¬ë‹¤ë¦¬ ê²Œì„</title>
     <style>
         * {
             margin: 0;
@@ -167,18 +167,18 @@
 </head>
 <body>
     <div class="container">
-        <h1> »ç´Ù¸® °ÔÀÓ</h1>
+        <h1> ì‚¬ë‹¤ë¦¬ ê²Œì„</h1>
         
         <div class="controls">
             <div class="input-group">
-                <label>Âü°¡ÀÚ (½°Ç¥·Î ±¸ºĞ)</label>
-                <input type="text" id="playersInput" placeholder="Ã¶¼ö, ¿µÈñ, ¹Î¼ö, ÁöÀº">
+                <label>ì°¸ê°€ì (ì‰¼í‘œë¡œ êµ¬ë¶„)</label>
+                <input type="text" id="playersInput" placeholder="ì² ìˆ˜, ì˜í¬, ë¯¼ìˆ˜, ì§€ì€">
             </div>
             <div class="input-group">
-                <label>°á°ú (½°Ç¥·Î ±¸ºĞ)</label>
-                <input type="text" id="resultsInput" placeholder="´çÃ·, ²Î, Ä¿ÇÇ, Ä¡Å²">
+                <label>ê²°ê³¼ (ì‰¼í‘œë¡œ êµ¬ë¶„)</label>
+                <input type="text" id="resultsInput" placeholder="ë‹¹ì²¨, ê½, ì»¤í”¼, ì¹˜í‚¨">
             </div>
-            <button id="generateBtn">»ç´Ù¸® »ı¼º</button>
+            <button id="generateBtn">ì‚¬ë‹¤ë¦¬ ìƒì„±</button>
         </div>
 
         <div class="game-area">
@@ -187,11 +187,11 @@
 	
         <div class="players-results">
             <div class="players">
-                <h3> Âü°¡ÀÚ (Å¬¸¯ÇÏ¼¼¿ä!)</h3>
+                <h3> ì°¸ê°€ì (í´ë¦­í•˜ì„¸ìš”!)</h3>
                 <div id="playersList"></div>
             </div>
             <div class="results">
-                <h3> °á°ú</h3>
+                <h3> ê²°ê³¼</h3>
                 <div id="resultsList"></div>
             </div>
         </div>
@@ -219,7 +219,7 @@
             const resultsText = resultsInput.value.trim();
 
             if (!playersText || !resultsText) {
-                alert('Âü°¡ÀÚ¿Í °á°ú¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä!');
+                alert('ì°¸ê°€ìì™€ ê²°ê³¼ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”!');
                 return;
             }
 
@@ -227,12 +227,12 @@
             results = resultsText.split(',').map(r => r.trim()).filter(r => r);
 
             if (players.length < 2) {
-                alert('Âü°¡ÀÚ´Â ÃÖ¼Ò 2¸í ÀÌ»óÀÌ¾î¾ß ÇÕ´Ï´Ù!');
+                alert('ì°¸ê°€ìëŠ” ìµœì†Œ 2ëª… ì´ìƒì´ì–´ì•¼ í•©ë‹ˆë‹¤!');
                 return;
             }
 
             if (players.length !== results.length) {
-                alert('Âü°¡ÀÚ¿Í °á°úÀÇ °³¼ö°¡ °°¾Æ¾ß ÇÕ´Ï´Ù!');
+                alert('ì°¸ê°€ìì™€ ê²°ê³¼ì˜ ê°œìˆ˜ê°€ ê°™ì•„ì•¼ í•©ë‹ˆë‹¤!');
                 return;
             }
 
@@ -246,19 +246,19 @@
             const rows = 15;
             const structure = [];
             
-            // °¢ ¼¼·Î¼± ½Ö¸¶´Ù 4~7°³ÀÇ °¡·Î¼± ¹èÄ¡
+            // ê° ì„¸ë¡œì„  ìŒë§ˆë‹¤ 4~7ê°œì˜ ê°€ë¡œì„  ë°°ì¹˜
             const bridgesPerColumn = [];
             for (let c = 0; c < cols - 1; c++) {
-                const count = Math.floor(Math.random() * 4) + 4; // 4~7°³
+                const count = Math.floor(Math.random() * 4) + 4; // 4~7ê°œ
                 bridgesPerColumn.push(count);
             }
 
-            // ºó ±¸Á¶ ÃÊ±âÈ­
+            // ë¹ˆ êµ¬ì¡° ì´ˆê¸°í™”
             for (let r = 0; r < rows; r++) {
                 structure.push(new Array(cols - 1).fill(false));
             }
 
-            // °¢ ¼¼·Î¼± ½Ö¿¡ °¡·Î¼± ¹èÄ¡
+            // ê° ì„¸ë¡œì„  ìŒì— ê°€ë¡œì„  ë°°ì¹˜
             for (let c = 0; c < cols - 1; c++) {
                 const count = bridgesPerColumn[c];
                 const availableRows = [];
@@ -266,12 +266,12 @@
                     availableRows.push(r);
                 }
 
-                // count°³ÀÇ ·£´ıÇÑ Çà¿¡ °¡·Î¼± ¹èÄ¡
+                // countê°œì˜ ëœë¤í•œ í–‰ì— ê°€ë¡œì„  ë°°ì¹˜
                 for (let i = 0; i < count && availableRows.length > 0; i++) {
                     const idx = Math.floor(Math.random() * availableRows.length);
                     const row = availableRows[idx];
                     
-                    // ÀÎÁ¢ÇÑ ¿­¿¡ °¡·Î¼±ÀÌ ¾ø´ÂÁö È®ÀÎ
+                    // ì¸ì ‘í•œ ì—´ì— ê°€ë¡œì„ ì´ ì—†ëŠ”ì§€ í™•ì¸
                     let canPlace = true;
                     if (c > 0 && structure[row][c - 1]) canPlace = false;
                     if (c < cols - 2 && structure[row][c + 1]) canPlace = false;
@@ -297,7 +297,7 @@
             const ladderHeight = canvas.height - topMargin - bottomMargin;
             const rowSpacing = ladderHeight / (ladder.length + 1);
 
-            // ¼¼·Î ¼±
+            // ì„¸ë¡œ ì„ 
             ctx.strokeStyle = '#667eea';
             ctx.lineWidth = 3;
             for (let i = 0; i < cols; i++) {
@@ -307,7 +307,7 @@
                 ctx.stroke();
             }
 
-            // °¡·Î ¼± (»ç´Ù¸®)
+            // ê°€ë¡œ ì„  (ì‚¬ë‹¤ë¦¬)
             ctx.strokeStyle = '#764ba2';
             ctx.lineWidth = 3;
             for (let r = 0; r < ladder.length; r++) {
@@ -325,7 +325,7 @@
                 }
             }
 
-            // Âü°¡ÀÚ ÀÌ¸§
+            // ì°¸ê°€ì ì´ë¦„
             ctx.fillStyle = '#667eea';
             ctx.font = 'bold 16px Arial';
             ctx.textAlign = 'center';
@@ -333,7 +333,7 @@
                 ctx.fillText(players[i], spacing * (i + 1), 40);
             }
 
-            // °á°ú
+            // ê²°ê³¼
             ctx.fillStyle = '#764ba2';
             for (let i = 0; i < results.length; i++) {
                 ctx.fillText(results[i], spacing * (i + 1), canvas.height - 30);
@@ -344,7 +344,7 @@
             playersList.innerHTML = '';
             resultsList.innerHTML = '';
 
-            // Âü°¡ÀÚ Ç¥½Ã
+            // ì°¸ê°€ì í‘œì‹œ
             players.forEach((player, playerIndex) => {
                 const div = document.createElement('div');
                 div.className = 'player-item';
@@ -354,14 +354,14 @@
                 nameSpan.textContent = player;
                 div.appendChild(nameSpan);
                 
-                // ÀÌ Âü°¡ÀÚÀÇ °á°ú°¡ ÀÖÀ¸¸é ¿À¸¥ÂÊ¿¡ Ç¥½Ã
+                // ì´ ì°¸ê°€ìì˜ ê²°ê³¼ê°€ ìˆìœ¼ë©´ ì˜¤ë¥¸ìª½ì— í‘œì‹œ
                 if (playerResults[playerIndex] !== undefined) {
                     const resultValue = playerResults[playerIndex];
                     const resultIndex = results.indexOf(resultValue);
                     
                     const resultSpan = document.createElement('span');
                     resultSpan.className = `player-result color-${resultIndex}`;
-                    resultSpan.textContent = '------¡æ'+resultValue;
+                    resultSpan.textContent = '------â†’'+resultValue;
                     div.appendChild(resultSpan);
                     
                     div.classList.add(`color-${resultIndex}`);
@@ -371,7 +371,7 @@
                 playersList.appendChild(div);
             });
 
-            // °á°ú Ç¥½Ã - ¸ÅÄªµÈ Âü°¡ÀÚ°¡ ÀÖÀ» ¶§¸¸ Ç¥½Ã
+            // ê²°ê³¼ í‘œì‹œ - ë§¤ì¹­ëœ ì°¸ê°€ìê°€ ìˆì„ ë•Œë§Œ í‘œì‹œ
             for (let playerIndex in playerResults) {
                 const resultValue = playerResults[playerIndex];
                 const resultIndex = results.indexOf(resultValue);
@@ -405,17 +405,17 @@
 
             const path = [{x: spacing * (currentCol + 1), y: y}];
 
-            // °æ·Î °è»ê
+            // ê²½ë¡œ ê³„ì‚°
             for (let r = 0; r < ladder.length; r++) {
                 y += rowSpacing;
                 
-                // ¿ŞÂÊ È®ÀÎ
+                // ì™¼ìª½ í™•ì¸
                 if (currentCol > 0 && ladder[r][currentCol - 1]) {
                     path.push({x: spacing * (currentCol + 1), y: y});
                     path.push({x: spacing * currentCol, y: y});
                     currentCol--;
                 }
-                // ¿À¸¥ÂÊ È®ÀÎ
+                // ì˜¤ë¥¸ìª½ í™•ì¸
                 else if (currentCol < cols - 1 && ladder[r][currentCol]) {
                     path.push({x: spacing * (currentCol + 1), y: y});
                     path.push({x: spacing * (currentCol + 2), y: y});
@@ -427,7 +427,7 @@
 
             path.push({x: spacing * (currentCol + 1), y: canvas.height - bottomMargin});
 
-            // ¾Ö´Ï¸ŞÀÌ¼Ç
+            // ì• ë‹ˆë©”ì´ì…˜
             let step = 0;
             const animate = () => {
                 if (step < path.length - 1) {
@@ -440,7 +440,7 @@
                     ctx.lineTo(path[step + 1].x, path[step + 1].y);
                     ctx.stroke();
 
-                    // ÀÌµ¿ ÁöÁ¡ Ç¥½Ã
+                    // ì´ë™ ì§€ì  í‘œì‹œ
                     ctx.fillStyle = '#ff6b6b';
                     ctx.beginPath();
                     ctx.arc(path[step + 1].x, path[step + 1].y, 6, 0, Math.PI * 2);
@@ -449,10 +449,10 @@
                     step++;
                     setTimeout(animate, 200);
                 } else {
-                    // °á°ú ÀúÀå
+                    // ê²°ê³¼ ì €ì¥
                     playerResults[startCol] = results[currentCol];
                     
-                    // UI ¾÷µ¥ÀÌÆ®
+                    // UI ì—…ë°ì´íŠ¸
                     displayPlayersAndResults();
 
                     isAnimating = false;
@@ -464,9 +464,9 @@
 
         generateBtn.addEventListener('click', generateLadder);
 
-        // ÃÊ±â ¿¹Á¦ µ¥ÀÌÅÍ
-        playersInput.value = 'Ã¶¼ö, ¿µÈñ, ¹Î¼ö, ÁöÀº';
-        resultsInput.value = '´çÃ·, ²Î, Ä¿ÇÇ, Ä¡Å²';
+        // ì´ˆê¸° ì˜ˆì œ ë°ì´í„°
+        playersInput.value = 'ì² ìˆ˜, ì˜í¬, ë¯¼ìˆ˜, ì§€ì€';
+        resultsInput.value = 'ë‹¹ì²¨, ê½, ì»¤í”¼, ì¹˜í‚¨';
         generateLadder();
     </script>
 </body>
