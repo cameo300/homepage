@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
+<!doctype html>
+<html>
+ <head>
+ <meta charset="euc-kr">
+	<link rel="stylesheet" href="common/style.css"> <!-- ê³µí†µìŠ¤íƒ€ì¼! -->
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: white;
-            padding: 50px;
-        }
+
         .admin-header {
             font-size: 3em;
             color: #667eea;
@@ -75,50 +71,50 @@
     </style>
 </head>
 <body>
-    <h1 class="admin-header">?? °ü¸®ÀÚ ¼³Á¤</h1>
-    <p class="admin-subtitle">È¨ÆäÀÌÁö °ü¸® ¸Þ´ºÀÔ´Ï´Ù</p>
+    <h1 class="admin-header"> ê´€ë¦¬ìž ì„¤ì •</h1>
+    <p class="admin-subtitle">í™ˆíŽ˜ì´ì§€ ê´€ë¦¬ ë©”ë‰´ìž…ë‹ˆë‹¤</p>
 
     <div class="admin-section">
-        <h3>?? °èÁ¤ Á¤º¸</h3>
+        <h3>?? ê³„ì • ì •ë³´</h3>
         <p class="info-text">
-            <strong>¾ÆÀÌµð:</strong> admin<br>
-            <strong>ºñ¹Ð¹øÈ£:</strong> admin1234 (±âº»°ª)
+            <strong>ì•„ì´ë””:</strong> admin<br>
+            <strong>ë¹„ë°€ë²ˆí˜¸:</strong> admin1234 (ê¸°ë³¸ê°’)
         </p>
     </div>
 
     <div class="admin-section">
-        <h3>?? ¸Þ´º °ü¸®</h3>
-        <p class="info-text">ÇöÀç µî·ÏµÈ ¸Þ´º ¸ñ·ÏÀÔ´Ï´Ù.</p>
+        <h3>?? ë©”ë‰´ ê´€ë¦¬</h3>
+        <p class="info-text">í˜„ìž¬ ë“±ë¡ëœ ë©”ë‰´ ëª©ë¡ìž…ë‹ˆë‹¤.</p>
         <ul class="menu-list">
             <li class="menu-item">
                 <span>?? Home</span>
-                <span style="color: #28a745;">È°¼º</span>
+                <span style="color: #28a745;">í™œì„±</span>
             </li>
             <li class="menu-item">
                 <span>?? Who am I?</span>
-                <span style="color: #28a745;">È°¼º</span>
+                <span style="color: #28a745;">í™œì„±</span>
             </li>
             <li class="menu-item">
                 <span>?? Portfolio</span>
-                <span style="color: #28a745;">È°¼º</span>
+                <span style="color: #28a745;">í™œì„±</span>
             </li>
             <li class="menu-item">
-                <span>?? Æ÷Åä¾Ù¹ü</span>
-                <span style="color: #28a745;">È°¼º</span>
+                <span>?? í¬í† ì•¨ë²”</span>
+                <span style="color: #28a745;">í™œì„±</span>
             </li>
             <li class="menu-item">
-                <span>?? °Ô½ÃÆÇ</span>
-                <span style="color: #28a745;">È°¼º</span>
+                <span>?? ê²Œì‹œíŒ</span>
+                <span style="color: #28a745;">í™œì„±</span>
             </li>
         </ul>
     </div>
 
     <div class="admin-section">
-        <h3>?? µ¥ÀÌÅÍ °ü¸®</h3>
-        <p class="info-text">ÀúÀåµÈ µ¥ÀÌÅÍ¸¦ °ü¸®ÇÒ ¼ö ÀÖ½À´Ï´Ù.</p>
+        <h3>?? ë°ì´í„° ê´€ë¦¬</h3>
+        <p class="info-text">ì €ìž¥ëœ ë°ì´í„°ë¥¼ ê´€ë¦¬í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.</p>
         <div style="margin-top: 20px;">
-            <button class="admin-btn" onclick="exportData()">µ¥ÀÌÅÍ ³»º¸³»±â</button>
-            <button class="admin-btn admin-btn-danger" onclick="clearAllData()">¸ðµç µ¥ÀÌÅÍ »èÁ¦</button>
+            <button class="admin-btn" onclick="exportData()">ë°ì´í„° ë‚´ë³´ë‚´ê¸°</button>
+            <button class="admin-btn admin-btn-danger" onclick="clearAllData()">ëª¨ë“  ë°ì´í„° ì‚­ì œ</button>
         </div>
     </div>
 
@@ -134,14 +130,14 @@
             a.href = url;
             a.download = 'homepage-data-' + new Date().toISOString().slice(0,10) + '.json';
             a.click();
-            alert('µ¥ÀÌÅÍ°¡ ´Ù¿î·ÎµåµÇ¾ú½À´Ï´Ù.');
+            alert('ë°ì´í„°ê°€ ë‹¤ìš´ë¡œë“œë˜ì—ˆìŠµë‹ˆë‹¤.');
         }
 
         function clearAllData() {
-            if (confirm('Á¤¸» ¸ðµç µ¥ÀÌÅÍ¸¦ »èÁ¦ÇÏ½Ã°Ú½À´Ï±î? ÀÌ ÀÛ¾÷Àº µÇµ¹¸± ¼ö ¾ø½À´Ï´Ù!')) {
-                if (confirm('Á¤¸»·Î »èÁ¦ÇÏ½Ã°Ú½À´Ï±î? (¸¶Áö¸· È®ÀÎ)')) {
+            if (confirm('ì •ë§ ëª¨ë“  ë°ì´í„°ë¥¼ ì‚­ì œí•˜ì‹œê² ìŠµë‹ˆê¹Œ? ì´ ìž‘ì—…ì€ ë˜ëŒë¦´ ìˆ˜ ì—†ìŠµë‹ˆë‹¤!')) {
+                if (confirm('ì •ë§ë¡œ ì‚­ì œí•˜ì‹œê² ìŠµë‹ˆê¹Œ? (ë§ˆì§€ë§‰ í™•ì¸)')) {
                     localStorage.clear();
-                    alert('¸ðµç µ¥ÀÌÅÍ°¡ »èÁ¦µÇ¾ú½À´Ï´Ù. ÆäÀÌÁö¸¦ »õ·Î°íÄ§ÇÕ´Ï´Ù.');
+                    alert('ëª¨ë“  ë°ì´í„°ê°€ ì‚­ì œë˜ì—ˆìŠµë‹ˆë‹¤. íŽ˜ì´ì§€ë¥¼ ìƒˆë¡œê³ ì¹¨í•©ë‹ˆë‹¤.');
                     location.reload();
                 }
             }
