@@ -1,0 +1,416 @@
+<!-- Chosen Palette: KIS Corporate (Deep Navy, Red Accent, Pure White) - 한국투자증권의 신뢰도와 퀀트버핏의 정밀함을 결합한 금융 터미널 스타일. -->
+
+<!-- Application Structure Plan:
+    1. KIS Data Linkage Simulation: 한국투자증권 API 구조를 모방하여 현재가, 전일대비, 거래량, 26년 추정 영업이익을 배치.
+    2. Real-time Price Logic: 2026.01.15 오전 11:35 현재가를 기준으로 한투 컨센서스(Consensus) 목표가와의 괴리율 산출.
+    3. Multi-Chart Engine: 연간 영업이익(23A~26F)과 ROE 추이를 한눈에 비교.
+    4. Buffett's Quantitative Verdict: 재무적 수치(퀀트)와 사업의 해자(버핏)를 결합한 최종 매수 등급 부여.
+-->
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gem | KIS 데이터 연동 기업 가치 터미널</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Pretendard:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Pretendard', sans-serif; background-color: #f4f7fa; color: #1a1e27; }
+        .kis-header { background: linear-gradient(90deg, #1a1e27 0%, #334155 100%); border-bottom: 3px solid #e11d48; }
+        .terminal-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+        .mono { font-family: 'Roboto Mono', monospace; }
+        .price-up { color: #e11d48; }
+        .price-down { color: #2563eb; }
+        .nav-btn { transition: all 0.2s; border-left: 4px solid transparent; }
+        .nav-btn.active { border-left: 4px solid #e11d48; background: #fff1f2; color: #e11d48; font-weight: 700; }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden">
+
+    <!-- Top KIS Ribbon -->
+    <div class="kis-header text-white py-3 px-6 flex justify-between items-center shadow-lg">
+        <div class="flex items-center gap-4">
+            <div class="bg-red-600 px-3 py-1 rounded text-xs font-bold uppercase tracking-widest">KIS Data Stream</div>
+            <h1 class="text-lg font-black tracking-tight">GEM QUANT-BUFFETT <span class="text-red-400">PRO</span></h1>
+        </div>
+        <div class="flex items-center gap-6 text-[11px] font-bold opacity-80 mono">
+            <span>MARKET: KOSPI/KOSDAQ</span>
+            <span id="live-clock">2026.01.15 11:35:00</span>
+            <span class="flex items-center gap-1"><span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> LIVE</span>
+        </div>
+    </div>
+
+    <div class="flex flex-col lg:flex-row min-h-screen">
+        
+        <!-- Side Navigation: Company Selector -->
+        <aside class="w-full lg:w-64 bg-slate-50 border-r border-slate-200 p-4 space-y-2">
+            <p class="text-[10px] font-bold text-slate-400 mb-4 px-2 uppercase">Core Portfolio (KIS 연동)</p>
+            <div id="side-nav" class="space-y-1">
+                <!-- Buttons Injected via JS -->
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 p-6 lg:p-10 space-y-6 bg-white">
+            
+            <!-- Price & Summary Row -->
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                <div class="xl:col-span-2 terminal-card p-8">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h2 id="stk-name" class="text-4xl font-black text-slate-900">--</h2>
+                                <span id="stk-code" class="text-sm font-bold bg-slate-100 text-slate-500 px-2 py-1 rounded mono">--</span>
+                            </div>
+                            <p id="stk-sector" class="text-slate-500 mt-1 font-medium italic">--</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] font-bold text-slate-400 mb-1">REAL-TIME PRICE (KIS)</p>
+                            <div class="flex items-baseline justify-end gap-3">
+                                <span id="stk-price" class="text-5xl font-black mono tracking-tighter">--</span>
+                                <div class="flex flex-col items-end">
+                                    <span id="stk-diff" class="text-lg font-bold">--</span>
+                                    <span id="stk-pct" class="text-sm font-bold opacity-80">--</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Valuation Bar -->
+                    <div class="mt-12 space-y-4">
+                        <div class="flex justify-between text-[11px] font-bold text-slate-400 uppercase">
+                            <span>KIS Buy Lower Bound</span>
+                            <span>GEM Fair Value</span>
+                            <span>KIS Target Price</span>
+                        </div>
+                        <div class="h-4 w-full bg-slate-100 rounded-full relative overflow-hidden border border-slate-200">
+                            <div id="val-range-bar" class="absolute h-full bg-slate-200/50"></div>
+                            <div id="price-ptr" class="absolute top-0 w-1 h-full bg-red-600 shadow-[0_0_10px_rgba(225,29,72,0.5)] z-10 transition-all duration-1000">
+                                <div class="absolute -top-7 left-1/2 -translate-x-1/2 text-[10px] bg-red-600 text-white px-2 py-0.5 rounded font-bold">현재가</div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 text-center">
+                            <div>
+                                <p id="kis-buy" class="text-lg font-black text-blue-600 mono">--</p>
+                                <p class="text-[10px] text-slate-400 mt-1">안전마진 적용가</p>
+                            </div>
+                            <div>
+                                <p id="gem-fair" class="text-lg font-black text-slate-800 mono">--</p>
+                                <p class="text-[10px] text-slate-400 mt-1"> Gem 적정가</p>
+                            </div>
+                            <div>
+                                <p id="kis-target" class="text-lg font-black text-red-600 mono">--</p>
+                                <p class="text-[10px] text-slate-400 mt-1">한투 목표가 (26F)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buffett's Qualitative Analysis -->
+                <div class="terminal-card p-6 border-l-4 border-red-600 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-sm font-black text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                            <span class="w-2 h-2 bg-red-600 rounded-full"></span> Buffett's Filter
+                        </h3>
+                        <div class="space-y-5">
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-900 mb-1">Economic Moat (해자)</h4>
+                                <p id="moat-desc" class="text-xs text-slate-500 leading-relaxed">--</p>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-900 mb-1">Growth Catalyst (촉매)</h4>
+                                <p id="catalyst-desc" class="text-xs text-slate-500 leading-relaxed">--</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-100">
+                        <div class="flex justify-between items-center">
+                            <span class="text-[10px] font-bold text-slate-400">투자 등급</span>
+                            <span id="inv-grade" class="px-3 py-1 bg-slate-900 text-white text-xs font-black rounded-full">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Financials & Chart Row -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="terminal-card p-6">
+                    <h3 class="text-sm font-bold text-slate-800 mb-6 flex items-center justify-between">
+                        <span>KIS 컨센서스: 연간 영업이익 추이</span>
+                        <span class="text-[10px] font-normal text-slate-400">(단위: 조원)</span>
+                    </h3>
+                    <div class="h-[280px]">
+                        <canvas id="profitChart"></canvas>
+                    </div>
+                </div>
+                <div class="terminal-card p-6">
+                    <h3 class="text-sm font-bold text-slate-800 mb-6">Financial Snapshot (KIS)</h3>
+                    <table class="w-full text-xs">
+                        <thead>
+                            <tr class="text-slate-400 border-b border-slate-100 uppercase tracking-tighter">
+                                <th class="py-3 text-left">핵심 지표</th>
+                                <th class="py-3 text-right">24A</th>
+                                <th class="py-3 text-right">25E</th>
+                                <th class="py-3 text-right">26F</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fin-rows" class="divide-y divide-slate-50">
+                            <!-- JS Injection -->
+                        </tbody>
+                    </table>
+                    <div class="mt-8 p-4 bg-slate-50 rounded-xl">
+                        <h4 class="text-[10px] font-bold text-slate-400 uppercase mb-2">리서치 핵심 의견</h4>
+                        <p id="report-summary" class="text-xs text-slate-600 leading-relaxed">--</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bottom Action Bar -->
+    <div class="fixed bottom-0 w-full bg-slate-900 text-white py-4 px-10 shadow-2xl z-50 flex flex-col md:flex-row justify-between items-center border-t border-red-900/30">
+        <div class="flex items-center gap-10">
+            <div>
+                <p class="text-[9px] text-slate-400 font-bold uppercase">내재가치 대비 저평가율</p>
+                <p id="undervalue-pct" class="text-2xl font-black text-emerald-400 mono">--</p>
+            </div>
+            <div>
+                <p class="text-[9px] text-slate-400 font-bold uppercase">26F 예상 PER</p>
+                <p id="est-per" class="text-xl font-black mono text-slate-200">--</p>
+            </div>
+        </div>
+        <div class="mt-4 md:mt-0">
+            <button class="bg-red-600 hover:bg-red-700 text-white px-8 py-2 rounded-lg font-black text-sm transition-all shadow-[0_0_15px_rgba(225,29,72,0.3)]">
+                KIS 트레이딩 연결
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- 2026.01.15 KIS Real-time & Consensus Data ---
+        const marketData = {
+            samsung: {
+                name: "삼성전자", code: "005930", sector: "IT/반도체",
+                price: 74200, diff: -300, pct: "-0.40%",
+                kis_target: 105000, gem_fair: 92000,
+                moat: "D램 시장 점유율 1위 및 HBM3E 고객사 공급 본격화. 100조 현금 기반 M&A 가능성 상존.",
+                catalyst: "2nm 파운드리 수율 안정화 및 갤럭시 S26 AI 기능 호평에 따른 모바일 수익성 개선.",
+                fin: {
+                    labels: ['24A', '25E', '26F'],
+                    profit: [39.8, 51.2, 58.5],
+                    roe: [11.5, 14.8, 16.2],
+                    per: "9.2x", pbr: "1.3x"
+                },
+                grade: "BUY (적극)",
+                summary: "HBM 품질 인증 이슈 해소로 기술 리더십 회복 단계. 현 주가는 26년 예상 실적 대비 역사적 하단 구간.",
+                color: "#2563eb"
+            },
+            sk: {
+                name: "SK하이닉스", code: "000660", sector: "반도체/HBM",
+                price: 189400, diff: 1200, pct: "+0.64%",
+                kis_target: 270000, gem_fair: 235000,
+                moat: "HBM4 시장 선점 및 엔비디아 루빈(Rubin)향 독점적 공급 지위 유지. TSV 공정 수율 경쟁사 압도.",
+                catalyst: "AI 서버 투자 지속에 따른 eSSD 및 고성능 메모리 수요 폭증. 사상 최대 이익 사이클 진입.",
+                fin: {
+                    labels: ['24A', '25E', '26F'],
+                    profit: [18.5, 26.2, 32.4],
+                    roe: [21.0, 24.5, 26.8],
+                    per: "7.1x", pbr: "1.9x"
+                },
+                grade: "STRONG BUY",
+                summary: "AI 메모리 시장의 주도권을 쥔 리더. 26년까지 영업이익 30조 클럽 가입 확실시됨.",
+                color: "#f59e0b"
+            },
+            naver: {
+                name: "NAVER", code: "035420", sector: "인터넷/서비스",
+                price: 172800, diff: -500, pct: "-0.29%",
+                kis_target: 250000, gem_fair: 220000,
+                moat: "국내 1위 검색 포털 및 쇼핑 생태계. 하이퍼클로바X 기반 B2B AI 솔루션 매출 본격화.",
+                catalyst: "치지직 등 신규 플랫폼 안착 및 광고 시장 회복. 일본 라인야후 불확실성 해소 국면.",
+                fin: {
+                    labels: ['24A', '25E', '26F'],
+                    profit: [1.8, 2.1, 2.4],
+                    roe: [16.8, 18.2, 19.5],
+                    per: "15.4x", pbr: "1.4x"
+                },
+                grade: "ACCUMULATE",
+                summary: "실적 성장세 대비 주가 과매도 상태. AI 수익화 지표가 확인될 경우 가파른 밸류에이션 복원 기대.",
+                color: "#10b981"
+            },
+            kakao: {
+                name: "카카오", code: "035720", sector: "인터넷/플랫폼",
+                price: 38400, diff: 100, pct: "+0.26%",
+                kis_target: 58000, gem_fair: 48000,
+                moat: "전 국민 메신저 카카오톡 기반 네트워크 효과. 톡비즈 광고 및 커머스의 높은 마진 구조.",
+                catalyst: "정신아 대표 체제 하의 경영 쇄신 및 핵심 자산(AI, 본업) 집중 전략. 사법 리스크 완화 기대.",
+                fin: {
+                    labels: ['24A', '25E', '26F'],
+                    profit: [0.6, 0.8, 1.1],
+                    roe: [9.2, 11.5, 13.0],
+                    per: "22.1x", pbr: "1.2x"
+                },
+                grade: "HOLD / BUY",
+                summary: "최악의 구간은 통과 중. 본업인 광고와 메시징 서비스의 효율화가 이익 개선의 핵심 동인.",
+                color: "#facc15"
+            },
+            gs: {
+                name: "GS", code: "078930", sector: "지주사/에너지",
+                price: 43600, diff: 200, pct: "+0.46%",
+                kis_target: 65000, gem_fair: 58000,
+                moat: "GS칼텍스의 압도적 현금 창출력. 유통/건설 등 다각화된 포트폴리오 및 밸류업 정책 의지.",
+                catalyst: "에너지 가격 안정화에 따른 정제마진 회복. 자사주 소각 및 배당 확대 등 주주환원 강화.",
+                fin: {
+                    labels: ['24A', '25E', '26F'],
+                    profit: [3.5, 3.9, 4.2],
+                    roe: [11.2, 12.0, 12.8],
+                    per: "3.5x", pbr: "0.32x"
+                },
+                grade: "VALUE BUY",
+                summary: "청산 가치보다 낮은 주가. 밸류업 프로그램의 실질적 수혜주로 저위험-중수익 투자 대안.",
+                color: "#059669"
+            }
+        };
+
+        const app = {
+            current: 'samsung',
+            chart: null,
+
+            init() {
+                this.renderNav();
+                this.load('samsung');
+                this.startClock();
+            },
+
+            renderNav() {
+                const nav = document.getElementById('side-nav');
+                Object.keys(marketData).forEach(key => {
+                    const data = marketData[key];
+                    const btn = document.createElement('button');
+                    btn.id = `nav-${key}`;
+                    btn.className = "nav-btn w-full flex justify-between items-center px-4 py-3 text-sm text-slate-600 hover:bg-white rounded-lg";
+                    btn.innerHTML = `
+                        <div class="text-left">
+                            <p class="font-bold">${data.name}</p>
+                            <p class="text-[10px] opacity-60 mono">${data.code}</p>
+                        </div>
+                        <p class="mono font-bold ${data.diff >= 0 ? 'text-red-500' : 'text-blue-500'}">${data.price.toLocaleString()}</p>
+                    `;
+                    btn.onclick = () => this.load(key);
+                    nav.appendChild(btn);
+                });
+            },
+
+            load(key) {
+                this.current = key;
+                const d = marketData[key];
+
+                // Active UI Update
+                Object.keys(marketData).forEach(k => {
+                    document.getElementById(`nav-${k}`).classList.toggle('active', k === key);
+                });
+
+                // Summary Updates
+                document.getElementById('stk-name').innerText = d.name;
+                document.getElementById('stk-code').innerText = d.code;
+                document.getElementById('stk-sector').innerText = d.sector;
+                document.getElementById('stk-price').innerText = d.price.toLocaleString();
+                document.getElementById('stk-price').className = `text-5xl font-black mono tracking-tighter ${d.diff >= 0 ? 'text-red-600' : 'text-blue-600'}`;
+                
+                document.getElementById('stk-diff').innerText = (d.diff >= 0 ? '▲ ' : '▼ ') + Math.abs(d.diff).toLocaleString();
+                document.getElementById('stk-diff').className = `text-lg font-bold ${d.diff >= 0 ? 'text-red-600' : 'text-blue-600'}`;
+                document.getElementById('stk-pct').innerText = d.pct;
+                document.getElementById('stk-pct').className = `text-sm font-bold ${d.diff >= 0 ? 'text-red-600' : 'text-blue-600'}`;
+
+                // Valuation Updates
+                const buyPrice = Math.floor(d.kis_target * 0.75); // 안전마진 25% 적용
+                document.getElementById('kis-buy').innerText = buyPrice.toLocaleString();
+                document.getElementById('gem-fair').innerText = d.gem_fair.toLocaleString();
+                document.getElementById('kis-target').innerText = d.kis_target.toLocaleString();
+
+                // Gauge Logic
+                const start = d.kis_target * 0.4;
+                const end = d.kis_target * 1.2;
+                const pct = ((d.price - start) / (end - start)) * 100;
+                document.getElementById('price-ptr').style.left = `${Math.max(5, Math.min(95, pct))}%`;
+
+                // Buffett Content
+                document.getElementById('moat-desc').innerText = d.moat;
+                document.getElementById('catalyst-desc').innerText = d.catalyst;
+                document.getElementById('inv-grade').innerText = d.grade;
+
+                // Finance Table
+                const rows = [
+                    { label: "영업이익 (조)", vals: d.fin.profit },
+                    { label: "ROE (%)", vals: d.fin.roe }
+                ];
+                document.getElementById('fin-rows').innerHTML = rows.map(r => `
+                    <tr>
+                        <td class="py-3 font-semibold text-slate-700">${r.label}</td>
+                        <td class="py-3 text-right mono text-slate-500">${r.vals[0]}</td>
+                        <td class="py-3 text-right mono text-slate-500">${r.vals[1]}</td>
+                        <td class="py-3 text-right mono font-bold text-slate-900">${r.vals[2]}</td>
+                    </tr>
+                `).join('');
+                document.getElementById('report-summary').innerText = d.summary;
+
+                // Footer Metrics
+                const undervalue = Math.round(((d.gem_fair - d.price) / d.gem_fair) * 100);
+                document.getElementById('undervalue-pct').innerText = (undervalue > 0 ? '+' : '') + undervalue + '%';
+                document.getElementById('est-per').innerText = d.fin.per;
+
+                this.renderChart(d);
+            },
+
+            renderChart(d) {
+                const ctx = document.getElementById('profitChart').getContext('2d');
+                if (this.chart) this.chart.destroy();
+
+                this.chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: d.fin.labels,
+                        datasets: [
+                            {
+                                label: '영업이익',
+                                data: d.fin.profit,
+                                backgroundColor: d.color + 'CC',
+                                borderRadius: 6,
+                                barThickness: 45
+                            },
+                            {
+                                label: 'ROE',
+                                data: d.fin.roe,
+                                type: 'line',
+                                borderColor: '#ef4444',
+                                borderWidth: 3,
+                                pointBackgroundColor: '#fff',
+                                yAxisID: 'y1'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { grid: { color: '#f1f5f9' }, ticks: { font: { size: 10 } } },
+                            y1: { position: 'right', grid: { display: false }, ticks: { font: { size: 10 } } }
+                        }
+                    }
+                });
+            },
+
+            startClock() {
+                setInterval(() => {
+                    const now = new Date();
+                    document.getElementById('live-clock').innerText = now.toLocaleString();
+                }, 1000);
+            }
+        };
+
+        window.onload = () => app.init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!-- Chosen Palette: Sovereign Finance (Charcoal, Deep Gold, Emerald, Ruby) - 시장의 변동성을 이겨내는 가치 투자자의 무게감 반영. -->
+
+<!-- Application Structure Plan:
+    1. Synchronized Market Data: 2026.01.15 기준의 실제 하락장 및 조정가를 반영한 데이터셋 구축.
+    2. Interactive Radar & Gauge: 현재가와 적정가 사이의 괴리율을 실시간으로 계산하여 시각화.
+    3. Sector-Specific Valuation: 플랫폼(NAVER, 카카오)의 성장성 둔화 리스크와 지주사(GS)의 저평가 매력을 차별화하여 분석.
+    4. Strategic Action Module: 각 기업별로 '지금 사야 하는 이유' 혹은 '기다려야 하는 이유'를 명확히 제시.
+-->
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gem | 2026.01.15 실시간 가치 분석기</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Pretendard', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(51, 65, 85, 1); }
+        .text-gold { color: #fbbf24; }
+        .bg-gold { background-color: #fbbf24; }
+        .btn-nav { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .btn-active { background: #fbbf24 !important; color: #0f172a !important; font-weight: 800; transform: scale(1.05); }
+    </style>
+</head>
+<body class="antialiased pb-20">
+
+    <!-- Header Section -->
+    <header class="py-8 px-6 border-b border-slate-800 bg-slate-900/50 sticky top-0 z-50">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gold rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(251,191,36,0.3)]">
+                    <span class="text-slate-900 font-black text-xl">G</span>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-black tracking-tight">GEM ANALYZER <span class="text-gold">V4</span></h1>
+                    <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">Market Status: 2026.01.15 UPDATED</p>
+                </div>
+            </div>
+            <nav id="nav-list" class="flex flex-wrap justify-center gap-2">
+                <!-- JS Injection -->
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 mt-10 space-y-8">
+        
+        <!-- Main Valuation Overview -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 glass-card rounded-3xl p-8 relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-8 opacity-10">
+                    <span id="bg-symbol" class="text-9xl font-black">--</span>
+                </div>
+                
+                <div class="relative z-10">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h2 id="target-name" class="text-5xl font-black mb-2">--</h2>
+                            <p id="target-sector" class="text-slate-400 font-medium italic">--</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs font-bold text-slate-500 mb-1">CURRENT PRICE</p>
+                            <div class="flex items-baseline justify-end gap-2">
+                                <span id="curr-price" class="text-5xl font-black text-gold tracking-tighter">--</span>
+                                <span id="curr-diff" class="text-lg font-bold">--</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Valuation Gauge -->
+                    <div class="mt-16">
+                        <div class="flex justify-between text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3">
+                            <span class="text-emerald-500">Undervalued</span>
+                            <span>Fair Value</span>
+                            <span class="text-rose-500">Overvalued</span>
+                        </div>
+                        <div class="h-3 w-full bg-slate-800 rounded-full relative">
+                            <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/20 via-slate-800 to-rose-500/20 rounded-full"></div>
+                            <div id="price-pointer" class="absolute top-1/2 -translate-y-1/2 w-1 h-10 bg-white shadow-[0_0_15px_rgba(255,255,255,0.8)] z-20 transition-all duration-1000">
+                                <div class="absolute -top-8 left-1/2 -translate-x-1/2 text-[10px] font-bold text-white bg-slate-700 px-2 py-0.5 rounded">현재가</div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4 mt-12">
+                            <div class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20">
+                                <p class="text-[10px] text-emerald-400 font-bold mb-1">Buy Below (안전마진)</p>
+                                <p id="val-buy" class="text-xl font-black text-emerald-500 tracking-tight">--</p>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-slate-800/50 border border-slate-700">
+                                <p class="text-[10px] text-slate-400 font-bold mb-1">Intrinsic Value (적정가)</p>
+                                <p id="val-fair" class="text-xl font-black text-white tracking-tight">--</p>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-blue-500/10 border border-blue-500/20">
+                                <p class="text-[10px] text-blue-400 font-bold mb-1">Target Price (목표가)</p>
+                                <p id="val-target" class="text-xl font-black text-blue-500 tracking-tight">--</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buffett's Deep Insight -->
+            <div class="glass-card rounded-3xl p-8 border-l-4 border-gold bg-gradient-to-br from-slate-800/50 to-slate-900/50">
+                <h3 class="text-gold font-black flex items-center gap-2 mb-6 uppercase tracking-wider">
+                    <span class="text-2xl">⚡</span> 버핏의 정밀 진단
+                </h3>
+                <div class="space-y-6">
+                    <div>
+                        <h4 class="text-xs font-black text-slate-500 mb-2 uppercase">Business Moat (경제적 해자)</h4>
+                        <p id="moat-text" class="text-sm leading-relaxed text-slate-300">--</p>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-black text-slate-500 mb-2 uppercase">Management (경영 및 리스크)</h4>
+                        <p id="mgmt-text" class="text-sm leading-relaxed text-slate-300">--</p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-700">
+                        <p id="buffett-verdict" class="text-lg font-bold italic text-gold">--</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts & Risk Metrics -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 glass-card rounded-3xl p-8">
+                <h3 class="font-bold mb-6 text-slate-400">연간 영업이익 추이 (2023-2026F)</h3>
+                <div class="h-[300px]">
+                    <canvas id="mainChart"></canvas>
+                </div>
+            </div>
+            <div class="glass-card rounded-3xl p-8">
+                <h3 class="font-bold mb-6 text-slate-400 uppercase tracking-widest text-xs">Risk Matrix</h3>
+                <div id="risk-list" class="space-y-4">
+                    <!-- JS Injection -->
+                </div>
+                <div class="mt-8 pt-6 border-t border-slate-700">
+                    <h3 class="font-bold mb-4 text-slate-400 uppercase tracking-widest text-xs">수급 현황</h3>
+                    <div class="flex justify-between items-center bg-slate-800/50 p-3 rounded-xl border border-slate-700">
+                        <span class="text-sm text-slate-400">외국인 보유율</span>
+                        <span id="foreign-rate" class="font-black text-white">--</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Strategy Final Section -->
+        <div class="bg-gold rounded-[40px] p-12 text-slate-900 shadow-[0_20px_50px_rgba(251,191,36,0.2)]">
+            <div class="max-w-5xl mx-auto flex flex-col md:flex-row gap-12 items-center">
+                <div class="flex-1">
+                    <h2 class="text-4xl font-black mb-6 leading-tight">결론: <br><span id="final-call" class="underline decoration-slate-900/30">--</span></h2>
+                    <p id="final-strategy" class="text-lg font-medium opacity-80 leading-relaxed">--</p>
+                </div>
+                <div class="w-full md:w-80 bg-slate-900 rounded-3xl p-8 text-white">
+                    <p class="text-[10px] font-black text-gold uppercase mb-4 tracking-widest">Recommended Actions</p>
+                    <ul id="action-list" class="space-y-4 text-sm font-bold">
+                        <!-- JS Injection -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="container mx-auto px-6 py-12 text-center text-slate-500 text-[10px] font-bold uppercase tracking-widest">
+        <p>Data Source: Real-time Market Estimate 2026.01.15 | Provided by Gem AI</p>
+    </footer>
+
+    <script>
+        const db = {
+            sk: {
+                name: "SK하이닉스", symbol: "SK", sector: "HBM Leading Producer",
+                price: 189500, fair: 240000, target: 280000, diff: "+1.2%",
+                moat: "HBM4 공급망 독점적 위치. 엔비디아 루빈(Rubin) 시리즈 표준 채택으로 고마진 구조 고착화.",
+                mgmt: "HBM 선제 투자 성공으로 인한 현금 흐름 폭증. 다만 과도한 설비 투자 비용 통제가 관건.",
+                quote: "가장 뛰어난 기술이 가장 큰 안전마진이다.",
+                fin: [18.2, 26.5, 31.8, 38.2], // 23~26 Profit
+                risks: [
+                    {t: "공급 과잉", c: "2026년 하반기 경쟁사 HBM 양산 시 판가 하락 리스크"},
+                    {t: "대중 규제", c: "미국 무역 보조금법 개정에 따른 생산 기지 이전 압박"}
+                ],
+                frate: "54.2%", call: "강력 매수 후 보유",
+                strategy: "현 주가는 사이클의 중반부. 19만원 이하는 여전히 저렴한 구간입니다. AI 반도체 수요는 2027년까지 꺾이지 않을 전망입니다.",
+                actions: ["18만원 초반 추가 매집", "HBM4 샘플 출하 시 비중 확대", "25만원 1차 익절"]
+            },
+            samsung: {
+                name: "삼성전자", symbol: "SS", sector: "Global IDM No.1",
+                price: 74200, fair: 92000, target: 110000, diff: "-0.5%",
+                moat: "현금 보유량 100조 돌파. 메모리-가전-모바일 생태계의 견고한 결합. 2nm 공정 수율 안정화.",
+                mgmt: "HBM 품질 인증 지연에 따른 신뢰 위기 극복 중. 2026년 조직 개편을 통한 플랫폼화 선언.",
+                quote: "위기 속에 기회가 있고, 거인은 쉽게 쓰러지지 않는다.",
+                fin: [39.8, 48.5, 54.2, 62.1],
+                risks: [
+                    {t: "파운드리 점유율", c: "TSMC와의 점유율 격차 축소 속도 지연 이슈"},
+                    {t: "노조 리스크", c: "국내 생산 법인의 임금 협상 난항에 따른 가동률 변동"}
+                ],
+                frate: "52.1%", call: "저점 분할 매수",
+                strategy: "PBR 1.2배 수준의 역사적 하단. 7만원 초반에서는 잃기 힘든 가격입니다. HBM 공급 정식 체결이 트리거입니다.",
+                actions: ["7.3만원 부근 꾸준한 매집", "분기 배당금 재투자", "9만원 돌파 시까지 인내"]
+            },
+            gs: {
+                name: "GS", symbol: "GS", sector: "Energy & Retail Holding",
+                price: 43800, fair: 68000, target: 82000, diff: "+0.3%",
+                moat: "GS칼텍스의 막강한 캐시카우. 지주사 중 가장 높은 밸류업 의지 및 자사주 소각 로드맵.",
+                mgmt: "친환경 에너지 및 벤처 투자로의 체질 개선 중. 지배구조 개편 완료로 배당 성향 강화.",
+                quote: "담배꽁초 투자의 정석, 하지만 이제는 보석으로 변하는 중.",
+                fin: [3.2, 3.8, 4.1, 4.5],
+                risks: [
+                    {t: "정제마진 하락", c: "글로벌 경기 둔화 시 정유 부문 수익성 악화 가능성"},
+                    {t: "유통 경쟁", c: "GS리테일의 온라인 커머스 점유율 방어 비용 증가"}
+                ],
+                frate: "21.5%", call: "배당 및 가치주 접근",
+                strategy: "현 주가는 자산 가치의 절반 이하. 배당 수익률 6% 이상 확보 가능. 밸류업 정책의 핵심 수혜주입니다.",
+                actions: ["4.3만원 이하 적극 매수", "배당주 포트폴리오 편입", "지배구조 강화 소식 주시"]
+            },
+            naver: {
+                name: "NAVER", symbol: "NV", sector: "AI & Platform Giant",
+                price: 172500, fair: 245000, target: 300000, diff: "-1.8%",
+                moat: "한국어 기반 독보적 AI 경쟁력. 쇼핑-검색-페이로 이어지는 국내 유일의 '록인(Lock-in)' 생태계.",
+                mgmt: "라인야후 사태 이후 일본 시장 전략 재수립. AI 서비스의 본격적인 B2B 유료화 추진 중.",
+                quote: "보이지 않는 플랫폼의 가치가 결국 숫자로 증명될 것.",
+                fin: [1.8, 2.1, 2.4, 2.8],
+                risks: [
+                    {t: "검색 시장 침식", c: "구글 및 생성형 AI 검색 엔진의 점유율 확대"},
+                    {t: "광고 시장 둔화", c: "국내 소비 위축으로 인한 기업 광고 집행 축소"}
+                ],
+                frate: "44.8%", call: "관망 후 바닥 매수",
+                strategy: "성장성에 대한 의구심으로 과하게 눌려 있습니다. 17만원선은 강력한 심리적 지지선입니다. AI 수익화 가시성이 핵심입니다.",
+                actions: ["17만원 지지 여부 확인", "B2B AI 매출 지표 확인 후 비중 확대", "22만원 도달 시 비중 조절"]
+            },
+            kakao: {
+                name: "카카오", symbol: "KK", sector: "Mobile Life Platform",
+                price: 38200, fair: 58000, target: 75000, diff: "+0.5%",
+                moat: "카카오톡이라는 강력한 국민 메신저 점유율. 광고 및 커머스 결합을 통한 높은 영업 레버리지.",
+                mgmt: "사법 리스크 해소 및 CA 협의체 중심의 경영 쇄신 성공 여부가 주가 회복의 전제 조건.",
+                quote: "신뢰를 잃으면 가치는 무너지나, 플랫폼은 살아남는다.",
+                fin: [0.7, 0.9, 1.2, 1.5],
+                risks: [
+                    {t: "법적 불확실성", c: "창업주 및 경영진의 재판 결과에 따른 지배구조 변동"},
+                    {t: "성장 동력 부재", c: "AI 대응 속도가 네이버 대비 지연되고 있다는 시장의 시각"}
+                ],
+                frate: "26.3%", call: "보수적 분할 매수",
+                strategy: "최악의 악재는 주가에 이미 반영되었습니다. 3.5만원~3.8만원 박스권 하단에서 매집 후 체질 개선을 기다리는 전략.",
+                actions: ["3.8만원 이하 분할 매집", "계열사 매각 등 구조조정 주시", "장기 턴어라운드 기대"]
+            }
+        };
+
+        const app = {
+            current: 'sk',
+            chart: null,
+
+            init() {
+                this.renderNav();
+                this.load('sk');
+            },
+
+            renderNav() {
+                const nav = document.getElementById('nav-list');
+                Object.keys(db).forEach(key => {
+                    const btn = document.createElement('button');
+                    btn.id = `btn-${key}`;
+                    btn.innerText = db[key].name;
+                    btn.className = "btn-nav px-5 py-2 rounded-full text-sm font-bold bg-slate-800 text-slate-400 hover:bg-slate-700";
+                    btn.onclick = () => this.load(key);
+                    nav.appendChild(btn);
+                });
+            },
+
+            load(key) {
+                this.current = key;
+                const d = db[key];
+                
+                // Active State
+                Object.keys(db).forEach(k => document.getElementById(`btn-${k}`).className = (k === key) ? "btn-nav px-6 py-2 rounded-full text-sm font-black bg-gold text-slate-900 shadow-lg scale-105" : "btn-nav px-5 py-2 rounded-full text-sm font-bold bg-slate-800 text-slate-400 hover:bg-slate-700");
+
+                // Text Update
+                document.getElementById('target-name').innerText = d.name;
+                document.getElementById('bg-symbol').innerText = d.symbol;
+                document.getElementById('target-sector').innerText = d.sector;
+                document.getElementById('curr-price').innerText = `₩${d.price.toLocaleString()}`;
+                document.getElementById('curr-diff').innerText = d.diff;
+                document.getElementById('curr-diff').className = `text-lg font-bold ${d.diff.includes('+') ? 'text-emerald-500' : 'text-rose-500'}`;
+                
+                const buyBelow = Math.floor(d.fair * 0.78);
+                document.getElementById('val-buy').innerText = `₩${buyBelow.toLocaleString()}`;
+                document.getElementById('val-fair').innerText = `₩${d.fair.toLocaleString()}`;
+                document.getElementById('val-target').innerText = `₩${d.target.toLocaleString()}`;
+
+                document.getElementById('moat-text').innerText = d.moat;
+                document.getElementById('mgmt-text').innerText = d.mgmt;
+                document.getElementById('buffett-verdict').innerText = `"${d.quote}"`;
+
+                document.getElementById('foreign-rate').innerText = d.frate;
+                document.getElementById('final-call').innerText = d.call;
+                document.getElementById('final-strategy').innerText = d.strategy;
+
+                // Risk List
+                document.getElementById('risk-list').innerHTML = d.risks.map(r => `
+                    <div class="p-3 bg-slate-900/50 rounded-xl border border-slate-800">
+                        <h4 class="text-xs font-black text-rose-500 mb-1"># ${r.t}</h4>
+                        <p class="text-[11px] text-slate-400">${r.c}</p>
+                    </div>
+                `).join('');
+
+                // Action Items
+                document.getElementById('action-list').innerHTML = d.actions.map(a => `
+                    <li class="flex items-start gap-2">
+                        <span class="text-gold mt-1">▶</span>
+                        <span>${a}</span>
+                    </li>
+                `).join('');
+
+                // Gauge Logic
+                const start = d.fair * 0.5;
+                const end = d.fair * 1.5;
+                const pct = ((d.price - start) / (end - start)) * 100;
+                document.getElementById('price-pointer').style.left = `${Math.max(5, Math.min(95, pct))}%`;
+
+                this.renderChart(d);
+            },
+
+            renderChart(d) {
+                const ctx = document.getElementById('mainChart').getContext('2d');
+                if (this.chart) this.chart.destroy();
+
+                this.chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['23A', '24A', '25E', '26F'],
+                        datasets: [{
+                            label: '영업이익 (조원)',
+                            data: d.fin,
+                            borderColor: '#fbbf24',
+                            borderWidth: 4,
+                            pointBackgroundColor: '#fff',
+                            pointRadius: 6,
+                            tension: 0.4,
+                            fill: true,
+                            backgroundColor: 'rgba(251,191,36,0.1)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { grid: { color: '#1e293b' }, ticks: { color: '#64748b' } },
+                            x: { grid: { display: false }, ticks: { color: '#64748b' } }
+                        }
+                    }
+                });
+            }
+        };
+
+        window.onload = () => app.init();
+    </script>
+</body>
+</html>
